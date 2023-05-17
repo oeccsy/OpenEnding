@@ -10,11 +10,13 @@ public class NetworkManager : Singleton<NetworkManager>
     public string networkName = "test";
     public Define.ConnectType connectType = Define.ConnectType.None;
     public List<Networking.NetworkDevice> connectedDeviceList = new List<Networking.NetworkDevice>();
+    public Networking.NetworkDevice myDeviceData = new Networking.NetworkDevice();  // Plugins Custom
     
     [Header("Networking")]
     [SerializeField]
-    private Networking networking = null;
-    private bool isSendable = true;
+    private Networking networking = null;                                           // Plugins
+    [SerializeField]
+    private bool isWritingData = false;                                             // true이면 현재 Writing(Sending) 중 임을 나타내는 변수
     private Action<Networking.NetworkDevice, string, byte[]> OnReceiveDataFromClient = null;
     private Action<string, string, byte[]> OnReceiveDataFromServer = null;
 
@@ -50,11 +52,17 @@ public class NetworkManager : Singleton<NetworkManager>
     public void StartServer()
     {
         DebugText.Instance.AddText("Start Server");
+
+        // 서버 디바이스 등록 : index 0
+        myDeviceData.indexOfDeviceList = connectedDeviceList.Count;
+        connectedDeviceList.Add(myDeviceData);
+        
         networking.StartServer(networkName, (connectedDevice) =>
         {
             DebugText.Instance.AddText($"{connectedDevice.Name} 접속 완료");
             if (!connectedDeviceList.Contains(connectedDevice))
             {
+                connectedDevice.indexOfDeviceList = connectedDeviceList.Count;
                 connectedDeviceList.Add(connectedDevice);
             }
         }, (disconnectedDevice) =>
@@ -62,6 +70,7 @@ public class NetworkManager : Singleton<NetworkManager>
             DebugText.Instance.AddText($"{disconnectedDevice.Name} 연결 끊김");
             if (connectedDeviceList != null && connectedDeviceList.Contains(disconnectedDevice))
             {
+                // indexOfDeviceList 꼬일 위험 점검
                 connectedDeviceList.Remove(disconnectedDevice);
             }
                 
@@ -73,18 +82,18 @@ public class NetworkManager : Singleton<NetworkManager>
     
     public IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
     {
-        yield return new WaitUntil(() => isSendable);
-        isSendable = false;
+        yield return new WaitWhile(() => isWritingData);
+        isWritingData = true;
         
         networking.WriteDevice(targetDevice, bytes, () =>
         {
-            isSendable = true;
+            isWritingData = false;
         });
     }
     
     public IEnumerator SendBytesToAllDevice(Byte[] bytes)
     {
-        yield return new WaitUntil(() => isSendable);
+        yield return new WaitWhile(() => isWritingData);
         
         for (int i = 0; i < connectedDeviceList.Count; i++)
         {
@@ -94,7 +103,7 @@ public class NetworkManager : Singleton<NetworkManager>
     
     public IEnumerator SendBytesExceptOneDevice(int skipIndex, Byte[] bytes)
     {
-        yield return new WaitUntil(() => isSendable);
+        yield return new WaitUntil(() => isWritingData);
         
         for (int i = 0; i < connectedDeviceList.Count; i++)
         {
@@ -122,12 +131,12 @@ public class NetworkManager : Singleton<NetworkManager>
     
     public IEnumerator SendBytesToServer(Byte[] bytes)
     {
-        yield return new WaitUntil(() => isSendable);
-        isSendable = false;
+        yield return new WaitWhile(() => isWritingData);
+        isWritingData = true;
         
         networking.SendFromClient(bytes);
         
-        isSendable = true;
+        isWritingData = false;
     }
     
     #endregion
