@@ -77,7 +77,7 @@ public class NetworkManager : Singleton<NetworkManager>
         }, ((device, characteristic, bytes) =>
         {
             //OnReceiveDataFromClient(device, characteristic, bytes);
-            StartCoroutine(SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes));
+            SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
         }));
     }
     
@@ -99,7 +99,7 @@ public class NetworkManager : Singleton<NetworkManager>
         if (bytes[1] == 0)
         {
             // 서버 디바이스 처리
-            yield return SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
+            SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
         }
         else
         {
@@ -114,7 +114,7 @@ public class NetworkManager : Singleton<NetworkManager>
         yield return new WaitWhile(() => isWritingData);
 
         // 서버 디바이스 처리
-        yield return SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
+        SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
         
         // 클라이언트 디바이스 처리
         for (int i = 1; i < connectedDeviceList.Count; i++)
@@ -148,7 +148,7 @@ public class NetworkManager : Singleton<NetworkManager>
         }, (clientName, characteristic, bytes)=>
         {
             //OnReceiveDataFromServer(clientName, characteristic, bytes);
-            StartCoroutine(SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes));
+            SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
         });
     }
     

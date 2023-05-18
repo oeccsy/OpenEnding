@@ -64,7 +64,7 @@ public class SealGame_PacketHandler : Singleton<SealGame_PacketHandler>
         return bytes;
     }
 
-    public IEnumerator ExecuteFuncByPacket(byte[] bytes)
+    public void ExecuteFuncByPacket(byte[] bytes)
     {
         // 아래 코드 불필요
         
