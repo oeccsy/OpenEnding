@@ -33,10 +33,10 @@ public class ConnectScene_ConnectUI : MonoBehaviour
 
     private void SetButtonEvent()
     {
-        startServerButton.onClick.AddListener( ()=> ConnectManager.Instance.SetConnectType(Define.ConnectType.Server));
+        startServerButton.onClick.AddListener( ()=> NetworkManager.Instance.connectType = Define.ConnectType.Server);
         startServerButton.onClick.AddListener( ()=> SceneManager.LoadScene(Define.SceneType.SealGameScene.ToString()));
         
-        startClientButton.onClick.AddListener( ()=> ConnectManager.Instance.SetConnectType(Define.ConnectType.Client));
+        startClientButton.onClick.AddListener( ()=> NetworkManager.Instance.connectType = Define.ConnectType.Client);
         startClientButton.onClick.AddListener( ()=> SceneManager.LoadScene(Define.SceneType.SealGameScene.ToString()));
     }
 }

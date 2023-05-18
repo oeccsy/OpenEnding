@@ -10,9 +10,9 @@ public class SealGame_GameStartButton : MonoBehaviour
     private void Awake()
     {
         button = GetComponent<Button>();
-        button.onClick.AddListener(()=> GameManager.Instance.GameFramework.StartGame());
+        button.onClick.AddListener(()=> GameManager.Instance.GameFramework.StartGameFramework());
 
-        if (ConnectManager.Instance.connectType != Define.ConnectType.Server)
+        if (NetworkManager.Instance.connectType != Define.ConnectType.Server)
         {
             gameObject.SetActive(false);
         }
