@@ -42,6 +42,9 @@ namespace Shatalmic
             public string Address;
             public bool Connected;
             public bool DoDisconnect;
+            
+            // Custom
+            public int indexOfDeviceList;
         }
 
         public List<NetworkDevice> NetworkDeviceList;

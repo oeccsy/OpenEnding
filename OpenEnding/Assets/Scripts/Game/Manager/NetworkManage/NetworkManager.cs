@@ -76,11 +76,12 @@ public class NetworkManager : Singleton<NetworkManager>
                 
         }, ((device, characteristic, bytes) =>
         {
-            OnReceiveDataFromClient(device, characteristic, bytes);
+            //OnReceiveDataFromClient(device, characteristic, bytes);
+            StartCoroutine(SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes));
         }));
     }
     
-    public IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
+    private IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
     {
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
@@ -90,34 +91,55 @@ public class NetworkManager : Singleton<NetworkManager>
             isWritingData = false;
         });
     }
-    
-    public IEnumerator SendBytesToAllDevice(Byte[] bytes)
+
+    public IEnumerator ExecuteFuncOnTargetDevice(byte[] bytes)
     {
         yield return new WaitWhile(() => isWritingData);
-        
-        for (int i = 0; i < connectedDeviceList.Count; i++)
+
+        if (bytes[1] == 0)
         {
-            yield return SendBytesToTargetDevice(connectedDeviceList[i], bytes);
+            // 서버 디바이스 처리
+            yield return SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
+        }
+        else
+        {
+            // 클라이언트 디바이스 처리
+            Networking.NetworkDevice targetDevice = connectedDeviceList[bytes[1]];
+            yield return SendBytesToTargetDevice(targetDevice, bytes);
         }
     }
-    
-    public IEnumerator SendBytesExceptOneDevice(int skipIndex, Byte[] bytes)
+
+    public IEnumerator ExecuteFuncOnAllDevice(byte[] bytes)
+    {
+        yield return new WaitWhile(() => isWritingData);
+
+        // 서버 디바이스 처리
+        yield return SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
+        
+        // 클라이언트 디바이스 처리
+        for (int i = 1; i < connectedDeviceList.Count; i++)
+        {
+            Networking.NetworkDevice targetDevice = connectedDeviceList[i];
+            yield return SendBytesToTargetDevice(targetDevice, bytes);
+        }
+    }
+
+    public IEnumerator ExecuteFuncExceptOneDevice(int skipIndex, Byte[] bytes)
     {
         yield return new WaitUntil(() => isWritingData);
         
         for (int i = 0; i < connectedDeviceList.Count; i++)
         {
             if(i == skipIndex) continue;
-            yield return SendBytesToTargetDevice(connectedDeviceList[i], bytes);
+            yield return ExecuteFuncOnTargetDevice(bytes);
         }
     }
-    
 
     #endregion
     
     #region Client Side
     
-    private void StartClient()
+    public void StartClient()
     {
         networking.StartClient(networkName, "client100", () =>
         {
@@ -125,7 +147,8 @@ public class NetworkManager : Singleton<NetworkManager>
             // DebugText.Instance.AddText("Start Client");
         }, (clientName, characteristic, bytes)=>
         {
-            OnReceiveDataFromServer(clientName, characteristic, bytes);
+            //OnReceiveDataFromServer(clientName, characteristic, bytes);
+            StartCoroutine(SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes));
         });
     }
     
