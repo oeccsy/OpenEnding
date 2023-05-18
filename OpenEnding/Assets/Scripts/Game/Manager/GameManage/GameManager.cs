@@ -14,7 +14,4 @@ public class GameManager : Singleton<GameManager>
             return _gameFramework;
         }
     }
-
-    //public GameMode gameMode = GameMode.Normal;
-    //public GameState gameState = GameState.GamePlay; 
 }
