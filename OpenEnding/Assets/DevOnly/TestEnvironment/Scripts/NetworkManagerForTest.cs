@@ -38,7 +38,7 @@ public partial class NetworkManager
                 {
                     case 255:
                         // On Device Connected
-                        DebugText.Instance.AddText($"클라이언트 접속 : {result.RemoteEndPoint.Port}");
+                        DebugText.Instance.AddText($"Client Join : {result.RemoteEndPoint.Port}");
 
                         Networking.NetworkDevice newDevice = new Networking.NetworkDevice();
                         newDevice.indexOfDeviceList = connectedDeviceList.Count;
