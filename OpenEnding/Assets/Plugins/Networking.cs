@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,6 +46,10 @@ namespace Shatalmic
             
             // Custom
             public int indexOfDeviceList;
+
+#if DEVELOPMENT_BUILD
+            public IPEndPoint endPoint;
+#endif
         }
 
         public List<NetworkDevice> NetworkDeviceList;

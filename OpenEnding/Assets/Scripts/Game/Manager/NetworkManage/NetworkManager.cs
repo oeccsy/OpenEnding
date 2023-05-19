@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Shatalmic;
 using UnityEngine;
 
-public class NetworkManager : Singleton<NetworkManager>
+public partial class NetworkManager : Singleton<NetworkManager>
 {
     [Header("Connect Info")]
     public string networkName = "test";
@@ -20,6 +20,7 @@ public class NetworkManager : Singleton<NetworkManager>
     private Action<Networking.NetworkDevice, string, byte[]> OnReceiveDataFromClient = null;
     private Action<string, string, byte[]> OnReceiveDataFromServer = null;
 
+#if !DEVELOPMENT_BUILD    
     private void Awake()
     {
         networking = GetComponent<Networking>();
@@ -163,4 +164,5 @@ public class NetworkManager : Singleton<NetworkManager>
     }
     
     #endregion
+#endif
 }
