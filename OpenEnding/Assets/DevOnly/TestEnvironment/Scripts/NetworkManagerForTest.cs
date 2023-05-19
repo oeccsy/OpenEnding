@@ -10,12 +10,13 @@ public partial class NetworkManager
 {
 #if DEVELOPMENT_BUILD
     
+    // 아래 UdpClinet는 LifeCycleManager에서 Application Quit인 경우에 Close() 처리
     private UdpClient server;
     private UdpClient client;
     
     #region Server Side
 
-    public async void StartServer()       // TODOv1 : UDP로 교체
+    public async void StartServer()
     {
         DebugText.Instance.AddText("Start Server");
 
@@ -37,20 +38,16 @@ public partial class NetworkManager
                 {
                     case 255:
                         // On Device Connected
-                        DebugText.Instance.AddText($"클라이언트 접속 : {result.RemoteEndPoint.Address}");
+                        DebugText.Instance.AddText($"클라이언트 접속 : {result.RemoteEndPoint.Port}");
 
                         Networking.NetworkDevice newDevice = new Networking.NetworkDevice();
                         newDevice.indexOfDeviceList = connectedDeviceList.Count;
                         newDevice.endPoint = result.RemoteEndPoint;
                         connectedDeviceList.Add(newDevice);
-                        
-                        // Response Test
-                        byte[] responseData = new byte[2] { 24, 20 };
-                        server.Send(responseData, responseData.Length, newDevice.endPoint);
-                        
+
                         break;
                     default:
-                        DebugText.Instance.AddText($"{bytes[0]} 도착!");
+                        SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
                         break;
                 }
             }
@@ -65,11 +62,9 @@ public partial class NetworkManager
     {
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
-        
-        networking.WriteDevice(targetDevice, bytes, () =>
-        {
-            isWritingData = false;
-        });
+
+        server.Send(bytes, bytes.Length, targetDevice.endPoint);
+        isWritingData = false;
     }
 
     public IEnumerator ExecuteFuncOnTargetDevice(byte[] bytes)
@@ -89,7 +84,7 @@ public partial class NetworkManager
         }
     }
 
-    public IEnumerator ExecuteFuncOnAllDevice(byte[] bytes)
+    public IEnumerator ExecuteFuncOnAllDevice(byte[] bytes) // TODOv1
     {
         yield return new WaitWhile(() => isWritingData);
 
@@ -104,7 +99,7 @@ public partial class NetworkManager
         }
     }
 
-    public IEnumerator ExecuteFuncExceptOneDevice(int skipIndex, Byte[] bytes)
+    public IEnumerator ExecuteFuncExceptOneDevice(int skipIndex, Byte[] bytes) // TODOv1
     {
         yield return new WaitUntil(() => isWritingData);
         
@@ -119,7 +114,6 @@ public partial class NetworkManager
     
     #region Client Side
     
-    // TODOv1 : UDP로 교체
     public async void StartClient()
     {
         // UDP 클라이언트 초기화
@@ -136,7 +130,7 @@ public partial class NetworkManager
             {
                 UdpReceiveResult result = await client.ReceiveAsync();
                 byte[] bytes = result.Buffer;
-                DebugText.Instance.AddText($"{bytes[0]} 도착!");
+                SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
             }
             catch (SocketException e)
             {
@@ -145,7 +139,7 @@ public partial class NetworkManager
         }
     }
     
-    public IEnumerator SendBytesToServer(Byte[] bytes) // DONEv1
+    public IEnumerator SendBytesToServer(Byte[] bytes)
     {
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
@@ -155,8 +149,8 @@ public partial class NetworkManager
         isWritingData = false;
     }
     #endregion
-    
-    private void OnApplicationQuit()
+
+    public void CloseUDPClient()
     {
         switch (connectType)
         {
@@ -168,6 +162,6 @@ public partial class NetworkManager
                 break;
         }
     }
-    
+
 #endif
 }

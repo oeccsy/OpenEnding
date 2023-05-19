@@ -20,4 +20,11 @@ public class LifeCycleManager : Singleton<LifeCycleManager>
         Application.targetFrameRate = 60;
 #endif
     }
+
+    private void OnApplicationQuit()
+    {
+#if DEVELOPMENT_BUILD
+        NetworkManager.Instance.CloseUDPClient();
+#endif
+    }
 }
