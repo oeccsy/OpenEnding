@@ -30,4 +30,10 @@ public class Define
         Hunter,
         Seal
     }
+
+    public enum CameraIndex
+    {
+        Main,
+        UI
+    }
 }

@@ -801,7 +801,8 @@ PlayerSettings:
   webGLMemoryGeometricGrowthStep: 0.2
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Standalone: DEVELOPMENT_BUILD
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
@@ -833,8 +834,8 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: OpenEnding_2022.3.8f1
-  metroPackageVersion: 
+  metroPackageName: OpenEnding2022.3.8f1
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -842,7 +843,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: OpenEnding_2022.3.8f1
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: OpenEnding_2022.3.8f1
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0

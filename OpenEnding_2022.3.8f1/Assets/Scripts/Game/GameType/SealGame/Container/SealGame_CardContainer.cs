@@ -18,7 +18,7 @@ public class SealGame_CardContainer
 
     public void SetDeviceData(int deviceIndex, Define.SealGameCardType targetCardType)
     {
-        DebugText.Instance.AddText($"DeviceList Count : {NetworkManager.Instance.connectedDeviceList.Count}");
+        DebugCanvas.Instance.AddText($"DeviceList Count : {NetworkManager.Instance.connectedDeviceList.Count}");
         
         deviceDataList[deviceIndex].cardType = targetCardType;
     }

@@ -54,7 +54,7 @@ public class Flip : Singleton<Flip>
     {
         if (Input.gyro.enabled)
         {
-            DebugText.Instance.SetText(Input.gyro.attitude.eulerAngles.ToString());
+            DebugCanvas.Instance.SetText(Input.gyro.attitude.eulerAngles.ToString());
         }
     }
 }

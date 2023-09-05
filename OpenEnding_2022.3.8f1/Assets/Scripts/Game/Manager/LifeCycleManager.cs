@@ -8,6 +8,8 @@ public class LifeCycleManager : Singleton<LifeCycleManager>
     private void Awake()
     {
 #if DEVELOPMENT_BUILD
+        DebugCanvas.Instance.InitDebugCanvas();
+        
 #if UNITY_STANDALONE_WIN
         Application.runInBackground = true;
 #endif

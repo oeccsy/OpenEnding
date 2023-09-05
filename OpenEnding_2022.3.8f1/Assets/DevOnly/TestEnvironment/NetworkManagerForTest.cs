@@ -9,7 +9,7 @@ using Shatalmic;
 public partial class NetworkManager
 {
 #if DEVELOPMENT_BUILD
-    
+#if UNITY_STANDALONE_WIN    
     // 아래 UdpClinet는 LifeCycleManager에서 Application Quit인 경우에 Close() 처리
     private UdpClient server;
     private UdpClient client;
@@ -18,7 +18,7 @@ public partial class NetworkManager
 
     public async void StartServer()
     {
-        DebugText.Instance.AddText("Start Server");
+        DebugCanvas.Instance.AddText("Start Server");
 
         // 서버 디바이스 등록 : index 0
         myDeviceData.indexOfDeviceList = connectedDeviceList.Count;
@@ -38,7 +38,7 @@ public partial class NetworkManager
                 {
                     case 255:
                         // On Device Connected
-                        DebugText.Instance.AddText($"Client Join : {result.RemoteEndPoint.Port}");
+                        DebugCanvas.Instance.AddText($"Client Join : {result.RemoteEndPoint.Port}");
 
                         Networking.NetworkDevice newDevice = new Networking.NetworkDevice();
                         newDevice.indexOfDeviceList = connectedDeviceList.Count;
@@ -117,7 +117,7 @@ public partial class NetworkManager
     public async void StartClient()
     {
         // UDP 클라이언트 초기화
-        DebugText.Instance.AddText("Start Client");
+        DebugCanvas.Instance.AddText("Start Client");
         client = new UdpClient();
         
         // 서버로 클라이언트 정보를 전달합니다.
@@ -134,7 +134,8 @@ public partial class NetworkManager
             }
             catch (SocketException e)
             {
-                Debug.LogError(e);
+                Debug.LogError($"Client Error : {e}");
+                CloseUDPClient();
             }
         }
     }
@@ -162,6 +163,6 @@ public partial class NetworkManager
                 break;
         }
     }
-
+#endif
 #endif
 }

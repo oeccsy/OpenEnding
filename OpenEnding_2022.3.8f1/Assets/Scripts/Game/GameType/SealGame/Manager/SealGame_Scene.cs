@@ -22,7 +22,7 @@ public class SealGame_Scene : Singleton<SealGame_Scene>
     }
     public void SetCardImageSeal(byte[] bytes)
     {
-        DebugText.Instance.AddText("물개 카드 !");
+        DebugCanvas.Instance.AddText("물개 카드 !");
         cardImage.sprite = Resources.Load<Sprite>("Sprites/Seal");
     }
 }
