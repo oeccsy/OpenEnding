@@ -31,6 +31,16 @@ public class Define
         Seal
     }
 
+    public enum PastelColor
+    {
+        Pink,
+        Green,
+        Violet,
+        Sky,
+        Gray,
+        Beige
+    }
+
     public enum CameraIndex
     {
         Main,
