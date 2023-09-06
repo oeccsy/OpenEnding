@@ -66,7 +66,7 @@ public class DebugCanvas : Singleton<DebugCanvas>
 
     public void AddText(object msg)
     {
-        _tmp.text = $"{_tmp.text} + \n + {msg}";
+        _tmp.text = $"{_tmp.text} \n {msg}";
     }
 
     public void SetText(object msg)
