@@ -1,9 +1,11 @@
 #if DEVELOPMENT_BUILD
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DebugCanvas : Singleton<DebugCanvas>
@@ -62,14 +64,38 @@ public class DebugCanvas : Singleton<DebugCanvas>
         
     }
 
-    public void AddText(string str)
+    public void AddText(object msg)
     {
-        _tmp.text = _tmp.text + "\n" + str;
+        _tmp.text = $"{_tmp.text} + \n + {msg}";
     }
 
-    public void SetText(string str)
+    public void SetText(object msg)
     {
-        _tmp.text = str;
+        _tmp.text = $"{msg}";
+    }
+}
+
+
+public static class DebugExtension
+{
+    public static void Log(this object value)
+    {
+        string curSceneName = SceneManager.GetActiveScene().name;
+        string prevClassName = new StackTrace().GetFrame(1).GetMethod().ReflectedType?.Name;
+
+        DebugCanvas.Instance.AddText(value);
+
+        UnityEngine.Debug.Log($"{curSceneName} : {prevClassName} : {value}");
+    }
+    
+    public static void LogError(this object value)
+    {
+        string curSceneName = SceneManager.GetActiveScene().name;
+        string prevClassName = new StackTrace().GetFrame(1).GetMethod().ReflectedType?.Name;
+
+        DebugCanvas.Instance.AddText(value);
+            
+        UnityEngine.Debug.LogError($"{curSceneName} : {prevClassName} : {value}");
     }
 }
 #endif
