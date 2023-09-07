@@ -8,16 +8,21 @@ using UnityEngine.EventSystems;
 public class DeviceObject : MonoBehaviour, IPointerClickHandler
 {
     public MeshRenderer meshRenderer;
-    public Define.PastelColor ownColor;
+    public ColorPalette.ColorName curColor = ColorPalette.ColorName.DeviceDefault;
+    public ColorPalette.ColorName ownColor = ColorPalette.ColorName.Pink;
     public Sequence flipSequence;
     public Sequence colorSequence;
+
+    public delegate void DeviceHandler(DeviceObject deviceObject);
+    public static event DeviceHandler OnTouchAnyDevice;
+    public event DeviceHandler OnTouchDevice;
 
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
     }
     
-    private void Flip()
+    public void Flip()
     {
         if (flipSequence.IsActive()) return;
         flipSequence = DOTween.Sequence()
@@ -25,35 +30,30 @@ public class DeviceObject : MonoBehaviour, IPointerClickHandler
             .Join(transform.DOLocalJump(transform.position, 3f, 1, 1f));
     }
 
-    private void SetDeviceColor(Define.PastelColor color)
+    public void SetDeviceColor(ColorPalette.ColorName targetColor)
     {
+        if (colorSequence.IsActive()) return;
+
+        colorSequence = DOTween.Sequence()
+            .Append(meshRenderer.materials[0].DOColor(ColorPalette.GetColor(targetColor), 1f))
+            .AppendCallback(() => curColor = targetColor);
+    }
+
+    public void ResetDeviceColor()
+    {
+        if (colorSequence.IsActive()) return;
         Material prevMat = meshRenderer.materials[0];
-        Material nextMat = Resources.Load<Material>($"Materials/Pastel_GroupA/{ownColor.ToString()}");
+        Material nextMat = Resources.Load<Material>($"Materials/Device");
         meshRenderer.materials[0] = nextMat;
 
         colorSequence = DOTween.Sequence()
             .Append(meshRenderer.materials[0].DOColor(nextMat.color, 1f).From(prevMat.color));
     }
 
-    private void StartConnect()
-    {
-        switch (ownColor)
-        {
-            case Define.PastelColor.Pink:
-                NetworkManager.Instance.connectType = Define.ConnectType.Server;
-                NetworkManager.Instance.StartServer();
-                break;
-            default:
-                NetworkManager.Instance.connectType = Define.ConnectType.Client;
-                NetworkManager.Instance.StartClient();
-                break;
-        }
-    }
-
     public void OnPointerClick(PointerEventData eventData)
     {
         Flip();
-        SetDeviceColor(ownColor);
-        StartConnect();
+        OnTouchDevice?.Invoke(this);
+        OnTouchAnyDevice?.Invoke(this);
     }
 }
