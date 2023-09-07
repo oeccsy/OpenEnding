@@ -7,8 +7,9 @@ public class LifeCycleManager : Singleton<LifeCycleManager>
 {
     private void Awake()
     {
-#if DEVELOPMENT_BUILD
         DebugCanvas.Instance.InitDebugCanvas();
+#if DEVELOPMENT_BUILD
+        
         
 #if UNITY_STANDALONE_WIN
         Application.runInBackground = true;
@@ -26,7 +27,8 @@ public class LifeCycleManager : Singleton<LifeCycleManager>
     private void OnApplicationQuit()
     {
 #if DEVELOPMENT_BUILD
-        NetworkManager.Instance.CloseUDPClient();
+        NetworkManager.Instance.StopServer();
+        NetworkManager.Instance.StopClient();
 #endif
     }
 }

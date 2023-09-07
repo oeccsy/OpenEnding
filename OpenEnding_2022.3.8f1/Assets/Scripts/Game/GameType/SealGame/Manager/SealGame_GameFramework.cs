@@ -35,6 +35,7 @@ public class SealGame_GameFramework : GameFramework
     private IEnumerator ShowCard()
     {
         DebugCanvas.Instance.AddText("ShowCard");
-        yield return NetworkManager.Instance.ExecuteFuncOnTargetDevice(new byte[] {0,(byte)cardIndexOfSeal,0,0,0});
+        Networking.NetworkDevice targetDevice = NetworkManager.Instance.connectedDeviceList[cardIndexOfSeal];
+        yield return NetworkManager.Instance.SendBytesToTargetDevice(targetDevice, new byte[] {0,0,0});
     }
 }

@@ -6,12 +6,10 @@ using UnityEngine;
 public class SealGame_PacketHandler : Singleton<SealGame_PacketHandler>
 {
     // 데이터 포맷
-    
-    // index 0 : 최초 송신 디바이스 번호
-    // index 1 : 최종 수신 디바이스 번호
-    // index 2 : 실행할 로직의 Class
-    // index 3 : 실행할 로직
-    // index 4 : 실행할 로직의 param
+
+    // index 0 : 실행할 로직의 Class
+    // index 1 : 실행할 로직
+    // index 2 : 실행할 로직의 param
     // . . .
     
     public delegate void Function(byte[] bytes);
@@ -44,7 +42,7 @@ public class SealGame_PacketHandler : Singleton<SealGame_PacketHandler>
     {
         List<byte> dataList = new List<byte>();
         
-        dataList.Add((byte)NetworkManager.Instance.myDeviceData.indexOfDeviceList);
+        dataList.Add((byte)NetworkManager.Instance.myDeviceData.deviceListOrder);
 
         switch (NetworkManager.Instance.connectType)
         {
@@ -66,25 +64,6 @@ public class SealGame_PacketHandler : Singleton<SealGame_PacketHandler>
 
     public void ExecuteFuncByPacket(byte[] bytes)
     {
-        // 아래 코드 불필요
-        
-        // // 서버는 본인이 받을 데이터가 아니면 목표 클라이언트에게 전송
-        // // 클라이언트는 본인이 받을 데이터가 아니면 에러로그
-        // switch (NetworkManager.Instance.connectType)
-        // {
-        //     case Define.ConnectType.Server:
-        //         if (bytes[1] != NetworkManager.Instance.myDeviceData.indexOfDeviceList)
-        //         {
-        //             Networking.NetworkDevice targetDevice = NetworkManager.Instance.connectedDeviceList[bytes[1]];
-        //             yield return NetworkManager.Instance.ExecuteFuncOnTargetDevice(bytes);
-        //         }
-        //         break;
-        //     case Define.ConnectType.Client:
-        //         DebugText.Instance.AddText("Network Error");
-        //         break;
-        // }
-        
-        // 내가 받을 데이터라면 수행한다.
         Function targetFunction = GetFunctionByPacket(bytes);
         targetFunction(bytes);
     }

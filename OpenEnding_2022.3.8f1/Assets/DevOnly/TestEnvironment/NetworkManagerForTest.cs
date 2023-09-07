@@ -110,6 +110,11 @@ public partial class NetworkManager
         }
     }
 
+    public void StopServer()
+    {
+        server?.Close();
+    }
+
     #endregion
     
     #region Client Side
@@ -135,7 +140,6 @@ public partial class NetworkManager
             catch (SocketException e)
             {
                 Debug.LogError($"Client Error : {e}");
-                CloseUDPClient();
             }
         }
     }
@@ -149,20 +153,13 @@ public partial class NetworkManager
         
         isWritingData = false;
     }
-    #endregion
 
-    public void CloseUDPClient()
+    public void StopClient()
     {
-        switch (connectType)
-        {
-            case Define.ConnectType.Server:
-                server.Close();
-                break;
-            case Define.ConnectType.Client:
-                client.Close();
-                break;
-        }
+        client?.Close();
     }
+    
+    #endregion
 #endif
 #endif
 }

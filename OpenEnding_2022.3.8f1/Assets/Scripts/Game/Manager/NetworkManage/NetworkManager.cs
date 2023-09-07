@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Shatalmic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public partial class NetworkManager : Singleton<NetworkManager>
 {
@@ -17,9 +19,12 @@ public partial class NetworkManager : Singleton<NetworkManager>
     private Networking networking = null;                                           // Plugins
     [SerializeField]
     private bool isWritingData = false;                                             // true이면 현재 Writing(Sending) 중 임을 나타내는 변수
+
+    private Action<Networking.NetworkDevice> OnDeviceReady = null;
     private Action<Networking.NetworkDevice, string, byte[]> OnReceiveDataFromClient = null;
     private Action<string, string, byte[]> OnReceiveDataFromServer = null;
-
+    // 추가
+    
 #if !DEVELOPMENT_BUILD    
     private void Awake()
     {
@@ -37,14 +42,12 @@ public partial class NetworkManager : Singleton<NetworkManager>
                 case "Bluetooth LE Not Powered Off" :
                 case "Bluetooth LE Not Available" :
                 case "Bluetooth LE Not Supported" :
-                    DebugText.Instance.AddText("error");
+                    "error".Log();
                     break;
             }
         }, (message) =>
         {
-            // Status 상태가 바뀔 때 실행되는 영역
-            // DebugText.Instance.AddText(message);
-            // Debug.Log(message);
+            //message.Log();
         });
     }
 
@@ -52,23 +55,24 @@ public partial class NetworkManager : Singleton<NetworkManager>
 
     public void StartServer()
     {
-        DebugText.Instance.AddText("Start Server");
+        "StartServer".Log();
 
-        // 서버 디바이스 등록 : index 0
-        myDeviceData.indexOfDeviceList = connectedDeviceList.Count;
+        myDeviceData.deviceListOrder = connectedDeviceList.Count;
         connectedDeviceList.Add(myDeviceData);
         
         networking.StartServer(networkName, (connectedDevice) =>
         {
-            DebugText.Instance.AddText($"{connectedDevice.Name} 접속 완료");
+            $"{connectedDevice.Name} 접속 완료".Log();
             if (!connectedDeviceList.Contains(connectedDevice))
             {
-                connectedDevice.indexOfDeviceList = connectedDeviceList.Count;
+                connectedDevice.deviceListOrder = connectedDeviceList.Count;
                 connectedDeviceList.Add(connectedDevice);
             }
+
+            StartCoroutine(ConnectManager.Instance.SynchronizeDevicesRoutine());
         }, (disconnectedDevice) =>
         {
-            DebugText.Instance.AddText($"{disconnectedDevice.Name} 연결 끊김");
+            $"{disconnectedDevice.Name} 연결 끊김".Log();
             if (connectedDeviceList != null && connectedDeviceList.Contains(disconnectedDevice))
             {
                 // indexOfDeviceList 꼬일 위험 점검
@@ -77,12 +81,12 @@ public partial class NetworkManager : Singleton<NetworkManager>
                 
         }, ((device, characteristic, bytes) =>
         {
-            //OnReceiveDataFromClient(device, characteristic, bytes);
+            OnReceiveDataFromClient(device, characteristic, bytes);
             SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
         }));
     }
     
-    private IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
+    public IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
     {
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
@@ -93,47 +97,45 @@ public partial class NetworkManager : Singleton<NetworkManager>
         });
     }
 
-    public IEnumerator ExecuteFuncOnTargetDevice(byte[] bytes)
+    public IEnumerator SendBytesToAllDevice(Byte[] bytes)
     {
         yield return new WaitWhile(() => isWritingData);
+        isWritingData = true;
 
-        if (bytes[1] == 0)
+        foreach (var targetDevice in connectedDeviceList)
         {
-            // 서버 디바이스 처리
-            SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
+            networking.WriteDevice(targetDevice, bytes, () =>
+            {
+                
+            });    
         }
-        else
-        {
-            // 클라이언트 디바이스 처리
-            Networking.NetworkDevice targetDevice = connectedDeviceList[bytes[1]];
-            yield return SendBytesToTargetDevice(targetDevice, bytes);
-        }
-    }
-
-    public IEnumerator ExecuteFuncOnAllDevice(byte[] bytes)
-    {
-        yield return new WaitWhile(() => isWritingData);
-
-        // 서버 디바이스 처리
-        SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
         
-        // 클라이언트 디바이스 처리
-        for (int i = 1; i < connectedDeviceList.Count; i++)
-        {
-            Networking.NetworkDevice targetDevice = connectedDeviceList[i];
-            yield return SendBytesToTargetDevice(targetDevice, bytes);
-        }
+        isWritingData = false;
     }
-
-    public IEnumerator ExecuteFuncExceptOneDevice(int skipIndex, Byte[] bytes)
+    
+    public IEnumerator SendBytesExceptOneDevice(Networking.NetworkDevice skipDevice, Byte[] bytes)
     {
         yield return new WaitUntil(() => isWritingData);
+        isWritingData = true;
         
-        for (int i = 0; i < connectedDeviceList.Count; i++)
+        foreach (var device in connectedDeviceList)
         {
-            if(i == skipIndex) continue;
-            yield return ExecuteFuncOnTargetDevice(bytes);
+            if (device == skipDevice) continue;
+            networking.WriteDevice(device, bytes, () =>
+            {
+                
+            });
         }
+        
+        isWritingData = false;
+    }
+
+    public void StopServer()
+    {
+        networking.StopServer(() =>
+        {
+            
+        });
     }
 
     #endregion
@@ -144,8 +146,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     {
         networking.StartClient(networkName, "client100", () =>
         {
-            // Advertising을 시작했을 때 실행되는 영역
-            // DebugText.Instance.AddText("Start Client");
+            "Start Client".Log();
         }, (clientName, characteristic, bytes)=>
         {
             //OnReceiveDataFromServer(clientName, characteristic, bytes);
@@ -163,6 +164,45 @@ public partial class NetworkManager : Singleton<NetworkManager>
         isWritingData = false;
     }
     
+    public IEnumerator RequestSendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
+    {
+        yield return new WaitUntil(() => isWritingData);
+        isWritingData = true;
+
+        if (NetworkManager.Instance.connectType == Define.ConnectType.Server)
+        {
+            yield return SendBytesToTargetDevice(targetDevice, bytes);
+        }
+        else
+        {
+            var request = new Byte[5]; // TODO
+            yield return SendBytesToServer(request);
+        }
+
+        isWritingData = false;
+    }
+
+    public void StopClient()
+    {
+        networking.StopClient(() =>
+        {
+            
+        });
+    }
+    
     #endregion
+
+
+    public void SetActionByScene()
+    {
+        switch (SceneManager.GetActiveScene().name)
+        {
+            case "ConnectScene":
+                break;
+            default:
+                break;
+        }
+        
+    }
 #endif
 }
