@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,7 +46,8 @@ namespace Shatalmic
             public bool DoDisconnect;
             
             // Custom
-            public int indexOfDeviceList;
+            public int deviceListOrder;
+            public int colorOrder;
 
 #if DEVELOPMENT_BUILD
             public IPEndPoint endPoint;
