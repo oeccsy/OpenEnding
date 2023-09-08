@@ -6,8 +6,9 @@
       <change beforePath="$PROJECT_DIR$/Assets/DevOnly/Debug/DebugCanvas.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DevOnly/Debug/DebugCanvas.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/ConnectScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/ConnectScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/Object/DeviceObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Object/DeviceObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Connect/ConnectManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Connect/ConnectManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Connect/Connect_Scene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Connect/Connect_Scene.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/NetworkManage/NetworkManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/NetworkManage/NetworkManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/Define.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utils/Define.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Performant.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Performant.asset" afterDir="false" />
@@ -20,6 +21,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/10871f9e312b442cb78b9b97db88fdcb172a00/93/1ee3fc87/Object.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Common/Object/DeviceObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Game/Connect/Connect_Scene.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utils/ColorPalette.cs" root0="FORCE_HIGHLIGHTING" />

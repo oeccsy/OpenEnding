@@ -8,20 +8,20 @@ using UnityEngine.tvOS;
 public class ConnectManager : Singleton<ConnectManager>
 {
     [SerializeField]
-    private DeviceObject userOwnDeviceObject;
-    [SerializeField]
     private Define.ConnectStatus connectStatus = Define.ConnectStatus.LeaveParty;
 
-    private void Awake()
+    private void Start()
     {
-        DeviceObject.OnTouchAnyDevice += StartConnect;
+        foreach (var deviceObject in Connect_Scene.Instance.deviceObjectList)
+        {
+            deviceObject.OnTouchDevice += StartConnect;
+        }
     }
 
     private void StartConnect(DeviceObject selectedDevice)
     {
         if (connectStatus != Define.ConnectStatus.LeaveParty) return;
-        if (selectedDevice.curColor != ColorPalette.ColorName.DeviceDefault) return;
-
+        "Start".Log();   
         switch (selectedDevice.ownColor)
         {
             case ColorPalette.ColorName.Pink:
@@ -36,15 +36,14 @@ public class ConnectManager : Singleton<ConnectManager>
         
         connectStatus = Define.ConnectStatus.TryingToJoin;
         
-        DeviceObject.OnTouchAnyDevice -= StartConnect;
-        DeviceObject.OnTouchAnyDevice += StopConnect;
+        selectedDevice.OnTouchDevice -= StartConnect;
+        selectedDevice.OnTouchDevice += StopConnect;
     }
 
     private void StopConnect(DeviceObject selectedDevice)
     {
         if (connectStatus == Define.ConnectStatus.LeaveParty) return;
-        if (selectedDevice != userOwnDeviceObject) return;
-
+        "Stop".Log();
         switch (NetworkManager.Instance.connectType)
         {
             case Define.ConnectType.Server:
@@ -59,8 +58,8 @@ public class ConnectManager : Singleton<ConnectManager>
         
         connectStatus = Define.ConnectStatus.LeaveParty;
         
-        DeviceObject.OnTouchAnyDevice -= StopConnect;
-        DeviceObject.OnTouchAnyDevice += StartConnect;
+        selectedDevice.OnTouchDevice -= StopConnect;
+        selectedDevice.OnTouchDevice += StartConnect;
     }
 
     public IEnumerator SynchronizeDevicesRoutine()

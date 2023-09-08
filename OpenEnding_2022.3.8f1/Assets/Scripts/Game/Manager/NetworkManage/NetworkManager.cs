@@ -143,6 +143,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     
     public void StartClient()
     {
+        "Start Client".Log();
         networking.StartClient(networkName, "client100", () =>
         {
             "Start Client".Log();

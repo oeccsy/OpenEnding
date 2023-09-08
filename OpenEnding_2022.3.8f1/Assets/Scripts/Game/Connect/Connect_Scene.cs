@@ -33,7 +33,10 @@ public class Connect_Scene : Singleton<Connect_Scene>
             deviceObjectList.Add(newDeviceObject);
         }
 
-        DeviceObject.OnTouchAnyDevice += SelectOwnDeviceWithAnimation;
+        foreach (var deviceObject in deviceObjectList)
+        {
+            deviceObject.OnTouchDevice += SelectOwnDeviceWithAnimation;
+        }
     }
 
     private void SelectOwnDeviceWithAnimation(DeviceObject selectedDevice)
@@ -45,8 +48,8 @@ public class Connect_Scene : Singleton<Connect_Scene>
         selectedDevice.Flip();
         selectedDevice.SetDeviceColor(selectedDevice.ownColor);
         
-        DeviceObject.OnTouchAnyDevice -= SelectOwnDeviceWithAnimation;
-        DeviceObject.OnTouchAnyDevice += LeavePartyWithAnimation;
+        selectedDevice.OnTouchDevice -= SelectOwnDeviceWithAnimation;
+        selectedDevice.OnTouchDevice += LeavePartyWithAnimation;
     }
 
     public void JoinPartyWithAnimation(List<ColorPalette.ColorName> deviceColorList)
@@ -59,7 +62,7 @@ public class Connect_Scene : Singleton<Connect_Scene>
         }
     }
 
-    public void LeavePartyWithAnimation(DeviceObject selectedDevice)
+    private void LeavePartyWithAnimation(DeviceObject selectedDevice)
     {
         if (selectedDevice != userOwnDeviceObject) return;
         
@@ -74,8 +77,8 @@ public class Connect_Scene : Singleton<Connect_Scene>
             }
         }
         
-        DeviceObject.OnTouchAnyDevice -= LeavePartyWithAnimation;
-        DeviceObject.OnTouchAnyDevice += SelectOwnDeviceWithAnimation;
+        selectedDevice.OnTouchDevice -= LeavePartyWithAnimation;
+        selectedDevice.OnTouchDevice += SelectOwnDeviceWithAnimation;
     }
     
     public IEnumerator SynchronizeDevicesRoutine()

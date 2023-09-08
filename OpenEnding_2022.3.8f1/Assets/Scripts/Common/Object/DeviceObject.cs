@@ -42,6 +42,9 @@ public class DeviceObject : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (flipSequence.IsActive()) return;
+        if (colorSequence.IsActive()) return;
+        
         OnTouchDevice?.Invoke(this);
         OnTouchAnyDevice?.Invoke(this);
     }
