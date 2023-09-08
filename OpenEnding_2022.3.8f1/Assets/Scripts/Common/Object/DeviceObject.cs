@@ -25,6 +25,7 @@ public class DeviceObject : MonoBehaviour, IPointerClickHandler
     public void Flip()
     {
         if (flipSequence.IsActive()) return;
+        
         flipSequence = DOTween.Sequence()
             .Append(transform.DORotate(transform.localRotation.eulerAngles + Vector3.right * 360, 1f, RotateMode.FastBeyond360))
             .Join(transform.DOLocalJump(transform.position, 3f, 1, 1f));
@@ -39,20 +40,8 @@ public class DeviceObject : MonoBehaviour, IPointerClickHandler
             .AppendCallback(() => curColor = targetColor);
     }
 
-    public void ResetDeviceColor()
-    {
-        if (colorSequence.IsActive()) return;
-        Material prevMat = meshRenderer.materials[0];
-        Material nextMat = Resources.Load<Material>($"Materials/Device");
-        meshRenderer.materials[0] = nextMat;
-
-        colorSequence = DOTween.Sequence()
-            .Append(meshRenderer.materials[0].DOColor(nextMat.color, 1f).From(prevMat.color));
-    }
-
     public void OnPointerClick(PointerEventData eventData)
     {
-        Flip();
         OnTouchDevice?.Invoke(this);
         OnTouchAnyDevice?.Invoke(this);
     }

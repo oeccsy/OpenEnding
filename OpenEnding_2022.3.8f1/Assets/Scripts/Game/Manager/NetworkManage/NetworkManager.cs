@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Shatalmic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
 
 public partial class NetworkManager : Singleton<NetworkManager>
 {
