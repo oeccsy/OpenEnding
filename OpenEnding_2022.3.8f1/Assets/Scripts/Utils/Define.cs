@@ -17,6 +17,13 @@ public class Define
         Server,
         Client
     }
+
+    public enum ConnectStatus
+    {
+        LeaveParty,
+        TryingToJoin,
+        JoinParty
+    }
     
     public enum SealGameStep
     {
