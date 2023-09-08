@@ -2,28 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3048a559-5bb8-415e-8a94-3f6a262470ce" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../OpenEnding/UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../OpenEnding/UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DevOnly/Debug/DebugText.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DevOnly/Debug/DebugCanvas.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DevOnly/Debug/DebugText.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DevOnly/Debug/DebugCanvas.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DevOnly/TestEnvironment/NetworkManagerForTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DevOnly/TestEnvironment/NetworkManagerForTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Networking.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Networking.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DevOnly/Debug/DebugCanvas.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DevOnly/Debug/DebugCanvas.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/ConnectScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/ConnectScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CommonUI.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CommonUI/ConnectScene_ConnectUI.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CommonUI/ConnectScene_ConnectUI.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/SealGame/Container/SealGame_CardContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/SealGame/Container/SealGame_CardContainer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/SealGame/Manager/SealGame_GameFramework.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/SealGame/Manager/SealGame_GameFramework.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/SealGame/Manager/SealGame_Scene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/SealGame/Manager/SealGame_Scene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/GameManage/GameFramework.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/GameManage/GameFramework.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/LifeCycleManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/LifeCycleManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/Object/DeviceObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Object/DeviceObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/NetworkManage/NetworkManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/NetworkManage/NetworkManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/Define.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utils/Define.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/Flip.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utils/Flip.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Performant.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Performant.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/CommonBurstAotSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/CommonBurstAotSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,8 +21,11 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Common/Object/DeviceObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Game/Connect/Connect_Scene.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utils/ColorPalette.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Runtime/Textures/RTHandleSystem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/InputModules/BaseInput.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../Unity Projects/Boids-master/Assets/Scripts/BoidManager.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -92,7 +84,10 @@
       <option name="presentableId" value="Default" />
       <updated>1693747810877</updated>
       <workItem from="1693747820706" duration="8021000" />
-      <workItem from="1693770559119" duration="12530000" />
+      <workItem from="1693770559119" duration="26923000" />
+      <workItem from="1694007153535" duration="24206000" />
+      <workItem from="1694088319184" duration="12152000" />
+      <workItem from="1694156213024" duration="1441000" />
     </task>
     <servers />
   </component>
