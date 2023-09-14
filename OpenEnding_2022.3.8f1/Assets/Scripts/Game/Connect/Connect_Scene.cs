@@ -20,7 +20,7 @@ public class Connect_Scene : Singleton<Connect_Scene>
         // 지형 생성
         GameObject planePrefab = Resources.Load<GameObject>("Prefabs/Plane");
         Instantiate(planePrefab, GameObject.Find("GameObjectRoot").transform);
-        
+
         GameObject deviceObjectPrefab = Resources.Load<GameObject>("Prefabs/DeviceObject");
         for (int i = 0; i < n; i++)
         {
@@ -52,13 +52,26 @@ public class Connect_Scene : Singleton<Connect_Scene>
         selectedDevice.OnTouchDevice += LeavePartyWithAnimation;
     }
 
-    public void JoinPartyWithAnimation(List<ColorPalette.ColorName> deviceColorList)
+    public void SynchronizeDevicesWithAnimation(Byte[] colors)
     {
-        foreach (var ownColor in deviceColorList)
+        foreach (var device in deviceObjectList)
         {
-            var device = deviceObjectList[(int)ownColor];
-            device.Flip();
-            device.SetDeviceColor(ownColor);
+            if (colors.Contains((byte)device.ownColor))
+            {
+                if (device.curColor == ColorPalette.ColorName.DeviceDefault)
+                {
+                    device.Flip();
+                    device.SetDeviceColor(device.ownColor);
+                }
+            }
+            else
+            {
+                if (device.curColor != ColorPalette.ColorName.DeviceDefault)
+                {
+                    device.Flip();
+                    device.SetDeviceColor(ColorPalette.ColorName.DeviceDefault);
+                }
+            }
         }
     }
 

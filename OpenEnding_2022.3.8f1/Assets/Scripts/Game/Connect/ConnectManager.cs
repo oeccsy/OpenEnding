@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Shatalmic;
 using UnityEngine;
-using UnityEngine.tvOS;
 
 public class ConnectManager : Singleton<ConnectManager>
 {
@@ -12,6 +11,11 @@ public class ConnectManager : Singleton<ConnectManager>
 
     private void Start()
     {
+        NetworkManager.Instance.OnDeviceReady += RegisterDevice;
+        NetworkManager.Instance.OnDeviceReady += RequestSynchronizeDevices;
+        NetworkManager.Instance.OnDeviceDisconnected += UnRegisterDevice;
+        NetworkManager.Instance.OnDeviceDisconnected += RequestSynchronizeDevices;
+        
         foreach (var deviceObject in Connect_Scene.Instance.deviceObjectList)
         {
             deviceObject.OnTouchDevice += StartConnect;
@@ -21,15 +25,15 @@ public class ConnectManager : Singleton<ConnectManager>
     private void StartConnect(DeviceObject selectedDevice)
     {
         if (connectStatus != Define.ConnectStatus.LeaveParty) return;
-        "Start".Log();   
+
+        NetworkManager.Instance.clientName = selectedDevice.ownColor.ToString();
+        
         switch (selectedDevice.ownColor)
         {
             case ColorPalette.ColorName.Pink:
-                NetworkManager.Instance.connectType = Define.ConnectType.Server;
                 NetworkManager.Instance.StartServer();
                 break;
             default:
-                NetworkManager.Instance.connectType = Define.ConnectType.Client;
                 NetworkManager.Instance.StartClient();
                 break;
         }
@@ -38,12 +42,14 @@ public class ConnectManager : Singleton<ConnectManager>
         
         selectedDevice.OnTouchDevice -= StartConnect;
         selectedDevice.OnTouchDevice += StopConnect;
+        
+        "StartConnect".Log();   
     }
 
     private void StopConnect(DeviceObject selectedDevice)
     {
         if (connectStatus == Define.ConnectStatus.LeaveParty) return;
-        "Stop".Log();
+        
         switch (NetworkManager.Instance.connectType)
         {
             case Define.ConnectType.Server:
@@ -60,15 +66,49 @@ public class ConnectManager : Singleton<ConnectManager>
         
         selectedDevice.OnTouchDevice -= StopConnect;
         selectedDevice.OnTouchDevice += StartConnect;
-    }
-
-    public IEnumerator SynchronizeDevicesRoutine()
-    {
-        yield return null;
-    }
-
-    public void ClientSendOwnColorToServer()
-    {
         
+        "StopConnect".Log();
+    }
+
+    public void RegisterDevice(Networking.NetworkDevice connectedDevice)
+    {
+        $"{connectedDevice.Name} Join Done".Log();
+        
+        List<Networking.NetworkDevice> connectedDeviceList = NetworkManager.Instance.connectedDeviceList;
+
+        var colorString = connectedDevice.Name.Split(':')[1];
+        connectedDevice.colorOrder = (int)(ColorPalette.ColorName)Enum.Parse(typeof(ColorPalette.ColorName), colorString);
+
+        if (!connectedDeviceList.Contains(connectedDevice))
+        {
+            connectedDevice.deviceListOrder = connectedDeviceList.Count;
+            connectedDeviceList.Add(connectedDevice);
+        }
+    }
+
+    public void UnRegisterDevice(Networking.NetworkDevice disconnectedDevice)
+    {
+        $"{disconnectedDevice.Name} Disconnect".Log();
+        
+        List<Networking.NetworkDevice> connectedDeviceList = NetworkManager.Instance.connectedDeviceList;
+
+        if (connectedDeviceList != null && connectedDeviceList.Contains(disconnectedDevice))
+        {
+            connectedDeviceList.Remove(disconnectedDevice);
+        }
+    }
+
+    private void RequestSynchronizeDevices(Networking.NetworkDevice temp)
+    {
+        var packet = new List<byte>();
+        packet.Add(0);
+        packet.Add(0);
+        
+        foreach (var device in NetworkManager.Instance.connectedDeviceList)
+        {
+            packet.Add((byte)device.colorOrder);
+        }
+
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(packet.ToArray()));
     }
 }

@@ -53,4 +53,11 @@ public class Define
         Main,
         UI
     }
+
+    public enum PacketIndex
+    {
+        Class = 0,
+        Function,
+        ParamBegin
+    }
 }

@@ -544,7 +544,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 483b966a8ebb0054b9ea452049999a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkName: test
+  networkName: OpenEnding
+  clientName: None
   connectType: 0
   networking: {fileID: 0}
   isWritingData: 0
@@ -809,6 +810,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619264208}
   - component: {fileID: 619264209}
+  - component: {fileID: 619264210}
   m_Layer: 0
   m_Name: ConnectManager
   m_TagString: Untagged
@@ -843,8 +845,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27f6888853514df7bd6ef600d920d7f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userOwnDeviceObject: {fileID: 0}
   connectStatus: 0
+--- !u!114 &619264210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619264207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23cb683c5e05fce43894434a90870b45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &649794073
 GameObject:
   m_ObjectHideFlags: 0
