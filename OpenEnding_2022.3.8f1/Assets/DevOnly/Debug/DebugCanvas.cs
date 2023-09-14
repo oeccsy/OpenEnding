@@ -74,28 +74,34 @@ public class DebugCanvas : Singleton<DebugCanvas>
         _tmp.text = $"{msg}";
     }
 }
-
+#endif
 
 public static class DebugExtension
 {
+    
+    [System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
     public static void Log(this object value)
     {
+#if DEVELOPMENT_BUILD
         string curSceneName = SceneManager.GetActiveScene().name;
         string prevClassName = new StackTrace().GetFrame(1).GetMethod().ReflectedType?.Name;
 
         DebugCanvas.Instance.AddText(value);
 
         UnityEngine.Debug.Log($"{curSceneName} : {prevClassName} : {value}");
+#endif    
     }
     
+    [System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
     public static void LogError(this object value)
     {
+#if DEVELOPMENT_BUILD
         string curSceneName = SceneManager.GetActiveScene().name;
         string prevClassName = new StackTrace().GetFrame(1).GetMethod().ReflectedType?.Name;
 
         DebugCanvas.Instance.AddText(value);
             
         UnityEngine.Debug.LogError($"{curSceneName} : {prevClassName} : {value}");
+#endif    
     }
 }
-#endif

@@ -8,8 +8,6 @@ public abstract class GameFramework : MonoBehaviour
 
     public void StartGameFramework()
     {
-        DebugCanvas.Instance.AddText("StartGame");
-        
         if (gameFramework != null) StopCoroutine(gameFramework);
         
         gameFramework = StartCoroutine(GameFrameworkCoroutine());
@@ -26,6 +24,5 @@ public abstract class GameFramework : MonoBehaviour
     public virtual void GameOver()
     {
         StopGameFramework();
-        DebugCanvas.Instance.AddText("GameOver");
     }
 }

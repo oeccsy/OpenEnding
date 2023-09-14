@@ -9,7 +9,7 @@ public class LifeCycleManager : Singleton<LifeCycleManager>
     {
         base.Awake();
         
-#if DEVELOPMENT_BUILD
+#if DEVELOPMENT_BUILD || UNITY_EDITOR || UNITY_STANDALONE_WIN
         DebugCanvas.Instance.InitDebugCanvas();
         
 #if UNITY_STANDALONE_WIN
