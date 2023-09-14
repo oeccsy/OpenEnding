@@ -42,7 +42,7 @@ public class SealGame_PacketHandler : Singleton<SealGame_PacketHandler>
     {
         List<byte> dataList = new List<byte>();
         
-        dataList.Add((byte)NetworkManager.Instance.myDeviceData.deviceListOrder);
+        dataList.Add((byte)NetworkManager.Instance.ownDeviceData.deviceListOrder);
 
         switch (NetworkManager.Instance.connectType)
         {

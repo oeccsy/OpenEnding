@@ -7,8 +7,10 @@ public class LifeCycleManager : Singleton<LifeCycleManager>
 {
     private void Awake()
     {
+        base.Awake();
+        
         DebugCanvas.Instance.InitDebugCanvas();
-#if DEVELOPMENT_BUILD
+#if DEVELOPMENT_BUILD_A
         
         
 #if UNITY_STANDALONE_WIN
@@ -26,7 +28,7 @@ public class LifeCycleManager : Singleton<LifeCycleManager>
 
     private void OnApplicationQuit()
     {
-#if DEVELOPMENT_BUILD
+#if DEVELOPMENT_BUILD_A
         NetworkManager.Instance.StopServer();
         NetworkManager.Instance.StopClient();
 #endif

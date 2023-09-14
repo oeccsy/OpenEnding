@@ -10,6 +10,8 @@ public class SealGame_Scene : Singleton<SealGame_Scene>
 
     private void Awake()
     {
+        base.Awake();
+        
         switch (NetworkManager.Instance.connectType)
         {
             case Define.ConnectType.Server:
