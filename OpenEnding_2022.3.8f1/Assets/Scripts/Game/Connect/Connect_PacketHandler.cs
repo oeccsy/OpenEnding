@@ -18,13 +18,14 @@ public class Connect_PacketHandler : Singleton<Connect_PacketHandler>
     private delegate void Function(byte[] bytes);
     private Function[] _sceneFunctions;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         
         _sceneFunctions = new Function[]
         {
-            Connect_Scene.Instance.SynchronizeDevicesWithAnimation
+            Connect_Scene.Instance.SynchronizeDevicesWithAnimation,
+            Connect_Scene.Instance.LoadFairytaleScene
         };
         
         _classDict = new Dictionary<byte, Function[]>

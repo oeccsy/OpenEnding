@@ -8,7 +8,10 @@ public class ConnectManager : Singleton<ConnectManager>
 {
     [SerializeField]
     private Define.ConnectStatus connectStatus = Define.ConnectStatus.LeaveParty;
-
+    
+    public delegate void ConnectHandler();
+    public event ConnectHandler OnAllDeviceConnected;
+    
     private void Start()
     {
         NetworkManager.Instance.OnDeviceReady += RegisterDevice;
@@ -70,7 +73,7 @@ public class ConnectManager : Singleton<ConnectManager>
         "StopConnect".Log();
     }
 
-    public void RegisterDevice(Networking.NetworkDevice connectedDevice)
+    private void RegisterDevice(Networking.NetworkDevice connectedDevice)
     {
         $"{connectedDevice.Name} Join Done".Log();
         
@@ -84,9 +87,14 @@ public class ConnectManager : Singleton<ConnectManager>
             connectedDevice.deviceListOrder = connectedDeviceList.Count;
             connectedDeviceList.Add(connectedDevice);
         }
+
+        if (Connect_Scene.Instance.n == connectedDeviceList.Count)
+        {
+            OnAllDeviceConnected?.Invoke();    
+        }
     }
 
-    public void UnRegisterDevice(Networking.NetworkDevice disconnectedDevice)
+    private void UnRegisterDevice(Networking.NetworkDevice disconnectedDevice)
     {
         $"{disconnectedDevice.Name} Disconnect".Log();
         

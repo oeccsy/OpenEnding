@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ConnectScene.unity
     guid: b317236647b3be949b3f8e655a64ddad
+  - enabled: 1
+    path: Assets/Scenes/FairytaleGameScene.unity
+    guid: 93d73eec6d8b03c4fab99c9af3dd429f
   m_configObjects: {}

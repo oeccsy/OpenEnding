@@ -2,8 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class Connect_Scene : Singleton<Connect_Scene>
 {
@@ -15,9 +18,8 @@ public class Connect_Scene : Singleton<Connect_Scene>
     public List<DeviceObject> deviceObjectList = new List<DeviceObject>();
     public GameObject plane;
 
-    private void Awake()
+    protected override void Awake()
     {
-        // 지형 생성
         GameObject planePrefab = Resources.Load<GameObject>("Prefabs/Plane");
         Instantiate(planePrefab, GameObject.Find("GameObjectRoot").transform);
 
@@ -93,9 +95,17 @@ public class Connect_Scene : Singleton<Connect_Scene>
         selectedDevice.OnTouchDevice -= LeavePartyWithAnimation;
         selectedDevice.OnTouchDevice += SelectOwnDeviceWithAnimation;
     }
-    
-    public IEnumerator SynchronizeDevicesRoutine()
+
+    public void LoadFairytaleScene(Byte[] temp)
     {
-        yield return null;
+        IEnumerator LoadFairytaleSceneRoutine()
+        {
+            Overlay.SetActiveOverlay();
+            yield return new WaitForSeconds(3f);
+            SceneManager.LoadScene("FairytaleGameScene");
+            Overlay.UnsetActiveOverlay();
+        }
+
+        StartCoroutine(LoadFairytaleSceneRoutine());
     }
 }
