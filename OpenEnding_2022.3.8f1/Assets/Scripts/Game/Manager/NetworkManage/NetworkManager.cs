@@ -8,10 +8,11 @@ using UnityEngine.SceneManagement;
 public partial class NetworkManager : Singleton<NetworkManager>
 {
     [Header("Connect Info")]
-    public string networkName = "test";
+    public string networkName = "OpenEnding";
+    public string clientName = "None";
     public Define.ConnectType connectType = Define.ConnectType.None;
-    public List<Networking.NetworkDevice> connectedDeviceList = new List<Networking.NetworkDevice>();
-    public Networking.NetworkDevice myDeviceData = new Networking.NetworkDevice();  // Plugins Custom
+    public readonly List<Networking.NetworkDevice> connectedDeviceList = new List<Networking.NetworkDevice>();
+    public readonly Networking.NetworkDevice ownDeviceData = new Networking.NetworkDevice();  // Plugins Custom
     
     [Header("Networking")]
     [SerializeField]
@@ -19,18 +20,21 @@ public partial class NetworkManager : Singleton<NetworkManager>
     [SerializeField]
     private bool isWritingData = false;                                             // true이면 현재 Writing(Sending) 중 임을 나타내는 변수
 
-    private Action<Networking.NetworkDevice> OnDeviceReady = null;
-    private Action<Networking.NetworkDevice, string, byte[]> OnReceiveDataFromClient = null;
-    private Action<string, string, byte[]> OnReceiveDataFromServer = null;
-    // 추가
     
-#if !DEVELOPMENT_BUILD    
+    public Action<Networking.NetworkDevice> OnDeviceReady = null;
+    public Action<Networking.NetworkDevice> OnDeviceDisconnected = null;
+    public Action<Networking.NetworkDevice, string, byte[]> OnReceiveDataFromClient = null;
+    
+    public Action<string, string, byte[]> OnReceiveDataFromServer = null;
+
+#if !DEVELOPMENT_BUILD_A    
     private void Awake()
     {
+        base.Awake();
         networking = GetComponent<Networking>();
         NetworkingInit();
     }
-    
+
     private void NetworkingInit()
     {
         networking.Initialize((error) =>
@@ -55,34 +59,26 @@ public partial class NetworkManager : Singleton<NetworkManager>
     public void StartServer()
     {
         "StartServer".Log();
-
-        myDeviceData.deviceListOrder = connectedDeviceList.Count;
-        connectedDeviceList.Add(myDeviceData);
+        connectType = Define.ConnectType.Server;
         
+        ownDeviceData.deviceListOrder = connectedDeviceList.Count;
+        ownDeviceData.colorOrder = 0;
+        
+        connectedDeviceList.Add(ownDeviceData);
+
         networking.StartServer(networkName, (connectedDevice) =>
         {
-            $"{connectedDevice.Name} 접속 완료".Log();
-            if (!connectedDeviceList.Contains(connectedDevice))
-            {
-                connectedDevice.deviceListOrder = connectedDeviceList.Count;
-                connectedDeviceList.Add(connectedDevice);
-            }
-
-            StartCoroutine(ConnectManager.Instance.SynchronizeDevicesRoutine());
+            "OnDeviceReady".Log();
+            OnDeviceReady?.Invoke(connectedDevice);
         }, (disconnectedDevice) =>
         {
-            $"{disconnectedDevice.Name} 연결 끊김".Log();
-            if (connectedDeviceList != null && connectedDeviceList.Contains(disconnectedDevice))
-            {
-                // indexOfDeviceList 꼬일 위험 점검
-                connectedDeviceList.Remove(disconnectedDevice);
-            }
-                
-        }, ((device, characteristic, bytes) =>
+            "OnDeviceDisconnected".Log();
+            OnDeviceDisconnected?.Invoke(disconnectedDevice);
+        }, (device, characteristic, bytes) =>
         {
-            OnReceiveDataFromClient(device, characteristic, bytes);
-            SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
-        }));
+            "OnDeviceData".Log();
+            OnReceiveDataFromClient?.Invoke(device, characteristic, bytes);
+        });
     }
     
     public IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
@@ -90,25 +86,41 @@ public partial class NetworkManager : Singleton<NetworkManager>
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
         
-        networking.WriteDevice(targetDevice, bytes, () =>
+        if (targetDevice == ownDeviceData)
         {
-            isWritingData = false;
-        });
+            OnReceiveDataFromServer?.Invoke(null, null, bytes);
+        }
+        else
+        {
+            networking.WriteDevice(targetDevice, bytes, () =>
+            {
+                isWritingData = false;
+            });    
+        }
     }
 
     public IEnumerator SendBytesToAllDevice(Byte[] bytes)
     {
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
+        
+        $"Device Count : {connectedDeviceList.Count}".Log();
 
         foreach (var targetDevice in connectedDeviceList)
         {
-            networking.WriteDevice(targetDevice, bytes, () =>
+            if (targetDevice == ownDeviceData)
             {
-                
-            });    
+                OnReceiveDataFromServer?.Invoke(null, null, bytes);
+            }
+            else
+            {
+                networking.WriteDevice(targetDevice, bytes, () =>
+                {
+                    
+                });     
+            }
         }
-        
+
         isWritingData = false;
     }
     
@@ -117,13 +129,21 @@ public partial class NetworkManager : Singleton<NetworkManager>
         yield return new WaitUntil(() => isWritingData);
         isWritingData = true;
         
-        foreach (var device in connectedDeviceList)
+        foreach (var targetDevice in connectedDeviceList)
         {
-            if (device == skipDevice) continue;
-            networking.WriteDevice(device, bytes, () =>
+            if (targetDevice == skipDevice) continue;
+            
+            if (targetDevice == ownDeviceData)
             {
-                
-            });
+                OnReceiveDataFromServer?.Invoke(null, null, bytes);
+            }
+            else
+            {
+                networking.WriteDevice(targetDevice, bytes, () =>
+                {
+                    
+                });    
+            }
         }
         
         isWritingData = false;
@@ -133,7 +153,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     {
         networking.StopServer(() =>
         {
-            
+            "StopServer".Log();
         });
     }
 
@@ -144,13 +164,14 @@ public partial class NetworkManager : Singleton<NetworkManager>
     public void StartClient()
     {
         "Start Client".Log();
-        networking.StartClient(networkName, "client100", () =>
+        connectType = Define.ConnectType.Client;
+        
+        networking.StartClient(networkName, clientName, () =>
         {
-            "Start Client".Log();
-        }, (clientName, characteristic, bytes)=>
+            "Start Client Advertising".Log();
+        }, (client, characteristic, bytes) =>
         {
-            //OnReceiveDataFromServer(clientName, characteristic, bytes);
-            SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
+            OnReceiveDataFromServer?.Invoke(client, characteristic, bytes);
         });
     }
     
@@ -169,7 +190,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
         yield return new WaitUntil(() => isWritingData);
         isWritingData = true;
 
-        if (NetworkManager.Instance.connectType == Define.ConnectType.Server)
+        if (connectType == Define.ConnectType.Server)
         {
             yield return SendBytesToTargetDevice(targetDevice, bytes);
         }
@@ -186,23 +207,11 @@ public partial class NetworkManager : Singleton<NetworkManager>
     {
         networking.StopClient(() =>
         {
-            
+            "StopClient".Log();
         });
     }
     
     #endregion
-
-
-    public void SetActionByScene()
-    {
-        switch (SceneManager.GetActiveScene().name)
-        {
-            case "ConnectScene":
-                break;
-            default:
-                break;
-        }
-        
-    }
+    
 #endif
 }
