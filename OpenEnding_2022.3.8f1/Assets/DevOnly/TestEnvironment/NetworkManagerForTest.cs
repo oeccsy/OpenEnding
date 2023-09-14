@@ -8,7 +8,7 @@ using Shatalmic;
 
 public partial class NetworkManager
 {
-#if DEVELOPMENT_BUILD
+#if DEVELOPMENT_BUILD_A
 #if UNITY_STANDALONE_WIN    
     // 아래 UdpClinet는 LifeCycleManager에서 Application Quit인 경우에 Close() 처리
     private UdpClient server;
@@ -21,8 +21,8 @@ public partial class NetworkManager
         DebugCanvas.Instance.AddText("Start Server");
 
         // 서버 디바이스 등록 : index 0
-        myDeviceData.indexOfDeviceList = connectedDeviceList.Count;
-        connectedDeviceList.Add(myDeviceData);
+        ownDeviceData.deviceListOrder = connectedDeviceList.Count;
+        connectedDeviceList.Add(ownDeviceData);
         
         // UDP 서버 초기화
         server = new UdpClient(8888);
@@ -41,7 +41,7 @@ public partial class NetworkManager
                         DebugCanvas.Instance.AddText($"Client Join : {result.RemoteEndPoint.Port}");
 
                         Networking.NetworkDevice newDevice = new Networking.NetworkDevice();
-                        newDevice.indexOfDeviceList = connectedDeviceList.Count;
+                        newDevice.deviceListOrder = connectedDeviceList.Count;
                         newDevice.endPoint = result.RemoteEndPoint;
                         connectedDeviceList.Add(newDevice);
 
@@ -58,7 +58,7 @@ public partial class NetworkManager
         }
     }
     
-    private IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes) 
+    public IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes) 
     {
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
@@ -67,47 +67,32 @@ public partial class NetworkManager
         isWritingData = false;
     }
 
-    public IEnumerator ExecuteFuncOnTargetDevice(byte[] bytes)
+    public IEnumerator SendBytesToAllDevice(Byte[] bytes)
     {
         yield return new WaitWhile(() => isWritingData);
+        isWritingData = true;
 
-        if (bytes[1] == 0)
+        foreach (var targetDevice in connectedDeviceList)
         {
-            // 서버 디바이스 처리
-            SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
-        }
-        else
-        {
-            // 클라이언트 디바이스 처리
-            Networking.NetworkDevice targetDevice = connectedDeviceList[bytes[1]];
             yield return SendBytesToTargetDevice(targetDevice, bytes);
         }
-    }
-
-    public IEnumerator ExecuteFuncOnAllDevice(byte[] bytes) // TODOv1
-    {
-        yield return new WaitWhile(() => isWritingData);
-
-        // 서버 디바이스 처리
-        SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
         
-        // 클라이언트 디바이스 처리
-        for (int i = 1; i < connectedDeviceList.Count; i++)
-        {
-            Networking.NetworkDevice targetDevice = connectedDeviceList[i];
-            yield return SendBytesToTargetDevice(targetDevice, bytes);
-        }
+        isWritingData = false;
     }
 
-    public IEnumerator ExecuteFuncExceptOneDevice(int skipIndex, Byte[] bytes) // TODOv1
+    public IEnumerator SendBytesExceptOneDevice(Networking.NetworkDevice skipDevice, Byte[] bytes)
     {
         yield return new WaitUntil(() => isWritingData);
+        isWritingData = true;
         
-        for (int i = 0; i < connectedDeviceList.Count; i++)
+        foreach (var targetDevice in connectedDeviceList)
         {
-            if(i == skipIndex) continue;
-            yield return ExecuteFuncOnTargetDevice(bytes);
+            if (targetDevice == skipDevice) continue;
+      
+            yield return SendBytesToTargetDevice(targetDevice, bytes);
         }
+        
+        isWritingData = false;
     }
 
     public void StopServer()
@@ -151,6 +136,24 @@ public partial class NetworkManager
         
         client.Send(bytes, bytes.Length, "127.0.0.1", 8888);
         
+        isWritingData = false;
+    }
+    
+    public IEnumerator RequestSendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
+    {
+        yield return new WaitUntil(() => isWritingData);
+        isWritingData = true;
+
+        if (connectType == Define.ConnectType.Server)
+        {
+            yield return SendBytesToTargetDevice(targetDevice, bytes);
+        }
+        else
+        {
+            var request = new Byte[5]; // TODO
+            yield return SendBytesToServer(request);
+        }
+
         isWritingData = false;
     }
 
