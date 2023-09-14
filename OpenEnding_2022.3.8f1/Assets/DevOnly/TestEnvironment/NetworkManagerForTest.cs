@@ -8,8 +8,7 @@ using Shatalmic;
 
 public partial class NetworkManager
 {
-#if DEVELOPMENT_BUILD_A
-#if UNITY_STANDALONE_WIN    
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR && !UNITY_ANDROID && !UNITY_IOS    
     // 아래 UdpClinet는 LifeCycleManager에서 Application Quit인 경우에 Close() 처리
     private UdpClient server;
     private UdpClient client;
@@ -163,6 +162,5 @@ public partial class NetworkManager
     }
     
     #endregion
-#endif
 #endif
 }

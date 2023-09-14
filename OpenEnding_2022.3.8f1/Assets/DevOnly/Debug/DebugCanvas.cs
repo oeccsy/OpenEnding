@@ -1,4 +1,4 @@
-//#if DEVELOPMENT_BUILD_A
+#if DEVELOPMENT_BUILD || UNITY_STANDALONE_WIN || UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -98,4 +98,4 @@ public static class DebugExtension
         UnityEngine.Debug.LogError($"{curSceneName} : {prevClassName} : {value}");
     }
 }
-//#endif
+#endif

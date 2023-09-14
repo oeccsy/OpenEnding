@@ -27,8 +27,8 @@ public partial class NetworkManager : Singleton<NetworkManager>
     
     public Action<string, string, byte[]> OnReceiveDataFromServer = null;
 
-#if !DEVELOPMENT_BUILD_A    
-    private void Awake()
+#if UNITY_ANDROID || UNITY_IOS 
+    protected override void Awake()
     {
         base.Awake();
         networking = GetComponent<Networking>();
@@ -83,6 +83,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     
     public IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
     {
+        if (connectType != Define.ConnectType.Server) yield break;
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
         
@@ -101,6 +102,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
 
     public IEnumerator SendBytesToAllDevice(Byte[] bytes)
     {
+        if (connectType != Define.ConnectType.Server) yield break;
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
         
@@ -126,6 +128,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     
     public IEnumerator SendBytesExceptOneDevice(Networking.NetworkDevice skipDevice, Byte[] bytes)
     {
+        if (connectType != Define.ConnectType.Server) yield break;
         yield return new WaitUntil(() => isWritingData);
         isWritingData = true;
         

@@ -49,7 +49,7 @@ namespace Shatalmic
             public int deviceListOrder;
             public int colorOrder;
 
-#if DEVELOPMENT_BUILD_A
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR
             public IPEndPoint endPoint;
 #endif
         }
