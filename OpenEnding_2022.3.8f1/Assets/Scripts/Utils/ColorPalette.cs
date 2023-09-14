@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorPalette
+public static class ColorPalette
 {
+    public static void Init() {}
+
     private static Dictionary<ColorName, Color> colorDict = new Dictionary<ColorName, Color>()
     {
         { ColorName.Pink, new Color(232/255f, 174/255f, 181/255f, 232/255f) },
