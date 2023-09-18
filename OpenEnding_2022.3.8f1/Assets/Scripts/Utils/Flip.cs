@@ -4,57 +4,48 @@ using UnityEngine;
 
 public class Flip : Singleton<Flip>
 {
+    private Define.DisplayedFace curFace = Define.DisplayedFace.Head;
     public delegate void FlipHandler();
-    public event FlipHandler OnFlip;
+    public event FlipHandler OnFlipToHead;
+    public event FlipHandler OnFlipToTail;
+    public event FlipHandler OnStartFlipToHead;
+    public event FlipHandler OnStartFlipToTail;
 
-    private Vector3 beforeEulerAngle;
-    private Vector3 curEulerAngle;
+    private void Awake()
+    {
+        Input.gyro.enabled = false;
+    }
 
-    private float flipRemainingTime; // 2초 이상 유지할 경우 Flip으로 확인
-    private Coroutine remainingTimeCheckRoutine = null;
+    public void SetEnableGyroSensor(bool enable)
+    {
+        Input.gyro.enabled = enable;
+    }
     
-    // 뒤집혔다고 판단하는 각도
-    private const float thresholdAngle = 150f;
-    public void StartCheckFlip()
-    {
-        Input.gyro.enabled = true;
-        beforeEulerAngle = Input.gyro.attitude.eulerAngles;
-    }
-
-    public IEnumerator CheckFlip()
-    {
-        //2초동안 150 이상 유지 할 경우 Flip으로 확인
-
-        bool isStartCheckFlipTime = false;
-        
-        while (true)
-        {
-            if (beforeEulerAngle.y - curEulerAngle.y > thresholdAngle)
-            {
-                if (isStartCheckFlipTime)
-                {
-                    flipRemainingTime += Time.deltaTime;
-                    yield return null;
-                }
-                else
-                {
-                    
-                }
-
-
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-
     private void Update()
     {
         if (Input.gyro.enabled)
         {
-            //DebugCanvas.Instance.SetText(Input.gyro.attitude.eulerAngles.ToString());
+            if (curFace == Define.DisplayedFace.Tail && Input.gyro.gravity.z < 0.7f)
+            {
+                OnStartFlipToHead?.Invoke();
+            }
+            
+            if (curFace == Define.DisplayedFace.Tail && Input.gyro.gravity.z < -0.95f)
+            {
+                curFace = Define.DisplayedFace.Head;
+                OnFlipToHead?.Invoke();
+            }
+
+            if (curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0f)
+            {
+                OnStartFlipToTail?.Invoke();
+            }
+
+            if (curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0.95f)
+            {
+                curFace = Define.DisplayedFace.Tail;
+                OnFlipToTail?.Invoke();
+            }
         }
     }
 }
