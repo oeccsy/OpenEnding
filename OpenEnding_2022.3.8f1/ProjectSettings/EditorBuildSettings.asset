@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/DevOnly/Temp/GyroTest.unity
+    guid: 7eb97b9cee6a93e4c850592c578df1b4
+  - enabled: 1
     path: Assets/Scenes/ConnectScene.unity
     guid: b317236647b3be949b3f8e655a64ddad
   - enabled: 1
