@@ -14,7 +14,7 @@ public class Connect_PacketHandler : Singleton<Connect_PacketHandler>
     // index 2 : 실행할 로직의 param
     // . . .
 
-    private Dictionary<Byte, Function[]> _classDict;
+    private Dictionary<byte, Function[]> _classDict;
     private delegate void Function(byte[] bytes);
     private Function[] _sceneFunctions;
 
