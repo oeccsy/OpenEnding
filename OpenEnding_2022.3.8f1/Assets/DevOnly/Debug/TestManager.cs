@@ -9,5 +9,17 @@ public class TestManager : MonoBehaviour
     {
         Connect_Scene.Instance.LoadFairytaleScene(null);
     }
+    
+    [MenuItem("FuncTest/SelectTortoiseCard")]
+    public static void SelectTortoiseCard()
+    {
+        Fairytale_Scene.Instance.TheHareAndTheTortoise();
+    }
+    
+    [MenuItem("FuncTest/TheNumberCard")]
+    public static void SelectNumberCard()
+    {
+        Fairytale_Scene.Instance.TheNumber();
+    }
 }
 #endif
