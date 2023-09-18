@@ -24,6 +24,19 @@ public class Define
         TryingToJoin,
         JoinParty
     }
+
+    public enum DisplayedFace
+    {
+        Head,
+        Tail
+    }
+
+    public enum FairyTailGameCardType
+    {
+        None,
+        TheHareAndTheTortoise,
+        TheNumber
+    }
     
     public enum SealGameStep
     {
@@ -59,5 +72,52 @@ public class Define
         Class = 0,
         Function,
         ParamBegin
+    }
+
+    public enum Act
+    {
+        Attack,
+        Bounce,
+        Clicked,
+        Death,
+        Eat,
+        Fear,
+        Fly,
+        Hit,
+        Idle_A,
+        Idle_B,
+        Idle_C,
+        Jump,
+        Roll,
+        Run,
+        Sit,
+        Spin,
+        Swim,
+        Walk
+    }
+    
+    public enum Shape
+    {
+        Annoyed,
+        Blink,
+        Cry,
+        Dead,
+        Excited,
+        Happy,
+        LookDown,
+        LookIn,
+        LookOut,
+        LookUp,
+        Rabid,
+        Sad,
+        Shrink,
+        Sleep,
+        Spin,
+        Squint,
+        Trauma,
+        Sweat_L,
+        Sweat_R,
+        Teardrop_L,
+        Teardrop_R
     }
 }
