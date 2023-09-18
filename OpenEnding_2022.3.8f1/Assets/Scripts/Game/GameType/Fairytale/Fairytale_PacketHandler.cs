@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Connect_PacketHandler : Singleton<Connect_PacketHandler>
+public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
 {
     // 데이터 포맷
     
@@ -13,7 +10,7 @@ public class Connect_PacketHandler : Singleton<Connect_PacketHandler>
     // index 1 : 실행할 로직
     // index 2 : 실행할 로직의 param
     // . . .
-
+    
     private Dictionary<byte, Function[]> _classDict;
     private delegate void Function(byte[] bytes);
     private Function[] _sceneFunctions;
@@ -24,8 +21,9 @@ public class Connect_PacketHandler : Singleton<Connect_PacketHandler>
         
         _sceneFunctions = new Function[]
         {
-            Connect_Scene.Instance.SynchronizeDevicesWithAnimation,
-            Connect_Scene.Instance.LoadFairytaleScene
+            (bytes) => Fairytale_Scene.Instance.TheHareAndTheTortoise(),
+            (bytes) => Fairytale_Scene.Instance.TheNumber(),
+            (bytes) => Fairytale_Scene.Instance.ShowPlayerCard()
         };
         
         _classDict = new Dictionary<byte, Function[]>
@@ -35,7 +33,7 @@ public class Connect_PacketHandler : Singleton<Connect_PacketHandler>
         
         NetworkManager.Instance.OnReceiveDataFromServer = ExecuteActionByPacket;
     }
-
+    
     public void ExecuteActionByPacket(string clientName, string characteristic, byte[] bytes)
     {
         var targetClass = _classDict[bytes[(byte)Define.PacketIndex.Class]];
