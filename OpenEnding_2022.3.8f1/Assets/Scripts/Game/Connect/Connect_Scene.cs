@@ -103,7 +103,6 @@ public class Connect_Scene : Singleton<Connect_Scene>
             Overlay.SetActiveOverlay();
             yield return new WaitForSeconds(3f);
             SceneManager.LoadScene("FairytaleGameScene");
-            Overlay.UnsetActiveOverlay();
         }
 
         StartCoroutine(LoadFairytaleSceneRoutine());
