@@ -67,6 +67,7 @@ public class DebugCanvas : Singleton<DebugCanvas>
     public void AddText(object msg)
     {
         _tmp.text = $"{_tmp.text} \n {msg}";
+        if(_tmp.text.Length > 250) SetText(msg);
     }
 
     public void SetText(object msg)

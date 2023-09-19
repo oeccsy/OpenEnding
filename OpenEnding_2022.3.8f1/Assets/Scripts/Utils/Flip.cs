@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Flip : Singleton<Flip>
 {
+    [SerializeField]
     private Define.DisplayedFace curFace = Define.DisplayedFace.Head;
+    [SerializeField]
+    private bool isStartFlip = false;
     public delegate void FlipHandler();
     public event FlipHandler OnFlipToHead;
     public event FlipHandler OnFlipToTail;
@@ -16,6 +19,15 @@ public class Flip : Singleton<Flip>
         Input.gyro.enabled = false;
     }
 
+    private void Start()
+    {
+        SetEnableGyroSensor(true);
+        OnFlipToHead = () => $"OnFlipToHead".Log();
+        OnFlipToTail = () => $"OnFlipToHead".Log();
+        OnStartFlipToHead = () => $"OnStartFlipToHead".Log();
+        OnStartFlipToTail = () => $"OnStartFlipToTail".Log();
+    }
+
     public void SetEnableGyroSensor(bool enable)
     {
         Input.gyro.enabled = enable;
@@ -25,25 +37,29 @@ public class Flip : Singleton<Flip>
     {
         if (Input.gyro.enabled)
         {
-            if (curFace == Define.DisplayedFace.Tail && Input.gyro.gravity.z < 0.7f)
+            if (!isStartFlip && curFace == Define.DisplayedFace.Tail && Input.gyro.gravity.z < 0.7f)
             {
+                isStartFlip = true;
                 OnStartFlipToHead?.Invoke();
             }
             
             if (curFace == Define.DisplayedFace.Tail && Input.gyro.gravity.z < -0.95f)
             {
                 curFace = Define.DisplayedFace.Head;
+                isStartFlip = false;
                 OnFlipToHead?.Invoke();
             }
 
-            if (curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0f)
+            if (!isStartFlip && curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0f)
             {
+                isStartFlip = true;
                 OnStartFlipToTail?.Invoke();
             }
 
             if (curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0.95f)
             {
                 curFace = Define.DisplayedFace.Tail;
+                isStartFlip = false;
                 OnFlipToTail?.Invoke();
             }
         }
