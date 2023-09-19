@@ -33,8 +33,8 @@ public class Define
 
     public enum FairyTailGameCardType
     {
-        None,
-        TheHareAndTheTortoise,
+        None = -1,
+        TheHareAndTheTortoise = 0,
         TheNumber
     }
     
