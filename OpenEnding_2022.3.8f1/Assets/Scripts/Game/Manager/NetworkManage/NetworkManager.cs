@@ -86,6 +86,8 @@ public partial class NetworkManager : Singleton<NetworkManager>
         if (connectType != Define.ConnectType.Server) yield break;
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
+
+        $"Try Send To {(ColorPalette.ColorName)targetDevice.colorOrder}".Log();
         
         if (targetDevice == ownDeviceData)
         {
@@ -110,6 +112,8 @@ public partial class NetworkManager : Singleton<NetworkManager>
 
         foreach (var targetDevice in connectedDeviceList)
         {
+            $"Try Send To {(ColorPalette.ColorName)targetDevice.colorOrder}".Log();
+            
             if (targetDevice == ownDeviceData)
             {
                 OnReceiveDataFromServer?.Invoke(null, null, bytes);

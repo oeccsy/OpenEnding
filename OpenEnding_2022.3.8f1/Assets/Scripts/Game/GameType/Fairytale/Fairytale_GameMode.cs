@@ -30,7 +30,7 @@ public class Fairytale_GameMode : GameMode
     private IEnumerator GameRoutine()
     {
         GameReady(); // 시간 설정, 카드 설정, 카드 가치 설정
-        ShowPlayerCard();
+        yield return ShowPlayerCard();
 
         while (timeStep < timeStepLimit)
         {
@@ -58,14 +58,18 @@ public class Fairytale_GameMode : GameMode
             var newCard = new Fairytale_CardData(device);
             newCard.cardType = cardTypes[(int)newCard.color];
             cardContainer.cardList.Add(newCard);
-            
+
+            $"{newCard.color.ToString()} : {newCard.cardType}".Log();
+            $"isMyDevice : {device == NetworkManager.Instance.ownDeviceData}".Log();
+
             StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] {0, (byte)newCard.cardType}));
         }
     }
 
-    private void ShowPlayerCard()
+    private IEnumerator ShowPlayerCard()
     {
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 2 }));
+        yield return new WaitForSecondsRealtime(3f);
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 2, 0 }));
     }
 
     private void NotifyCardFlipAvailable()
