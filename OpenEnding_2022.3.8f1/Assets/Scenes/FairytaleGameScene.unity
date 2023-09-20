@@ -659,7 +659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da0a04129bc64342908d03ccf3314d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeStepLimit: 0
+  timeStepLimit: 10
 --- !u!114 &1654405869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -672,6 +672,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47a808651415aad40a4ce173b007e3e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curFace: 0
+  isStartFlip: 0
 --- !u!1 &1829183953
 GameObject:
   m_ObjectHideFlags: 0

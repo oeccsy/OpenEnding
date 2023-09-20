@@ -14,19 +14,23 @@ public class Flip : Singleton<Flip>
     public event FlipHandler OnStartFlipToHead;
     public event FlipHandler OnStartFlipToTail;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        
         Input.gyro.enabled = false;
     }
-
+    
+#if DEVELOPMENT_BUILD
     private void Start()
     {
         SetEnableGyroSensor(true);
-        OnFlipToHead = () => $"OnFlipToHead".Log();
-        OnFlipToTail = () => $"OnFlipToHead".Log();
-        OnStartFlipToHead = () => $"OnStartFlipToHead".Log();
-        OnStartFlipToTail = () => $"OnStartFlipToTail".Log();
+        // OnFlipToHead += () => $"OnFlipToHead".Log();
+        // OnFlipToTail += () => $"OnFlipToTail".Log();
+        // OnStartFlipToHead += () => $"OnStartFlipToHead".Log();
+        // OnStartFlipToTail += () => $"OnStartFlipToTail".Log();
     }
+#endif
 
     public void SetEnableGyroSensor(bool enable)
     {

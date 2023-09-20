@@ -30,6 +30,7 @@ public class ConnectManager : Singleton<ConnectManager>
         if (connectStatus != Define.ConnectStatus.LeaveParty) return;
 
         NetworkManager.Instance.clientName = selectedDevice.ownColor.ToString();
+        NetworkManager.Instance.ownDeviceData.colorOrder = (int)selectedDevice.ownColor;
         
         switch (selectedDevice.ownColor)
         {

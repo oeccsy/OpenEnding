@@ -68,15 +68,12 @@ public partial class NetworkManager : Singleton<NetworkManager>
 
         networking.StartServer(networkName, (connectedDevice) =>
         {
-            "OnDeviceReady".Log();
             OnDeviceReady?.Invoke(connectedDevice);
         }, (disconnectedDevice) =>
         {
-            "OnDeviceDisconnected".Log();
             OnDeviceDisconnected?.Invoke(disconnectedDevice);
         }, (device, characteristic, bytes) =>
         {
-            "OnDeviceData".Log();
             OnReceiveDataFromClient?.Invoke(device, characteristic, bytes);
         });
     }
@@ -87,8 +84,6 @@ public partial class NetworkManager : Singleton<NetworkManager>
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
 
-        $"Try Send To {(ColorPalette.ColorName)targetDevice.colorOrder}".Log();
-        
         if (targetDevice == ownDeviceData)
         {
             OnReceiveDataFromServer?.Invoke(null, null, bytes);
@@ -107,13 +102,9 @@ public partial class NetworkManager : Singleton<NetworkManager>
         if (connectType != Define.ConnectType.Server) yield break;
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
-        
-        $"Device Count : {connectedDeviceList.Count}".Log();
 
         foreach (var targetDevice in connectedDeviceList)
         {
-            $"Try Send To {(ColorPalette.ColorName)targetDevice.colorOrder}".Log();
-            
             if (targetDevice == ownDeviceData)
             {
                 OnReceiveDataFromServer?.Invoke(null, null, bytes);
@@ -186,8 +177,16 @@ public partial class NetworkManager : Singleton<NetworkManager>
     {
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
-        
-        networking.SendFromClient(bytes);
+
+        switch (connectType)
+        {
+            case Define.ConnectType.Client:
+                networking.SendFromClient(bytes);
+                break;
+            case Define.ConnectType.Server:
+                OnReceiveDataFromClient?.Invoke(null, null, bytes);
+                break;
+        }
         
         isWritingData = false;
     }
