@@ -67,7 +67,7 @@ public class DebugCanvas : Singleton<DebugCanvas>
     public void AddText(object msg)
     {
         _tmp.text = $"{_tmp.text} \n {msg}";
-        if(_tmp.text.Length > 250) SetText(msg);
+        if(_tmp.text.Length > 400) SetText(msg);
     }
 
     public void SetText(object msg)
@@ -89,7 +89,7 @@ public static class DebugExtension
 
         DebugCanvas.Instance.AddText(value);
 
-        UnityEngine.Debug.Log($"{curSceneName} : {prevClassName} : {value}");
+        UnityEngine.Debug.Log($"OpenEnding : {curSceneName} : {prevClassName} : {value}");
 #endif    
     }
     
@@ -102,7 +102,7 @@ public static class DebugExtension
 
         DebugCanvas.Instance.AddText(value);
             
-        UnityEngine.Debug.LogError($"{curSceneName} : {prevClassName} : {value}");
+        UnityEngine.Debug.LogError($"OpenEnding : {curSceneName} : {prevClassName} : {value}");
 #endif    
     }
 }
