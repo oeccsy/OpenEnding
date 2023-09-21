@@ -5,13 +5,15 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
     public void TheHareAndTheTortoise()
     {
         var prefab = Resources.Load<GameObject>("Quirky/TortoiseCard");
-        Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<Animal>();
+        var instance = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
+        Fairytale_PacketHandler.Instance.ownCard = instance;
     }
 
     public void TheNumber()
     {
         var prefab = Resources.Load<GameObject>("Quirky/RabbitCard");
-        Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<Animal>();
+        var instance = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
+        Fairytale_PacketHandler.Instance.ownCard = instance;
     }
 
     public void ShowPlayerCard()

@@ -9,6 +9,7 @@ public class Fairytale_CardContainer
     public delegate void CardFaceHandler();
     public event CardFaceHandler OnAllCardHead;
     public event CardFaceHandler OnAllCardTail;
+    public event CardFaceHandler OnFaceMixed;
     
     private int _headCount = 0;
     private int _tailCount = 0;
@@ -44,9 +45,15 @@ public class Fairytale_CardContainer
                 cardData.displayedFace = Define.DisplayedFace.Head;
                 _headCount++;
                 _tailCount--;
-
-                $"head : {_headCount}, tail : {_tailCount}".Log();
-                if(_tailCount == 0) OnAllCardHead?.Invoke();
+                
+                if (_tailCount == 0)
+                {
+                    OnAllCardHead?.Invoke();
+                }
+                else
+                {
+                    OnFaceMixed?.Invoke();
+                }
             }
         }
 
@@ -63,8 +70,14 @@ public class Fairytale_CardContainer
                 _headCount--;
                 _tailCount++;
                 
-                $"head : {_headCount}, tail : {_tailCount}".Log();
-                if(_headCount == 0) OnAllCardTail?.Invoke();
+                if (_headCount == 0)
+                {
+                    OnAllCardTail?.Invoke();
+                }
+                else
+                {
+                    OnFaceMixed?.Invoke();
+                }
             }
         }
         

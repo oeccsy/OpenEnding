@@ -7,13 +7,14 @@ using UnityEngine.UI;
 
 public class Overlay : MonoBehaviour
 {
-    private static Image _image;
+    public static Image image;
     private Canvas _canvas;
-    private static Sequence _overlaySequence;
+    public static Sequence overlaySequence;
+    public static bool isOverlayActive = false;
 
     private void Awake()
     {
-        _image = GetComponent<Image>();
+        image = GetComponent<Image>();
         _canvas = transform.parent.GetComponent<Canvas>();
 
         SceneManager.sceneLoaded += (scene, mode) => SetCanvas();
@@ -21,18 +22,21 @@ public class Overlay : MonoBehaviour
 
     public static void SetActiveOverlay()
     {
-        if (_overlaySequence.IsActive()) return;
+        if (overlaySequence.IsActive()) return;
 
-        _overlaySequence = DOTween.Sequence()
-            .Append(_image.DOFade(1f, 2f));
+        isOverlayActive = true;
+        
+        overlaySequence = DOTween.Sequence()
+            .Append(image.DOFade(1f, 2f));
     }
 
     public static void UnsetActiveOverlay()
     {
-        if (_overlaySequence.IsActive()) return;
+        if (overlaySequence.IsActive()) return;
 
-        _overlaySequence = DOTween.Sequence()
-            .Append(_image.DOFade(0f, 2f));
+        overlaySequence = DOTween.Sequence()
+            .Append(image.DOFade(0f, 2f))
+            .AppendCallback( ()=> isOverlayActive = false );
     }
 
     private void SetCanvas()

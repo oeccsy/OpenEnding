@@ -14,18 +14,19 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
     
     private Fairytale_Scene _fairytaleScene;
     private Fairytale_CardContainer _cardContainer;
-    
+    public Fairytale_Card ownCard;
     
     private Dictionary<byte, Function[]> _classDict;
     
     private delegate void Function(byte[] bytes);
     private Function[] _sceneFunctions;
     private Function[] _cardContainerFunctions;
+    private Function[] _cardFunctions;
 
     protected override void Awake()
     {
         base.Awake();
-
+        
         _fairytaleScene = Fairytale_Scene.Instance;
         _cardContainer = GameObject.Find("FairytaleManager").GetComponent<Fairytale_GameMode>().cardContainer;
 
@@ -41,11 +42,18 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
             (bytes) => _cardContainer.SetCardHead((ColorPalette.ColorName)bytes[0]),
             (bytes) => _cardContainer.SetCardTail((ColorPalette.ColorName)bytes[0])
         };
+        
+        _cardFunctions = new Function[]
+        {
+            (bytes) => { if(ownCard != null) ownCard.Vibrate(); },
+            (bytes) => { if (ownCard != null) ownCard.ShowNextStep(); }
+        };
             
         _classDict = new Dictionary<byte, Function[]>
         {
             {0, _sceneFunctions},
-            {1, _cardContainerFunctions}
+            {1, _cardContainerFunctions},
+            {2, _cardFunctions}
         };
         
         NetworkManager.Instance.OnReceiveDataFromServer = ExecuteActionByPacket;

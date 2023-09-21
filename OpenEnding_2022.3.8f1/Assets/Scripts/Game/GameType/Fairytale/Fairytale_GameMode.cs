@@ -6,47 +6,60 @@ public class Fairytale_GameMode : GameMode
 {
     public Fairytale_CardContainer cardContainer = new Fairytale_CardContainer();
     
-    private int timeStep = 0;
-    private int timeStepLimit = 0;
+    private int _timeStep = 0;
+    private int _timeStepLimit = 1;
     
-    private bool isAllCardTail = false;
-    private bool isTimerExpired = false;
-    private bool isAllCardHead = false;
+    private bool _isAllCardTail = false;
+    private bool _isTimerExpired = false;
+    private bool _isAllCardHead = false;
 
-    private Coroutine gameRoutine = null;
-    private Coroutine timer = null;
+    private Coroutine _gameRoutine = null;
+    private Coroutine _timer = null;
 
     private void Awake()
     {
         GameManager.Instance.GameMode = this;
         
-        cardContainer.OnAllCardHead += () => isAllCardHead = true;
-        cardContainer.OnAllCardTail += () => isAllCardTail = true;
-        
-        SetFlipEvent();
-        Flip.Instance.SetEnableGyroSensor(true);
-        
+        cardContainer.OnAllCardHead += () =>
+        {
+            _isAllCardHead = true;
+            _isAllCardTail = false;
+        };
+        cardContainer.OnAllCardTail += () =>
+        {
+            _isAllCardHead = false;
+            _isAllCardTail = true;
+        };
+        cardContainer.OnFaceMixed += () =>
+        {
+            _isAllCardHead = false;
+            _isAllCardTail = false;
+        };
+
         if (NetworkManager.Instance.connectType == Define.ConnectType.Server)
         {
-            gameRoutine = StartCoroutine(GameRoutine());    
+            _gameRoutine = StartCoroutine(GameRoutine());    
         }
     }
-
-    #region Routine
+    
     private IEnumerator GameRoutine()
     {
         GameReady();
         yield return new WaitForSecondsRealtime(0.5f);
+
         ShowPlayerCard();
 
-        while (timeStep < timeStepLimit)
+        while (_timeStep < _timeStepLimit)
         {
-            yield return new WaitUntil(() => isAllCardTail);
+            yield return new WaitUntil(() => _isAllCardTail);
             NotifyCardFlipAvailable();
+            UpdateCard();
             StartTimerForDecide();
-            yield return new WaitUntil(() => isTimerExpired || isAllCardHead);
-            yield return new WaitForSecondsRealtime(5f);
+            yield return new WaitUntil(() => _isTimerExpired || _isAllCardHead);
             UpdateData();
+            UpdateTailCard();
+            NotifyCardFlipUnavailable();
+            if (_isAllCardTail) break;
         }
         
         ShowResult();
@@ -54,7 +67,7 @@ public class Fairytale_GameMode : GameMode
 
     private void GameReady()
     {
-        timeStepLimit = Random.Range(3, 5);
+        _timeStepLimit = Random.Range(3, 5);
 
         var cardTypes = new List<Define.FairyTailGameCardType>();
         cardTypes.Add(Define.FairyTailGameCardType.TheHareAndTheTortoise);
@@ -80,62 +93,48 @@ public class Fairytale_GameMode : GameMode
     private void NotifyCardFlipAvailable()
     {
         "NotifyCardFlipAvailable".Log();
-        // 진동으로 알림
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 0, 0 }));
+    }
+
+    private void UpdateCard()
+    {
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 1, 0 }));
     }
 
     private void StartTimerForDecide()
     {
-        "StartTimerForDecide".Log();
         IEnumerator Timer()
         {
             yield return new WaitForSecondsRealtime(10f);
-            isTimerExpired = true;
+            _isTimerExpired = true;
         }
         
-        isTimerExpired = false;
-        isAllCardHead = false;
+        _isTimerExpired = false;
+        _isAllCardHead = false;
 
-        timer = StartCoroutine(Timer());
+        _timer = StartCoroutine(Timer());
     }
 
     private void UpdateData()
     {
-        isTimerExpired = false;
-        isAllCardHead = false;
+        if(_timer != null) StopCoroutine(_timer);
+        _isTimerExpired = false;
+        _timeStep++;
+    }
 
-        timeStep++;
+    private void UpdateTailCard()
+    {
+        
+    }
+    
+    private void NotifyCardFlipUnavailable()
+    {
+        "NotifyCardFlipUnavailable".Log();
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 0, 0 }));
     }
 
     private void ShowResult()
     {
         "ShowResult".Log();
     }
-    
-    #endregion
-
-    #region Interaction
-
-    private void SetFlipEvent()
-    {
-        Flip.Instance.OnFlipToTail += NotifyFlipToTail;
-        Flip.Instance.OnStartFlipToHead += NotifyStartFlipToHead;
-    }
-
-    private void UnsetFlipEvent()
-    {
-        Flip.Instance.OnFlipToTail -= NotifyFlipToTail;
-        Flip.Instance.OnStartFlipToHead -= NotifyStartFlipToHead;
-    }
-
-    private void NotifyFlipToTail()
-    {
-        StartCoroutine(NetworkManager.Instance.SendBytesToServer(new byte[] {1, 1, (byte)NetworkManager.Instance.ownDeviceData.colorOrder}));
-    }
-    
-    private void NotifyStartFlipToHead()
-    {
-        StartCoroutine(NetworkManager.Instance.SendBytesToServer(new byte[] {1, 0, (byte)NetworkManager.Instance.ownDeviceData.colorOrder}));
-    }
-
-    #endregion
 }
