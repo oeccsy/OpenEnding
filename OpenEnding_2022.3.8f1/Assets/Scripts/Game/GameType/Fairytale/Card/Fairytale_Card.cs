@@ -6,7 +6,6 @@ using UnityEngine;
 public class Fairytale_Card : MonoBehaviour
 {
     public Fairytale_CardData cardData;
-    public bool alphaControl = false;
     protected virtual void Awake()
     {
         SetFlipEvent();
