@@ -76,7 +76,7 @@ public class Define
 
     public enum Act
     {
-        Attack,
+        Attack = 0,
         Bounce,
         Clicked,
         Death,
@@ -93,31 +93,31 @@ public class Define
         Sit,
         Spin,
         Swim,
-        Walk
+        Walk = 17
     }
     
     public enum Shape
     {
-        Annoyed,
-        Blink,
-        Cry,
-        Dead,
-        Excited,
-        Happy,
-        LookDown,
-        LookIn,
-        LookOut,
-        LookUp,
-        Rabid,
-        Sad,
-        Shrink,
-        Sleep,
-        Spin,
-        Squint,
-        Trauma,
-        Sweat_L,
-        Sweat_R,
-        Teardrop_L,
-        Teardrop_R
+        Eyes_Annoyed = 0,
+        Eyes_Blink,
+        Eyes_Cry,
+        Eyes_Dead,
+        Eyes_Excited,
+        Eyes_Happy,
+        Eyes_LookDown,
+        Eyes_LookIn,
+        Eyes_LookOut,
+        Eyes_LookUp,
+        Eyes_Rabid,
+        Eyes_Sad,
+        Eyes_Shrink,
+        Eyes_Sleep,
+        Eyes_Spin,
+        Eyes_Squint,
+        Eyes_Trauma,
+        Eyes_Sweat_L,
+        Eyes_Sweat_R,
+        Eyes_Teardrop_L,
+        Eyes_Teardrop_R = 20
     }
 }

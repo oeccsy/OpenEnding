@@ -22,18 +22,23 @@ public class TheHareAndTheTortoise : Fairytale_Card
         base.Update();
     }
 
+    [ContextMenu("FuncTest/ShowNextStep")]
     public override void ShowNextStep()
     {
         "Override ShowNextStep".Log();
         if (hare != null)
         {
-            Define.Act nextAct = (Define.Act)((int)hare.curAction + 1);
+            "Start Test1".Log();
+            Define.Act nextAct = (Define.Act)(((int)hare.curAction + 1) % 17);
             hare.ActNaturally(nextAct);
+            "Test1 Done".Log();
         }
         if (tortoise != null)
         {
-            Define.Act nextAct = (Define.Act)((int)hare.curAction + 1);
-            tortoise.ActNaturally(nextAct);    
+            "Start Test2".Log();
+            Define.Act nextAct = (Define.Act)(((int)hare.curAction + 1) % 17);
+            tortoise.ActNaturally(nextAct);
+            "Test2 Done".Log();
         }
     }
 }

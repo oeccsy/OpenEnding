@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Shatalmic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public partial class NetworkManager : Singleton<NetworkManager>
 {
@@ -100,6 +99,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     public IEnumerator SendBytesToAllDevice(Byte[] bytes)
     {
         if (connectType != Define.ConnectType.Server) yield break;
+        
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
 
@@ -111,13 +111,14 @@ public partial class NetworkManager : Singleton<NetworkManager>
             }
             else
             {
+                $"Send to {(ColorPalette.ColorName)targetDevice.colorOrder} {bytes[0]}{bytes[1]}".Log();
                 networking.WriteDevice(targetDevice, bytes, () =>
                 {
-                    
+                    $"Send Done {(ColorPalette.ColorName)targetDevice.colorOrder} {bytes[0]}{bytes[1]}".Log();
                 });     
             }
         }
-
+        
         isWritingData = false;
     }
     

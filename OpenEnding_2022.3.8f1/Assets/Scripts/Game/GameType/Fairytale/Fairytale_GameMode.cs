@@ -46,13 +46,13 @@ public class Fairytale_GameMode : GameMode
     {
         GameReady();
         yield return new WaitForSecondsRealtime(0.5f);
-
         ShowPlayerCard();
 
         while (_timeStep < _timeStepLimit)
         {
             yield return new WaitUntil(() => _isAllCardTail);
             NotifyCardFlipAvailable();
+            yield return new WaitForSecondsRealtime(0.5f);
             UpdateCard();
             StartTimerForDecide();
             yield return new WaitUntil(() => _isTimerExpired || _isAllCardHead);
@@ -67,11 +67,14 @@ public class Fairytale_GameMode : GameMode
 
     private void GameReady()
     {
+        "GameReady".Log();
         _timeStepLimit = Random.Range(3, 5);
 
         var cardTypes = new List<Define.FairyTailGameCardType>();
         cardTypes.Add(Define.FairyTailGameCardType.TheHareAndTheTortoise);
         cardTypes.Add(Define.FairyTailGameCardType.TheNumber);
+        
+        Utils.ListRandomShuffle(cardTypes);
 
         foreach (var device in NetworkManager.Instance.connectedDeviceList)
         {
@@ -87,6 +90,7 @@ public class Fairytale_GameMode : GameMode
 
     private void ShowPlayerCard()
     {
+        "ShowPlayerCard".Log();
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 2, 0 }));
     }
 

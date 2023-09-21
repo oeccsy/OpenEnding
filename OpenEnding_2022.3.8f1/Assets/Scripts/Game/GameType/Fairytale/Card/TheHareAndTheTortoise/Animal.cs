@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Animal : MonoBehaviour
 {
-    public Define.Act curAction;
-    public Define.Shape curShape;
+    public Define.Act curAction = Define.Act.Walk;
+    public Define.Shape curShape = Define.Shape.Eyes_Blink;
     
     private Animator animator;
     

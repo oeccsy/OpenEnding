@@ -38,6 +38,8 @@ public class Fairytale_CardContainer
     
     public void SetCardHead(ColorPalette.ColorName targetDeviceColor)
     {
+        $"Set {targetDeviceColor} Head".Log();
+        
         foreach (var cardData in cardList)
         {
             if (cardData.color == targetDeviceColor)
@@ -56,12 +58,12 @@ public class Fairytale_CardContainer
                 }
             }
         }
-
-        $"Set {targetDeviceColor} Head".Log();
     }
 
     public void SetCardTail(ColorPalette.ColorName targetDeviceColor)
     {
+        $"Set {targetDeviceColor} Tail".Log();
+        
         foreach (var cardData in cardList)
         {
             if (cardData.color == targetDeviceColor)
@@ -80,8 +82,5 @@ public class Fairytale_CardContainer
                 }
             }
         }
-        
-        
-        $"Set {targetDeviceColor} Tail".Log();
     }
 }
