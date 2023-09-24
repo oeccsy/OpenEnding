@@ -2,16 +2,11 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    // 게임을 관리하는 Root Class
-    public GameFramework _gameFramework = null;
-    public GameFramework GameFramework
-    {
-        get
-        {
-            if (_gameFramework == null)
-                _gameFramework = FindObjectOfType<GameFramework>(); //GameObject.Find("Systems").GetComponentInChildren<GameFramework>();
+    public GameMode GameMode { get; set; }
+    public GameFlow GameFlow { get; set; }
 
-            return _gameFramework;
-        }
+    protected override void Awake()
+    {
+        GameFlow = GetComponent<GameFlow>();
     }
 }

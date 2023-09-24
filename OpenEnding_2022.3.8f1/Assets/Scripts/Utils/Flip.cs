@@ -4,57 +4,68 @@ using UnityEngine;
 
 public class Flip : Singleton<Flip>
 {
+    [SerializeField]
+    private Define.DisplayedFace curFace = Define.DisplayedFace.Head;
+    [SerializeField]
+    private bool isStartFlip = false;
     public delegate void FlipHandler();
-    public event FlipHandler OnFlip;
+    public event FlipHandler OnFlipToHead;
+    public event FlipHandler OnFlipToTail;
+    public event FlipHandler OnStartFlipToHead;
+    public event FlipHandler OnStartFlipToTail;
 
-    private Vector3 beforeEulerAngle;
-    private Vector3 curEulerAngle;
-
-    private float flipRemainingTime; // 2초 이상 유지할 경우 Flip으로 확인
-    private Coroutine remainingTimeCheckRoutine = null;
-    
-    // 뒤집혔다고 판단하는 각도
-    private const float thresholdAngle = 150f;
-    public void StartCheckFlip()
+    protected override void Awake()
     {
-        Input.gyro.enabled = true;
-        beforeEulerAngle = Input.gyro.attitude.eulerAngles;
-    }
-
-    public IEnumerator CheckFlip()
-    {
-        //2초동안 150 이상 유지 할 경우 Flip으로 확인
-
-        bool isStartCheckFlipTime = false;
+        base.Awake();
         
-        while (true)
-        {
-            if (beforeEulerAngle.y - curEulerAngle.y > thresholdAngle)
-            {
-                if (isStartCheckFlipTime)
-                {
-                    flipRemainingTime += Time.deltaTime;
-                    yield return null;
-                }
-                else
-                {
-                    
-                }
-
-
-            }
-            else
-            {
-                break;
-            }
-        }
+        Input.gyro.enabled = false;
     }
+    
+#if DEVELOPMENT_BUILD
+    private void Start()
+    {
+        SetEnableGyroSensor(true);
+        // OnFlipToHead += () => $"OnFlipToHead".Log();
+        // OnFlipToTail += () => $"OnFlipToTail".Log();
+        // OnStartFlipToHead += () => $"OnStartFlipToHead".Log();
+        // OnStartFlipToTail += () => $"OnStartFlipToTail".Log();
+    }
+#endif
 
+    public void SetEnableGyroSensor(bool enable)
+    {
+        Input.gyro.enabled = enable;
+    }
+    
     private void Update()
     {
         if (Input.gyro.enabled)
         {
-            DebugText.Instance.SetText(Input.gyro.attitude.eulerAngles.ToString());
+            if (!isStartFlip && curFace == Define.DisplayedFace.Tail && Input.gyro.gravity.z < 0.7f)
+            {
+                isStartFlip = true;
+                OnStartFlipToHead?.Invoke();
+            }
+            
+            if (curFace == Define.DisplayedFace.Tail && Input.gyro.gravity.z < -0.95f)
+            {
+                curFace = Define.DisplayedFace.Head;
+                isStartFlip = false;
+                OnFlipToHead?.Invoke();
+            }
+
+            if (!isStartFlip && curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0f)
+            {
+                isStartFlip = true;
+                OnStartFlipToTail?.Invoke();
+            }
+
+            if (curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0.95f)
+            {
+                curFace = Define.DisplayedFace.Tail;
+                isStartFlip = false;
+                OnFlipToTail?.Invoke();
+            }
         }
     }
 }

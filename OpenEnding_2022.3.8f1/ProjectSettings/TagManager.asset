@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Object
+  - BackgroundUI
+  - SceneUI
+  - PopupUI
+  - Debug
   - 
   - 
   - 
@@ -38,6 +38,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BackgroundUI
+    uniqueID: 3460573099
+    locked: 0
+  - name: Object
+    uniqueID: 313827769
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: SceneUI
+    uniqueID: 966638043
+    locked: 0
+  - name: PopupUI
+    uniqueID: 554620329
+    locked: 0
+  - name: Debug
+    uniqueID: 2782071865
     locked: 0

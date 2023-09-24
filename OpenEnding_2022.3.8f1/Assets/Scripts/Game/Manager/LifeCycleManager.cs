@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class LifeCycleManager : Singleton<LifeCycleManager>
 {
-    private void Awake()
+    protected override void Awake()
     {
-#if DEVELOPMENT_BUILD
+        base.Awake();
+        
+#if DEVELOPMENT_BUILD || UNITY_EDITOR || UNITY_STANDALONE_WIN
+        DebugCanvas.Instance.InitDebugCanvas();
+        
 #if UNITY_STANDALONE_WIN
         Application.runInBackground = true;
 #endif
@@ -24,7 +28,8 @@ public class LifeCycleManager : Singleton<LifeCycleManager>
     private void OnApplicationQuit()
     {
 #if DEVELOPMENT_BUILD
-        NetworkManager.Instance.CloseUDPClient();
+        NetworkManager.Instance.StopServer();
+        NetworkManager.Instance.StopClient();
 #endif
     }
 }
