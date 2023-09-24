@@ -49,8 +49,9 @@ public class Fairytale_Card : MonoBehaviour
         Handheld.Vibrate();
     }
 
-    public virtual void ShowNextStep()
-    {
-        "Just Card ShowNextStep".Log();
-    }
+    public virtual void ShowNextStep() { }
+    
+    public virtual void CreateStoryLine(int goal, int runningTime) { }
+    
+    public virtual void SelectStory(int timeStep, int runningTime, ref int cur, int goal) { }
 }

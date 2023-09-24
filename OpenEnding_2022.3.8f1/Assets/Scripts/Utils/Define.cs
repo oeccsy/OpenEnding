@@ -120,4 +120,12 @@ public class Define
         Eyes_Teardrop_L,
         Eyes_Teardrop_R = 20
     }
+
+    public enum Story
+    {
+        LoseAll,
+        Standstill,
+        TakeStepBack,
+        TakeOneStep
+    }
 }
