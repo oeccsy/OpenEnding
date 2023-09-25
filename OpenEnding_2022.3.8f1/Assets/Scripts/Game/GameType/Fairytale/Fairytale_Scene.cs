@@ -4,7 +4,7 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
 {
     public void TheHareAndTheTortoise()
     {
-        var prefab = Resources.Load<GameObject>("Quirky/TortoiseCard");
+        var prefab = Resources.Load<GameObject>("Prefabs/TheHareAndTheTortoise");
         var instance = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
         Fairytale_PacketHandler.Instance.ownCard = instance;
     }

@@ -647,6 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dae9efcd0bb4a6dad5e5003cfebb78b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ownCard: {fileID: 0}
 --- !u!114 &1654405868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,7 +660,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da0a04129bc64342908d03ccf3314d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeStepLimit: 10
 --- !u!114 &1654405869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -686,6 +686,7 @@ GameObject:
   - component: {fileID: 1829183957}
   - component: {fileID: 1829183956}
   - component: {fileID: 1829183955}
+  - component: {fileID: 1829183958}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -701,8 +702,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1829183953}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.32667622, y: -0.5154048, z: 0.2213397, w: 0.76069}
-  m_LocalPosition: {x: 4.2242055, y: 5.8588758, z: -1.6616023}
+  m_LocalRotation: {x: 0.3455961, y: -0.39444384, z: 0.16312236, w: 0.8356845}
+  m_LocalPosition: {x: 5.4651227, y: 7.0630383, z: -4.499548}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -763,11 +764,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 5
-  far clip plane: 1000
-  field of view: 60
+  near clip plane: 0.1
+  far clip plane: 5000
+  field of view: 50
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -783,6 +784,40 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1829183958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829183953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowDebugText: 0
+  m_ShowCameraFrustum: 1
+  m_IgnoreTimeScale: 0
+  m_WorldUpOverride: {fileID: 0}
+  m_UpdateMethod: 2
+  m_BlendUpdateMethod: 1
+  m_DefaultBlend:
+    m_Style: 1
+    m_Time: 2
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_CustomBlends: {fileID: 0}
+  m_CameraCutEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_CameraActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1929744449
 GameObject:
   m_ObjectHideFlags: 0

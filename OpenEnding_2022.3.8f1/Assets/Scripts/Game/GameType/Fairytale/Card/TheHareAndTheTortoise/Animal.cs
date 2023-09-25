@@ -12,8 +12,8 @@ public class Animal : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        ActNaturally(curAction);
-        Shape(curShape);
+        ActNaturally(Define.Act.Walk);
+        Shape(Define.Shape.Eyes_Blink);
     }
 
     public void ActImmediately(Define.Act act)
