@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 public class TheHareAndTheTortoise : Fairytale_Card
 {
-    public List<Define.Story> storyLine = new List<Define.Story>();
-    
+    public int step = -1;
+    public int targetGoal = 5;
     public int achievement = 0;
+    public List<Define.Story> storyLine = new List<Define.Story>();
     public List<int> achievementProgress = new List<int>();
     
     [SerializeField]
@@ -15,29 +16,37 @@ public class TheHareAndTheTortoise : Fairytale_Card
 
     protected override void Awake()
     {
+#if !UNITY_EDITOR
         base.Awake();
+#endif
+        CreateStoryLine(5, 15);
+        hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
+        tortoise.transform.position = Vector3.zero;
+        
     }
 
     public override void Update()
     {
+#if !UNITY_EDITOR
         base.Update();
+#endif
     }
     
     public override void CreateStoryLine(int goal, int runningTime)
     {
-        achievement = 0;
+        int temporaryAchievement = 0;
 
         for (int i = 0; i < runningTime; i++)
         {
-            SelectStory(i, runningTime, ref achievement, goal);
+            SelectStory(i, runningTime, ref temporaryAchievement, goal);
         }
     }
 
-    public override void SelectStory(int timeStep, int runningTime, ref int curAchievement, int goal)
+    public override void SelectStory(int timeStep, int runningTime, ref int temporaryAchievement, int goal)
     {
         List<Define.Story> availableStory = new List<Define.Story>();
 
-        if (timeStep + 1 == runningTime || curAchievement + 1 != goal)
+        if (timeStep + 1 == runningTime || temporaryAchievement + 1 != goal)
         {
             availableStory.Add(Define.Story.TakeOneStep);
             availableStory.Add(Define.Story.TakeOneStep);
@@ -45,19 +54,19 @@ public class TheHareAndTheTortoise : Fairytale_Card
             availableStory.Add(Define.Story.TakeOneStep);
         }
 
-        if (curAchievement + runningTime - timeStep - 1 >= goal)
+        if (temporaryAchievement + runningTime - timeStep - 1 >= goal)
         {
             availableStory.Add(Define.Story.Standstill);
             availableStory.Add(Define.Story.Standstill);
         }
 
-        if (curAchievement - 1 + runningTime - timeStep - 1 >= goal && curAchievement > 0)
+        if (temporaryAchievement - 1 + runningTime - timeStep - 1 >= goal && temporaryAchievement > 0)
         {
             availableStory.Add(Define.Story.TakeStepBack);
             availableStory.Add(Define.Story.TakeStepBack);
         }
 
-        if (runningTime - timeStep - 1 >= goal && curAchievement > 0)
+        if (runningTime - timeStep - 1 >= goal && temporaryAchievement > 0)
         {
             availableStory.Add(Define.Story.LoseAll);
         }
@@ -69,44 +78,99 @@ public class TheHareAndTheTortoise : Fairytale_Card
         switch (availableStory[Random.Range(0, availableStory.Count)])
         {
             case Define.Story.LoseAll:
-                curAchievement = 0;
+                temporaryAchievement = 0;
                 storyLine.Add(Define.Story.LoseAll);
-                achievementProgress.Add(curAchievement);
+                achievementProgress.Add(temporaryAchievement);
                 break;
             case Define.Story.Standstill:
                 storyLine.Add(Define.Story.Standstill);
-                achievementProgress.Add(curAchievement);
+                achievementProgress.Add(temporaryAchievement);
                 break;
             case Define.Story.TakeStepBack:
-                curAchievement -= 1;
+                temporaryAchievement -= 1;
                 storyLine.Add(Define.Story.TakeStepBack);
-                achievementProgress.Add(curAchievement);
+                achievementProgress.Add(temporaryAchievement);
                 break;
             case Define.Story.TakeOneStep:
-                curAchievement += 1;
+                temporaryAchievement += 1;
                 storyLine.Add(Define.Story.TakeOneStep);
-                achievementProgress.Add(curAchievement);
+                achievementProgress.Add(temporaryAchievement);
                 break;
         }
+    }
+
+    private void TortoiseRunFast()
+    {
+        achievement += 1;
+        tortoise.ActNaturally(Define.Act.Run);
+        tortoise.Shape(Define.Shape.Eyes_Annoyed);
+        
+        hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
+        tortoise.transform.position = Vector3.forward * achievement * 0.5f;
+    }
+
+    private void TortoiseRunSlow()
+    {
+        achievement += 0;
+        tortoise.ActNaturally(Define.Act.Walk);
+        tortoise.Shape(Define.Shape.Eyes_Sad);
+        
+        hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
+        tortoise.transform.position = Vector3.forward * achievement * 0.5f;
+    }
+
+    private void TortoiseDance()
+    {
+        achievement -= 1;
+        tortoise.ActNaturally(Define.Act.Spin);
+        tortoise.Shape(Define.Shape.Eyes_Happy);
+        
+        hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
+        tortoise.transform.position = Vector3.forward * achievement * 0.5f;
+        tortoise.speed = 0f;
+    }
+
+    private void TortoiseAccident()
+    {
+        achievement = 0;
+        tortoise.ActNaturally(Define.Act.Death);
+        tortoise.Shape(Define.Shape.Eyes_Dead);
+        
+        hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
+        tortoise.transform.position = Vector3.forward * achievement * 0.5f;
+        tortoise.speed = 0f;
+    }
+
+    private void ShowResult()
+    {
+        
     }
 
     [ContextMenu("FuncTest/ShowNextStep")]
     public override void ShowNextStep()
     {
-        "Override ShowNextStep".Log();
-        if (hare != null)
+        if (achievement == targetGoal) return;
+        
+        step++;
+        switch (storyLine[step])
         {
-            "Start Test1".Log();
-            Define.Act nextAct = (Define.Act)(((int)hare.curAction + 1) % 17);
-            hare.ActNaturally(nextAct);
-            "Test1 Done".Log();
+            case Define.Story.LoseAll:
+                TortoiseAccident();
+                break;
+            case Define.Story.Standstill:
+                TortoiseRunSlow();
+                break;
+            case Define.Story.TakeOneStep:
+                TortoiseRunFast();
+                break;
+            case Define.Story.TakeStepBack:
+                TortoiseDance();
+                break;
         }
-        if (tortoise != null)
+
+        if (achievement == targetGoal)
         {
-            "Start Test2".Log();
-            Define.Act nextAct = (Define.Act)(((int)hare.curAction + 1) % 17);
-            tortoise.ActNaturally(nextAct);
-            "Test2 Done".Log();
+            ShowResult();
         }
     }
 }

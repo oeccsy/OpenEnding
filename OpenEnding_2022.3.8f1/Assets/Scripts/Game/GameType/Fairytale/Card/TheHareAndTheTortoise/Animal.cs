@@ -6,6 +6,7 @@ public class Animal : MonoBehaviour
 {
     public Define.Act curAction = Define.Act.Walk;
     public Define.Shape curShape = Define.Shape.Eyes_Blink;
+    public float speed;
     
     private Animator animator;
     
@@ -14,6 +15,11 @@ public class Animal : MonoBehaviour
         animator = GetComponent<Animator>();
         ActNaturally(Define.Act.Walk);
         Shape(Define.Shape.Eyes_Blink);
+    }
+
+    public void Update()
+    {
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
     public void ActImmediately(Define.Act act)
