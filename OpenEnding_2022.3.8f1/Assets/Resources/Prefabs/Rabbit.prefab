@@ -165,10 +165,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6281554889076892110}
+  - component: {fileID: 5929877198391265635}
+  - component: {fileID: 6613340118482039427}
   - component: {fileID: 6652105870756738514}
   - component: {fileID: 4118198734796670101}
   - component: {fileID: 5348571020004724209}
-  - component: {fileID: 5929877198391265635}
+  - component: {fileID: 1199844630574631487}
+  - component: {fileID: 2988101675293030598}
   m_Layer: 0
   m_Name: Rabbit
   m_TagString: Untagged
@@ -184,7 +187,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2306018740434192387}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -196,6 +199,33 @@ Transform:
   - {fileID: 7660451206013298576}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5929877198391265635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2306018740434192387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 220248e1fc3548b9b19a9d20bb8e89ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curAction: 17
+  curShape: 1
+  speed: 1
+--- !u!114 &6613340118482039427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2306018740434192387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4458c5077118a5243bb943d042b3d37b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!205 &6652105870756738514
 LODGroup:
   m_ObjectHideFlags: 0
@@ -218,11 +248,11 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4935361957951650636}
-  - screenRelativeHeight: 0.35
+  - screenRelativeHeight: 0.02
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1392304687528773542}
-  - screenRelativeHeight: 0.02
+  - screenRelativeHeight: 0
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 974967533670563701}
@@ -265,26 +295,60 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.21000636
   m_Height: 0.7151161
   m_Direction: 2
   m_Center: {x: -0.00035232306, y: 0.28616464, z: 0.05226299}
---- !u!114 &5929877198391265635
-MonoBehaviour:
+--- !u!54 &1199844630574631487
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2306018740434192387}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &2988101675293030598
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2306018740434192387}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 220248e1fc3548b9b19a9d20bb8e89ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  curAction: 17
-  curShape: 1
+  serializedVersion: 3
+  m_Size: {x: 0.515244, y: 0.5094385, z: 0.785198}
+  m_Center: {x: 0.0014513731, y: 0.24528074, z: 0.008708179}
 --- !u!1 &4089872379165703843
 GameObject:
   m_ObjectHideFlags: 0
