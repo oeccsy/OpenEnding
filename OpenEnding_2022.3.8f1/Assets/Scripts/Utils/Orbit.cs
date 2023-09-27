@@ -27,4 +27,12 @@ public class Orbit : MonoBehaviour
         transform.position = Pos;
         transform.rotation = Rot;
     }
+    
+    #if UNITY_EDITOR
+    [ContextMenu("Scene Settings/SetRotate")]
+    public void SetRotate()
+    {
+        transform.rotation = Rot;
+    }
+    #endif
 }
