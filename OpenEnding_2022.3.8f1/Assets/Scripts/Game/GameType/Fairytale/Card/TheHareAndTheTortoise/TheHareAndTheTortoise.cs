@@ -8,6 +8,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
     public int achievement = 0;
     public List<Define.Story> storyLine = new List<Define.Story>();
     public List<int> achievementProgress = new List<int>();
+    private Coroutine currentStoryRoutine = null;
     
     [SerializeField]
     private Animal hare;
@@ -20,9 +21,6 @@ public class TheHareAndTheTortoise : Fairytale_Card
         base.Awake();
 #endif
         CreateStoryLine(5, 15);
-        hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
-        tortoise.transform.position = Vector3.zero;
-        
     }
 
     public override void Update()
@@ -99,46 +97,75 @@ public class TheHareAndTheTortoise : Fairytale_Card
         }
     }
 
-    private void TortoiseRunFast()
+    private IEnumerator TortoiseRunFast()
     {
+        Debug.Log("OneStep");
         achievement += 1;
+        
+        yield return new WaitForSecondsRealtime(3f);
+        
         tortoise.ActNaturally(Define.Act.Run);
         tortoise.Shape(Define.Shape.Eyes_Annoyed);
+        tortoise.speed = 8f;
         
-        hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
-        tortoise.transform.position = Vector3.forward * achievement * 0.5f;
+        yield return new WaitForSecondsRealtime(2f);
+        Debug.Log("Done");
+
+        tortoise.ActNaturally(Define.Act.Walk);
+        tortoise.Shape(Define.Shape.Eyes_Blink);
+        tortoise.speed = 4f;
     }
 
-    private void TortoiseRunSlow()
+    private IEnumerator TortoiseRunSlow()
     {
+        Debug.Log("Slow");
+        yield return null;
         achievement += 0;
+        
         tortoise.ActNaturally(Define.Act.Walk);
         tortoise.Shape(Define.Shape.Eyes_Sad);
-        
-        hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
-        tortoise.transform.position = Vector3.forward * achievement * 0.5f;
     }
 
-    private void TortoiseDance()
+    private IEnumerator TortoiseDance()
     {
+        Debug.Log("Dance");
         achievement -= 1;
+        
+        yield return new WaitForSecondsRealtime(3f);
+        
         tortoise.ActNaturally(Define.Act.Spin);
         tortoise.Shape(Define.Shape.Eyes_Happy);
-        
-        hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
-        tortoise.transform.position = Vector3.forward * achievement * 0.5f;
         tortoise.speed = 0f;
+        
+        yield return new WaitForSecondsRealtime(2f);
+        Debug.Log("Done");
+        
+        tortoise.ActNaturally(Define.Act.Walk);
+        tortoise.Shape(Define.Shape.Eyes_Blink);
+        tortoise.speed = 4f;
     }
 
-    private void TortoiseAccident()
+    private IEnumerator TortoiseAccident()
     {
-        achievement = 0;
-        tortoise.ActNaturally(Define.Act.Death);
-        tortoise.Shape(Define.Shape.Eyes_Dead);
-        
+        "Accident".Log();
         hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
         tortoise.transform.position = Vector3.forward * achievement * 0.5f;
+
+        var delay = achievement * 2f;
+        achievement = 0;
+        
+        yield return new WaitForSecondsRealtime(3f);
+        
+        tortoise.ActNaturally(Define.Act.Death);
+        tortoise.Shape(Define.Shape.Eyes_Dead);
         tortoise.speed = 0f;
+        
+        yield return new WaitForSecondsRealtime(delay);
+        Debug.Log("Done");
+        
+        tortoise.ActNaturally(Define.Act.Walk);
+        tortoise.Shape(Define.Shape.Eyes_Blink);
+        tortoise.speed = 4f;
     }
 
     private void ShowResult()
@@ -155,16 +182,20 @@ public class TheHareAndTheTortoise : Fairytale_Card
         switch (storyLine[step])
         {
             case Define.Story.LoseAll:
-                TortoiseAccident();
+                if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
+                currentStoryRoutine = StartCoroutine(TortoiseAccident());
                 break;
             case Define.Story.Standstill:
-                TortoiseRunSlow();
+                if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
+                currentStoryRoutine = StartCoroutine(TortoiseRunSlow());
                 break;
             case Define.Story.TakeOneStep:
-                TortoiseRunFast();
+                if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
+                currentStoryRoutine = StartCoroutine(TortoiseRunFast());
                 break;
             case Define.Story.TakeStepBack:
-                TortoiseDance();
+                if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
+                currentStoryRoutine = StartCoroutine(TortoiseDance());
                 break;
         }
 
