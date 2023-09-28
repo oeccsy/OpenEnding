@@ -67,6 +67,12 @@ public class Define
         UI
     }
 
+    public enum PostProcess
+    {
+        None,
+        GrayScale
+    }
+
     public enum PacketIndex
     {
         Class = 0,

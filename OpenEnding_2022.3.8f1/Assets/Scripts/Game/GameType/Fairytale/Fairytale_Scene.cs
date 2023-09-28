@@ -20,4 +20,9 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
     {
         Overlay.UnsetActiveOverlay();
     }
+
+    public void SetSceneGrayScale()
+    {
+        PostProcess.SetPostProcess(Define.PostProcess.GrayScale);
+    }
 }

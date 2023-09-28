@@ -34,7 +34,8 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
         {
             (bytes) => _fairytaleScene.TheHareAndTheTortoise(),
             (bytes) => _fairytaleScene.TheNumber(),
-            (bytes) => _fairytaleScene.ShowPlayerCard()
+            (bytes) => _fairytaleScene.ShowPlayerCard(),
+            (bytes) => _fairytaleScene.SetSceneGrayScale()
         };
 
         _cardContainerFunctions = new Function[]

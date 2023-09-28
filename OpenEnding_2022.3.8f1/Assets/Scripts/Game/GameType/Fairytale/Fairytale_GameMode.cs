@@ -51,13 +51,15 @@ public class Fairytale_GameMode : GameMode
         while (_timeStep < _timeStepLimit)
         {
             yield return new WaitUntil(() => _isAllCardTail);
-            NotifyCardFlipAvailable();
-            yield return new WaitForSecondsRealtime(0.5f);
             UpdateCard();
+            yield return new WaitForSecondsRealtime(0.5f);
+            NotifyCardFlipAvailable();
             StartTimerForDecide();
             yield return new WaitUntil(() => _isTimerExpired || _isAllCardHead);
-            UpdateData();
+            ResetTimer();
             UpdateTailCard();
+            UpdateDoneCard();
+            yield return new WaitForSecondsRealtime(0.5f);
             NotifyCardFlipUnavailable();
             if (_isAllCardTail) break;
         }
@@ -93,16 +95,16 @@ public class Fairytale_GameMode : GameMode
         "ShowPlayerCard".Log();
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 2, 0 }));
     }
+    
+    private void UpdateCard()
+    {
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 1, 0 }));
+    }
 
     private void NotifyCardFlipAvailable()
     {
         "NotifyCardFlipAvailable".Log();
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 0, 0 }));
-    }
-
-    private void UpdateCard()
-    {
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 1, 0 }));
     }
 
     private void StartTimerForDecide()
@@ -119,14 +121,26 @@ public class Fairytale_GameMode : GameMode
         _timer = StartCoroutine(Timer());
     }
 
-    private void UpdateData()
+    private void ResetTimer()
     {
         if(_timer != null) StopCoroutine(_timer);
         _isTimerExpired = false;
-        _timeStep++;
+        _timeStep += cardContainer.cardList.Count;
     }
 
     private void UpdateTailCard()
+    {
+        foreach (var card in cardContainer.cardList)
+        {
+            if (card.displayedFace == Define.DisplayedFace.Tail)
+            {
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 3, 0 }));
+                cardContainer.cardList.Remove(card);
+            }
+        }
+    }
+
+    private void UpdateDoneCard()
     {
         
     }
