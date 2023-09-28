@@ -36,6 +36,8 @@ public partial class NetworkManager : Singleton<NetworkManager>
 
     private void NetworkingInit()
     {
+        if (networking == null) networking = gameObject.AddComponent<Networking>();
+        
         networking.Initialize((error) =>
         {
             switch (error)
