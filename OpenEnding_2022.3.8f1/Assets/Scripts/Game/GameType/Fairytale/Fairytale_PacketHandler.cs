@@ -14,7 +14,7 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
     
     private Fairytale_Scene _fairytaleScene;
     private Fairytale_CardContainer _cardContainer;
-    public Fairytale_Card ownCard;
+    public Fairytale_Card OwnCard => _fairytaleScene.card; 
     
     private Dictionary<byte, Function[]> _classDict;
     
@@ -33,7 +33,7 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
         _sceneFunctions = new Function[]
         {
             (bytes) => _fairytaleScene.TheHareAndTheTortoise(),
-            (bytes) => _fairytaleScene.TheNumber(),
+            (bytes) => _fairytaleScene.TheHareAndTheTortoise(),
             (bytes) => _fairytaleScene.ShowPlayerCard(),
             (bytes) => _fairytaleScene.SetSceneGrayScale()
         };
@@ -46,8 +46,9 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
         
         _cardFunctions = new Function[]
         {
-            (bytes) => { if(ownCard != null) ownCard.Vibrate(); },
-            (bytes) => { if (ownCard != null) ownCard.ShowNextStep(); }
+            (bytes) => { if(OwnCard != null) OwnCard.Vibrate(); },
+            (bytes) => { if(OwnCard != null) OwnCard.StoryUnfoldsByTimeStep(bytes[0]); },
+            (bytes) => { if(OwnCard != null) OwnCard.CreateStoryLine(5, bytes[0]);}
         };
             
         _classDict = new Dictionary<byte, Function[]>

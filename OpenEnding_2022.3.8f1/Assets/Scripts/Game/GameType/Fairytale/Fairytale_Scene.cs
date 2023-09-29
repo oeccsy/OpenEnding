@@ -2,18 +2,18 @@
 
 public class Fairytale_Scene : Singleton<Fairytale_Scene>
 {
+    public Fairytale_Card card;
+    
     public void TheHareAndTheTortoise()
     {
         var prefab = Resources.Load<GameObject>("Prefabs/TheHareAndTheTortoise");
-        var instance = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
-        Fairytale_PacketHandler.Instance.ownCard = instance;
+        card = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
     }
 
     public void TheNumber()
     {
         var prefab = Resources.Load<GameObject>("Quirky/RabbitCard");
-        var instance = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
-        Fairytale_PacketHandler.Instance.ownCard = instance;
+        card = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
     }
 
     public void ShowPlayerCard()
@@ -23,6 +23,7 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
 
     public void SetSceneGrayScale()
     {
+        $"SetSceneGrayScale".Log();
         PostProcess.SetPostProcess(Define.PostProcess.GrayScale);
     }
 }
