@@ -37,6 +37,13 @@ public class Define
         TheHareAndTheTortoise = 0,
         TheNumber
     }
+
+    public enum FairyTailGameCardStatus
+    {
+        None = 0,
+        Success = 1,
+        GiveUp = 2
+    }
     
     public enum SealGameStep
     {
