@@ -38,12 +38,14 @@ public class Fairytale_CardContainer
     
     public void SetCardHead(ColorPalette.ColorName targetDeviceColor)
     {
-        $"Set {targetDeviceColor} Head".Log();
-        
         foreach (var cardData in cardList)
         {
             if (cardData.color == targetDeviceColor)
             {
+                if (cardData.cardStatus != Define.FairyTailGameCardStatus.None) return;
+                
+                $"Set {targetDeviceColor} Head".Log();
+                
                 cardData.displayedFace = Define.DisplayedFace.Head;
                 _headCount++;
                 _tailCount--;
@@ -62,12 +64,14 @@ public class Fairytale_CardContainer
 
     public void SetCardTail(ColorPalette.ColorName targetDeviceColor)
     {
-        $"Set {targetDeviceColor} Tail".Log();
-        
         foreach (var cardData in cardList)
         {
             if (cardData.color == targetDeviceColor)
             {
+                if (cardData.cardStatus != Define.FairyTailGameCardStatus.None) return;
+                
+                $"Set {targetDeviceColor} Tail".Log();
+                
                 cardData.displayedFace = Define.DisplayedFace.Tail;
                 _headCount--;
                 _tailCount++;
@@ -79,6 +83,50 @@ public class Fairytale_CardContainer
                 else
                 {
                     OnFaceMixed?.Invoke();
+                }
+            }
+        }
+    }
+
+    public void SetCardSuccess(ColorPalette.ColorName targetDeviceColor)
+    {
+        $"Set {targetDeviceColor} Success".Log();
+        
+        foreach (var cardData in cardList)
+        {
+            if (cardData.color == targetDeviceColor)
+            {
+                cardData.cardStatus = Define.FairyTailGameCardStatus.Success;
+                switch (cardData.displayedFace)
+                {
+                    case Define.DisplayedFace.Head :
+                        _headCount--;
+                        break;
+                    case Define.DisplayedFace.Tail :
+                        _tailCount--;
+                        break;
+                }
+            }
+        }
+    }
+    
+    public void SetCardGiveUp(ColorPalette.ColorName targetDeviceColor)
+    {
+        $"Set {targetDeviceColor} GiveUp".Log();
+        
+        foreach (var cardData in cardList)
+        {
+            if (cardData.color == targetDeviceColor)
+            {
+                cardData.cardStatus = Define.FairyTailGameCardStatus.GiveUp;
+                switch (cardData.displayedFace)
+                {
+                    case Define.DisplayedFace.Head :
+                        _headCount--;
+                        break;
+                    case Define.DisplayedFace.Tail :
+                        _tailCount--;
+                        break;
                 }
             }
         }

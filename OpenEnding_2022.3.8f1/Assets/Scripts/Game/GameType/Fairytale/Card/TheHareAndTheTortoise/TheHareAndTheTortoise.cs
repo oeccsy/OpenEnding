@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public class TheHareAndTheTortoise : Fairytale_Card
 {
-    public int step = -1;
-    public int targetGoal = 5;
-    public int achievement = 0;
     public List<Define.Story> storyLine = new List<Define.Story>();
     public List<int> achievementProgress = new List<int>();
     private Coroutine currentStoryRoutine = null;
@@ -20,7 +17,6 @@ public class TheHareAndTheTortoise : Fairytale_Card
 #if !UNITY_EDITOR
         base.Awake();
 #endif
-        CreateStoryLine(5, 15);
     }
 
     public override void Update()
@@ -32,11 +28,17 @@ public class TheHareAndTheTortoise : Fairytale_Card
     
     public override void CreateStoryLine(int goal, int runningTime)
     {
+        DebugCanvas.Instance.SetText("");
+        $"Create Story Line : {goal}, {runningTime}".Log();
+        cardData.runningTime = runningTime;
+        cardData.goal = goal;
+
         int temporaryAchievement = 0;
 
         for (int i = 0; i < runningTime; i++)
         {
             SelectStory(i, runningTime, ref temporaryAchievement, goal);
+            $"story : {storyLine[i]}".Log();
         }
     }
 
@@ -100,7 +102,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
     private IEnumerator TortoiseRunFast()
     {
         Debug.Log("OneStep");
-        achievement += 1;
+        cardData.achievement += 1;
         
         yield return new WaitForSecondsRealtime(3f);
         
@@ -120,7 +122,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
     {
         Debug.Log("Slow");
         yield return null;
-        achievement += 0;
+        cardData.achievement += 0;
         
         tortoise.ActNaturally(Define.Act.Walk);
         tortoise.Shape(Define.Shape.Eyes_Sad);
@@ -129,7 +131,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
     private IEnumerator TortoiseDance()
     {
         Debug.Log("Dance");
-        achievement -= 1;
+        cardData.achievement -= 1;
         
         yield return new WaitForSecondsRealtime(3f);
         
@@ -148,11 +150,11 @@ public class TheHareAndTheTortoise : Fairytale_Card
     private IEnumerator TortoiseAccident()
     {
         "Accident".Log();
-        hare.transform.position = Vector3.left + Vector3.forward * targetGoal * 0.5f;
-        tortoise.transform.position = Vector3.forward * achievement * 0.5f;
+        hare.transform.position = Vector3.left + Vector3.forward * cardData.goal * 0.5f;
+        tortoise.transform.position = Vector3.forward * cardData.achievement * 0.5f;
 
-        var delay = achievement * 2f;
-        achievement = 0;
+        var delay = cardData.achievement * 2f;
+        cardData.achievement = 0;
         
         yield return new WaitForSecondsRealtime(3f);
         
@@ -174,12 +176,15 @@ public class TheHareAndTheTortoise : Fairytale_Card
     }
 
     [ContextMenu("FuncTest/ShowNextStep")]
-    public override void ShowNextStep()
+    public override void StoryUnfoldsByTimeStep(int timeStep)
     {
-        if (achievement == targetGoal) return;
+        if (cardData.cardStatus != Define.FairyTailGameCardStatus.None) return;
         
-        step++;
-        switch (storyLine[step])
+        "StoryUnFolds".Log();
+        
+        cardData.timeStep = timeStep;
+        
+        switch (storyLine[timeStep])
         {
             case Define.Story.LoseAll:
                 if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
@@ -199,7 +204,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
                 break;
         }
 
-        if (achievement == targetGoal)
+        if (cardData.achievement == cardData.goal)
         {
             ShowResult();
         }

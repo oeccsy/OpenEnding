@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class Fairytale_Card : MonoBehaviour
 {
-    public Fairytale_CardData cardData;
+    public Fairytale_CardData cardData = new Fairytale_CardData(NetworkManager.Instance.ownDeviceData);
+    
     protected virtual void Awake()
     {
         SetFlipEvent();
         Flip.Instance.SetEnableGyroSensor(true);
-        Fairytale_PacketHandler.Instance.ownCard = this;
     }
 
     public virtual void Update()
@@ -46,10 +46,11 @@ public class Fairytale_Card : MonoBehaviour
 
     public void Vibrate()
     {
-        Handheld.Vibrate();
+        "Vibrate".Log();
+        //Handheld.Vibrate();
     }
 
-    public virtual void ShowNextStep() { }
+    public virtual void StoryUnfoldsByTimeStep(int timeStep) { }
     
     public virtual void CreateStoryLine(int goal, int runningTime) { }
     
