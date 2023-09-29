@@ -22,11 +22,18 @@ public class TestManager : MonoBehaviour
         Fairytale_Scene.Instance.TheHareAndTheTortoise();
     }
     
-    [MenuItem("FuncTest/D_ShowNextCard")]
+    [MenuItem("FuncTest/D_CreateStory")]
+    public static void CreateStory()
+    {
+        var component = FindObjectOfType<TheHareAndTheTortoise>();
+        component.CreateStoryLine(5, 15);
+    }
+    
+    [MenuItem("FuncTest/E_ShowNextCard")]
     public static void ShowNextCard()
     {
         var component = FindObjectOfType<TheHareAndTheTortoise>();
-        component.ShowNextStep();
+        component.StoryUnfoldsByTimeStep(0);
     }
 }
 #endif
