@@ -38,7 +38,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
         for (int i = 0; i < runningTime; i++)
         {
             SelectStory(i, runningTime, ref temporaryAchievement, goal);
-            $"story : {storyLine[i]}".Log();
+            //$"story : {storyLine[i]}".Log();
         }
     }
 
@@ -101,7 +101,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
 
     private IEnumerator TortoiseRunFast()
     {
-        Debug.Log("OneStep");
+        "OneStep".Log();
         cardData.achievement += 1;
         
         yield return new WaitForSecondsRealtime(3f);
@@ -120,7 +120,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
 
     private IEnumerator TortoiseRunSlow()
     {
-        Debug.Log("Slow");
+        "Slow".Log();
         yield return null;
         cardData.achievement += 0;
         
@@ -130,7 +130,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
 
     private IEnumerator TortoiseDance()
     {
-        Debug.Log("Dance");
+        "Dance".Log();
         cardData.achievement -= 1;
         
         yield return new WaitForSecondsRealtime(3f);
@@ -179,6 +179,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
     public override void StoryUnfoldsByTimeStep(int timeStep)
     {
         if (cardData.cardStatus != Define.FairyTailGameCardStatus.None) return;
+        if (cardData.runningTime <= timeStep) return;
         
         "StoryUnFolds".Log();
         
@@ -203,6 +204,8 @@ public class TheHareAndTheTortoise : Fairytale_Card
                 currentStoryRoutine = StartCoroutine(TortoiseDance());
                 break;
         }
+        
+        "StoryUnFolds Done".Log();
 
         if (cardData.achievement == cardData.goal)
         {
