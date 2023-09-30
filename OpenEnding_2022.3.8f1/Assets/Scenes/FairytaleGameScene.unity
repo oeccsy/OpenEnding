@@ -570,6 +570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56c389b93ae74af2a0d2d07f6aa7e5a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  card: {fileID: 0}
 --- !u!1 &1216578286
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,7 +648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dae9efcd0bb4a6dad5e5003cfebb78b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ownCard: {fileID: 0}
 --- !u!114 &1654405868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,6 +660,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da0a04129bc64342908d03ccf3314d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardContainer:
+    cardList: []
 --- !u!114 &1654405869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,6 +689,7 @@ GameObject:
   - component: {fileID: 1829183956}
   - component: {fileID: 1829183955}
   - component: {fileID: 1829183958}
+  - component: {fileID: 1829183959}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -818,6 +821,19 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1829183959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829183953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 343a676dcf8a529409a03cb67916bfba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grayScaleShader: {fileID: 4800000, guid: e5125578802d7f2488efb31f40ad521f, type: 3}
 --- !u!1 &1929744449
 GameObject:
   m_ObjectHideFlags: 0
