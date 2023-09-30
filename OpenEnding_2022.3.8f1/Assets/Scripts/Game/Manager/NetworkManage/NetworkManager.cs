@@ -82,12 +82,15 @@ public partial class NetworkManager : Singleton<NetworkManager>
     public IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
     {
         if (connectType != Define.ConnectType.Server) yield break;
+        
+        $"To Target : {isWritingData}".Log();
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
 
         if (targetDevice == ownDeviceData)
         {
             OnReceiveDataFromServer?.Invoke(null, null, bytes);
+            isWritingData = false;
         }
         else
         {
@@ -102,26 +105,26 @@ public partial class NetworkManager : Singleton<NetworkManager>
     {
         if (connectType != Define.ConnectType.Server) yield break;
         
-        yield return new WaitWhile(() => isWritingData);
-        isWritingData = true;
-
         foreach (var targetDevice in connectedDeviceList)
         {
+            $"Send To All, isWriting : {isWritingData}".Log(); 
+        
+            yield return new WaitWhile(() => isWritingData);
+            isWritingData = true;
+            
             if (targetDevice == ownDeviceData)
             {
                 OnReceiveDataFromServer?.Invoke(null, null, bytes);
+                isWritingData = false;
             }
             else
             {
-                $"Send to {(ColorPalette.ColorName)targetDevice.colorOrder} {bytes[0]}{bytes[1]}".Log();
                 networking.WriteDevice(targetDevice, bytes, () =>
                 {
-                    $"Send Done {(ColorPalette.ColorName)targetDevice.colorOrder} {bytes[0]}{bytes[1]}".Log();
+                    isWritingData = false;
                 });     
             }
         }
-        
-        isWritingData = false;
     }
     
     public IEnumerator SendBytesExceptOneDevice(Networking.NetworkDevice skipDevice, Byte[] bytes)
@@ -178,6 +181,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     
     public IEnumerator SendBytesToServer(Byte[] bytes)
     {
+        $"Send To Server isWriting : {isWritingData}".Log();
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
 
