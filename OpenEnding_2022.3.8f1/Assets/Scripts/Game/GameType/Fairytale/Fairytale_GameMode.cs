@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ public class Fairytale_GameMode : GameMode
     
     private IEnumerator GameRoutine()
     {
-        GameReady();
+        SelectCardTypes();
         yield return new WaitForSecondsRealtime(0.5f);
         CreateStories();
         yield return new WaitForSecondsRealtime(0.5f);
@@ -62,19 +63,17 @@ public class Fairytale_GameMode : GameMode
             StartTimerForDecide(10f);
             yield return new WaitUntil(() => _isTimerExpired || _isAllCardHead);
             ResetTimer();
-            
-            RemoveTailCardFromGame();
-            UpdateDoneCard();
+            UpdateGameData();
+            UpdateCardDataByFace();
+            if (_isAllCardTail) break;
             yield return new WaitForSecondsRealtime(0.5f);
             NotifyCardFlipUnavailable();
-            if (_isAllCardTail) break;
-            _timeStep++;
         }
         
         ShowResult();
     }
 
-    private void GameReady()
+    private void SelectCardTypes()
     {
         "GameReady".Log();
         
@@ -98,6 +97,7 @@ public class Fairytale_GameMode : GameMode
         _timeStep = 0;
         _totalCardFlip = 0;
         _maxCardFlip = Random.Range(21, 31);
+        $"maxCardFlip : {_maxCardFlip}".Log();
     }
 
     private void CreateStories()
@@ -121,7 +121,6 @@ public class Fairytale_GameMode : GameMode
 
     private void ShowPlayerCard()
     {
-        "ShowPlayerCard".Log();
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 2, 0 }));
     }
     
@@ -138,7 +137,6 @@ public class Fairytale_GameMode : GameMode
 
     private void NotifyCardFlipAvailable()
     {
-        "NotifyCardFlipAvailable".Log();
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 0, 0 }));
     }
 
@@ -160,35 +158,42 @@ public class Fairytale_GameMode : GameMode
     {
         if(_timer != null) StopCoroutine(_timer);
         _isTimerExpired = false;
-        _timeStep += cardContainer.cardList.Count;
     }
 
-    private void RemoveTailCardFromGame()
+    private void UpdateGameData()
     {
-        foreach (var card in cardContainer.cardList)
+        _timeStep++;
+
+        foreach (var cardData in cardContainer.cardList)
         {
-             if (card.displayedFace == Define.DisplayedFace.Tail)
-             {
-                 StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 3, 0 }));
-                 cardContainer.SetCardGiveUp(card.color);
-             }
+            if (cardData.displayedFace == Define.DisplayedFace.Head) _totalCardFlip++;
         }
+
+        $"total card flip : {_totalCardFlip}".Log();
     }
 
-    private void UpdateDoneCard()
+    private void UpdateCardDataByFace()
     {
         foreach (var card in cardContainer.cardList)
         {
-            if (card.runningTime - 1 == _timeStep && card.displayedFace == Define.DisplayedFace.Head)
+            if (card.displayedFace == Define.DisplayedFace.Tail)
+            {
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 3, 0 }));
+                cardContainer.SetCardGiveUp(card.color);
+            }
+        }
+        
+        foreach (var card in cardContainer.cardList)
+        {
+            if (card.displayedFace == Define.DisplayedFace.Head && card.runningTime - 1 == _timeStep)
             {
                 cardContainer.SetCardSuccess(card.color);
             }
         }
     }
-    
+
     private void NotifyCardFlipUnavailable()
     {
-        "NotifyCardFlipUnavailable".Log();
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 0, 0 }));
     }
 
