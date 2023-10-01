@@ -128,10 +128,10 @@ public class Define
         Eyes_Spin,
         Eyes_Squint,
         Eyes_Trauma,
-        Eyes_Sweat_L,
-        Eyes_Sweat_R,
-        Eyes_Teardrop_L,
-        Eyes_Teardrop_R = 20
+        Sweat_L,
+        Sweat_R,
+        Teardrop_L,
+        Teardrop_R = 20
     }
 
     public enum Story

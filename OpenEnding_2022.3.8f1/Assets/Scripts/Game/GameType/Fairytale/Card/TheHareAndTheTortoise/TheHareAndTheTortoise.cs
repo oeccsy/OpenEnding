@@ -155,9 +155,18 @@ public class TheHareAndTheTortoise : Fairytale_Card
         
         yield return new WaitUntil( ()=> (butterfliesOrbit.Theta - tortoise.orbit.Theta) % 360 <= 0f);
 
-        tortoise.ActNaturally(Define.Act.Jump);
+        tortoise.ActNaturally(Define.Act.Idle_A);
         tortoise.Shape(Define.Shape.Eyes_LookUp);
         tortoise.speed = 0f;
+        yield return new WaitForSecondsRealtime(1f);
+        tortoise.ActNaturally(Define.Act.Idle_B);
+        yield return new WaitForSecondsRealtime(1f);
+        tortoise.ActNaturally(Define.Act.Idle_C);
+        
+        yield return new WaitForSecondsRealtime(1f);
+        
+        tortoise.ActNaturally(Define.Act.Jump);
+        tortoise.Shape(Define.Shape.Eyes_Excited);
 
         yield return new WaitForSecondsRealtime(2f);
 
@@ -167,8 +176,13 @@ public class TheHareAndTheTortoise : Fairytale_Card
         
         yield return new WaitForSecondsRealtime(4f);
         
+        tortoise.ActNaturally(Define.Act.Idle_A);
+        tortoise.Shape(Define.Shape.Eyes_Squint);
+        
+        yield return new WaitForSecondsRealtime(0.5f);
+        
         tortoise.ActNaturally(Define.Act.Run);
-        tortoise.Shape(Define.Shape.Eyes_Annoyed);
+        tortoise.Shape(Define.Shape.Teardrop_R);
         tortoise.speed = 8f;
 
         yield return new WaitUntil(() => (hare.orbit.Theta - tortoise.orbit.Theta) % 360 <= (cardData.goal - 1 - cardData.achievement) * 10);
