@@ -10519,7 +10519,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4781259111881260754}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3655315, y: -0.3150833, z: 0.13304262, w: 0.8656841}
+  m_LocalRotation: {x: 0.3655315, y: -0.31508327, z: 0.1330426, w: 0.8656841}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10598,7 +10598,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5211602276458536284}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.31357697, y: -0.32241517, z: 0.114132695, w: 0.88582826}
+  m_LocalRotation: {x: 0.31357697, y: -0.3224151, z: 0.11413264, w: 0.8858283}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -20638,9 +20638,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41c13ca608b4d8f9ef06bc1ad2695c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  step: -1
-  targetGoal: 5
-  achievement: 0
+  cardData:
+    cardType: 0
+    cardStatus: 0
+    displayedFace: 0
+    runningTime: 0
+    timeStep: 0
+    goal: 0
+    achievement: 0
   storyLine: 
   achievementProgress: 
   hare: {fileID: 5166080011741336344}

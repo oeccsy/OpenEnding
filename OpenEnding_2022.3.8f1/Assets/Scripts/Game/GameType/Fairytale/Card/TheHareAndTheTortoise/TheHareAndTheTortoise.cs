@@ -24,11 +24,12 @@ public class TheHareAndTheTortoise : Fairytale_Card
 #if !UNITY_EDITOR
         base.Update();
 #endif
+        
+        //Debug.Log((hare.orbit.Theta - tortoise.orbit.Theta) %360);
     }
     
     public override void CreateStoryLine(int goal, int runningTime)
     {
-        DebugCanvas.Instance.SetText("");
         $"Create Story Line : {goal}, {runningTime}".Log();
         cardData.runningTime = runningTime;
         cardData.goal = goal;
@@ -38,7 +39,6 @@ public class TheHareAndTheTortoise : Fairytale_Card
         for (int i = 0; i < runningTime; i++)
         {
             SelectStory(i, runningTime, ref temporaryAchievement, goal);
-            //$"story : {storyLine[i]}".Log();
         }
     }
 
@@ -87,12 +87,12 @@ public class TheHareAndTheTortoise : Fairytale_Card
                 achievementProgress.Add(temporaryAchievement);
                 break;
             case Define.Story.TakeStepBack:
-                temporaryAchievement -= 1;
+                temporaryAchievement--;
                 storyLine.Add(Define.Story.TakeStepBack);
                 achievementProgress.Add(temporaryAchievement);
                 break;
             case Define.Story.TakeOneStep:
-                temporaryAchievement += 1;
+                temporaryAchievement++;
                 storyLine.Add(Define.Story.TakeOneStep);
                 achievementProgress.Add(temporaryAchievement);
                 break;
@@ -102,16 +102,20 @@ public class TheHareAndTheTortoise : Fairytale_Card
     private IEnumerator TortoiseRunFast()
     {
         "OneStep".Log();
-        cardData.achievement += 1;
+        tortoise.orbit.Theta = hare.orbit.Theta - (cardData.goal - 1 - cardData.achievement) * 10;
+        tortoise.speed = 4f;
+        tortoise.ActImmediately(Define.Act.Walk);
+        tortoise.Shape(Define.Shape.Eyes_Blink);
+        
+        cardData.achievement++;
         
         yield return new WaitForSecondsRealtime(3f);
         
         tortoise.ActNaturally(Define.Act.Run);
         tortoise.Shape(Define.Shape.Eyes_Annoyed);
-        tortoise.speed = 8f;
+        tortoise.speed = 6f;
         
-        yield return new WaitForSecondsRealtime(2f);
-        Debug.Log("Done");
+        yield return new WaitUntil(() => (hare.orbit.Theta - tortoise.orbit.Theta) % 360 <= (cardData.goal - 1 - cardData.achievement) * 10);
 
         tortoise.ActNaturally(Define.Act.Walk);
         tortoise.Shape(Define.Shape.Eyes_Blink);
@@ -121,9 +125,13 @@ public class TheHareAndTheTortoise : Fairytale_Card
     private IEnumerator TortoiseRunSlow()
     {
         "Slow".Log();
-        yield return null;
-        cardData.achievement += 0;
+        tortoise.orbit.Theta = hare.orbit.Theta - (cardData.goal - 1 - cardData.achievement) * 10;
+        tortoise.speed = 4f;
+        tortoise.ActImmediately(Define.Act.Walk);
+        tortoise.Shape(Define.Shape.Eyes_Blink);
         
+        yield return null;
+
         tortoise.ActNaturally(Define.Act.Walk);
         tortoise.Shape(Define.Shape.Eyes_Sad);
     }
@@ -131,29 +139,55 @@ public class TheHareAndTheTortoise : Fairytale_Card
     private IEnumerator TortoiseDance()
     {
         "Dance".Log();
-        cardData.achievement -= 1;
+        tortoise.orbit.Theta = hare.orbit.Theta - (cardData.goal - 1 - cardData.achievement) * 10;
+        tortoise.speed = 4f;
+        tortoise.ActImmediately(Define.Act.Walk);
+        tortoise.Shape(Define.Shape.Eyes_Blink);
         
-        yield return new WaitForSecondsRealtime(3f);
+        cardData.achievement--;
         
+        yield return new WaitUntil(() => cardData.displayedFace == Define.DisplayedFace.Head);
+        
+        var butterfliesPrefab = Resources.Load<GameObject>("Prefabs/Butterflies");
+        var butterfliesInstance = Instantiate(butterfliesPrefab, transform);
+        var butterfliesOrbit = butterfliesInstance.GetComponent<Orbit>();
+        butterfliesOrbit.Theta = tortoise.orbit.Theta + 40f;
+        
+        yield return new WaitUntil( ()=> (butterfliesOrbit.Theta - tortoise.orbit.Theta) % 360 <= 0f);
+
+        tortoise.ActNaturally(Define.Act.Jump);
+        tortoise.Shape(Define.Shape.Eyes_LookUp);
+        tortoise.speed = 0f;
+
+        yield return new WaitForSecondsRealtime(2f);
+
         tortoise.ActNaturally(Define.Act.Spin);
         tortoise.Shape(Define.Shape.Eyes_Happy);
         tortoise.speed = 0f;
         
-        yield return new WaitForSecondsRealtime(2f);
-        Debug.Log("Done");
+        yield return new WaitForSecondsRealtime(4f);
+        
+        tortoise.ActNaturally(Define.Act.Run);
+        tortoise.Shape(Define.Shape.Eyes_Annoyed);
+        tortoise.speed = 8f;
+
+        yield return new WaitUntil(() => (hare.orbit.Theta - tortoise.orbit.Theta) % 360 <= (cardData.goal - 1 - cardData.achievement) * 10);
         
         tortoise.ActNaturally(Define.Act.Walk);
         tortoise.Shape(Define.Shape.Eyes_Blink);
         tortoise.speed = 4f;
+        
+        Destroy(butterfliesInstance);
     }
 
     private IEnumerator TortoiseAccident()
     {
         "Accident".Log();
-        hare.transform.position = Vector3.left + Vector3.forward * cardData.goal * 0.5f;
-        tortoise.transform.position = Vector3.forward * cardData.achievement * 0.5f;
-
-        var delay = cardData.achievement * 2f;
+        tortoise.orbit.Theta = hare.orbit.Theta - (cardData.goal - 1 - cardData.achievement) * 10;
+        tortoise.speed = 4f;
+        tortoise.ActImmediately(Define.Act.Walk);
+        tortoise.Shape(Define.Shape.Eyes_Blink);
+        
         cardData.achievement = 0;
         
         yield return new WaitForSecondsRealtime(3f);
@@ -162,9 +196,8 @@ public class TheHareAndTheTortoise : Fairytale_Card
         tortoise.Shape(Define.Shape.Eyes_Dead);
         tortoise.speed = 0f;
         
-        yield return new WaitForSecondsRealtime(delay);
-        Debug.Log("Done");
-        
+        yield return new WaitUntil(()=> (hare.orbit.Theta - tortoise.orbit.Theta) % 360 >= (cardData.goal - 1 - cardData.achievement) * 10);
+
         tortoise.ActNaturally(Define.Act.Walk);
         tortoise.Shape(Define.Shape.Eyes_Blink);
         tortoise.speed = 4f;
@@ -180,10 +213,10 @@ public class TheHareAndTheTortoise : Fairytale_Card
     {
         if (cardData.cardStatus != Define.FairyTailGameCardStatus.None) return;
         if (cardData.runningTime <= timeStep) return;
-        
-        "StoryUnFolds".Log();
-        
+
         cardData.timeStep = timeStep;
+        
+        Debug.Log($"{timeStep} : {storyLine[timeStep].ToString()}");
         
         switch (storyLine[timeStep])
         {
@@ -204,8 +237,6 @@ public class TheHareAndTheTortoise : Fairytale_Card
                 currentStoryRoutine = StartCoroutine(TortoiseDance());
                 break;
         }
-        
-        "StoryUnFolds Done".Log();
 
         if (cardData.achievement == cardData.goal)
         {

@@ -7,19 +7,19 @@ public class Animal : MonoBehaviour
     public float speed;
     
     private Animator _animator;
-    private Orbit _orbit;
+    public Orbit orbit;
     
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        _orbit = GetComponent<Orbit>();
+        orbit = GetComponent<Orbit>();
         ActNaturally(Define.Act.Walk);
         Shape(Define.Shape.Eyes_Blink);
     }
 
     public void Update()
     {
-        _orbit.Theta += speed * Time.deltaTime;
+        orbit.Theta += speed * Time.deltaTime;
     }
 
     public void ActImmediately(Define.Act act)
