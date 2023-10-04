@@ -31,20 +31,20 @@ public class Define
         Tail
     }
 
-    public enum FairyTailGameCardType
+    public enum FairyTaleGameCardType
     {
         None = -1,
         TheHareAndTheTortoise = 0,
         TheNumber
     }
 
-    public enum FairyTailGameCardStatus
+    public enum FairyTaleGameCardStatus
     {
-        None = 0,
+        Playing = 0,
         Success = 1,
         GiveUp = 2
     }
-    
+
     public enum SealGameStep
     {
         GameReady,
