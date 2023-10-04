@@ -77,9 +77,9 @@ public class Fairytale_GameMode : GameMode
     {
         "GameReady".Log();
         
-        var cardTypes = new List<Define.FairyTailGameCardType>();
-        cardTypes.Add(Define.FairyTailGameCardType.TheHareAndTheTortoise);
-        cardTypes.Add(Define.FairyTailGameCardType.TheNumber);
+        var cardTypes = new List<Define.FairyTaleGameCardType>();
+        cardTypes.Add(Define.FairyTaleGameCardType.TheHareAndTheTortoise);
+        cardTypes.Add(Define.FairyTaleGameCardType.TheNumber);
         
         Utils.ListRandomShuffle(cardTypes);
 
@@ -128,7 +128,7 @@ public class Fairytale_GameMode : GameMode
     {
         foreach (var card in cardContainer.cardList)
         {
-            if (card.cardStatus == Define.FairyTailGameCardStatus.None)
+            if (card.cardStatus == Define.FairyTaleGameCardStatus.Playing)
             {
                 StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 2, 1, (byte)timeStep }));    
             }
@@ -176,7 +176,7 @@ public class Fairytale_GameMode : GameMode
     {
         foreach (var card in cardContainer.cardList)
         {
-            if (card.displayedFace == Define.DisplayedFace.Tail)
+            if (card.displayedFace == Define.DisplayedFace.Tail && card.cardStatus == Define.FairyTaleGameCardStatus.Playing)
             {
                 StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 3, 0 }));
                 cardContainer.SetCardGiveUp(card.color);
@@ -190,6 +190,9 @@ public class Fairytale_GameMode : GameMode
                 cardContainer.SetCardSuccess(card.color);
             }
         }
+        
+        $"head : {cardContainer.headCount}".Log();
+        $"tail : {cardContainer.tailCount}".Log();
     }
 
     private void NotifyCardFlipUnavailable()

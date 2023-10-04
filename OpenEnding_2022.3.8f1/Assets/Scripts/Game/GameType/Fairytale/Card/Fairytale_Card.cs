@@ -25,7 +25,9 @@ public class Fairytale_Card : MonoBehaviour
 
     public void SetFlipEvent()
     {
+        Flip.Instance.OnFlipToTail += () => cardData.displayedFace = Define.DisplayedFace.Tail;
         Flip.Instance.OnFlipToTail += NotifyFlipToTail;
+        Flip.Instance.OnFlipToHead += () => cardData.displayedFace = Define.DisplayedFace.Head;
         Flip.Instance.OnStartFlipToHead += NotifyStartFlipToHead;
     }
 
@@ -48,7 +50,7 @@ public class Fairytale_Card : MonoBehaviour
     public void Vibrate()
     {
         //"Vibrate".Log();
-        //Handheld.Vibrate();
+        Handheld.Vibrate();
     }
 
     public virtual void StoryUnfoldsByTimeStep(int timeStep) { }

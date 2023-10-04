@@ -4,8 +4,8 @@ using Shatalmic;
 [Serializable]
 public class Fairytale_CardData
 {
-    public Define.FairyTailGameCardType cardType = Define.FairyTailGameCardType.None;
-    public Define.FairyTailGameCardStatus cardStatus = Define.FairyTailGameCardStatus.None;
+    public Define.FairyTaleGameCardType cardType = Define.FairyTaleGameCardType.None;
+    public Define.FairyTaleGameCardStatus cardStatus = Define.FairyTaleGameCardStatus.Playing;
     public Define.DisplayedFace displayedFace = Define.DisplayedFace.Head;
     
     public ColorPalette.ColorName color { get { return (ColorPalette.ColorName)networkDevice.colorOrder; } }
