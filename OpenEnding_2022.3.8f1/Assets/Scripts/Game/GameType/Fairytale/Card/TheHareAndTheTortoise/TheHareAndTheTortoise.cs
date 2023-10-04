@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 public class TheHareAndTheTortoise : Fairytale_Card
 {
@@ -24,8 +25,6 @@ public class TheHareAndTheTortoise : Fairytale_Card
 #if !UNITY_EDITOR
         base.Update();
 #endif
-        
-        //Debug.Log((hare.orbit.Theta - tortoise.orbit.Theta) %360);
     }
     
     public override void CreateStoryLine(int goal, int runningTime)
@@ -109,17 +108,24 @@ public class TheHareAndTheTortoise : Fairytale_Card
         
         cardData.achievement++;
         
+        yield return new WaitUntil(() => cardData.displayedFace == Define.DisplayedFace.Head);
         yield return new WaitForSecondsRealtime(3f);
         
         tortoise.ActNaturally(Define.Act.Run);
         tortoise.Shape(Define.Shape.Eyes_Annoyed);
         tortoise.speed = 6f;
+        var streamPrefab = Resources.Load<GameObject>("Prefabs/Stream");
+        var streamInstance = Instantiate(streamPrefab, tortoise.transform);
         
         yield return new WaitUntil(() => (hare.orbit.Theta - tortoise.orbit.Theta) % 360 <= (cardData.goal - 1 - cardData.achievement) * 10);
 
         tortoise.ActNaturally(Define.Act.Walk);
         tortoise.Shape(Define.Shape.Eyes_Blink);
         tortoise.speed = 4f;
+        
+        yield return new WaitForSecondsRealtime(1f);
+        
+        Destroy(streamInstance);
     }
 
     private IEnumerator TortoiseRunSlow()
@@ -204,6 +210,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
         
         cardData.achievement = 0;
         
+        yield return new WaitUntil(() => cardData.displayedFace == Define.DisplayedFace.Head);
         yield return new WaitForSecondsRealtime(3f);
         
         tortoise.ActNaturally(Define.Act.Death);
@@ -225,7 +232,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
     [ContextMenu("FuncTest/ShowNextStep")]
     public override void StoryUnfoldsByTimeStep(int timeStep)
     {
-        if (cardData.cardStatus != Define.FairyTailGameCardStatus.None) return;
+        if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
         if (cardData.runningTime <= timeStep) return;
 
         cardData.timeStep = timeStep;
