@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class TestManager : MonoBehaviour
+public class TestManager : Singleton<TestManager>
 {
     [MenuItem("FuncTest/A_LoadFairytaleScene")]
     public static void LoadFairytaleScene()
@@ -33,7 +33,19 @@ public class TestManager : MonoBehaviour
     public static void ShowNextCard()
     {
         var component = FindObjectOfType<TheHareAndTheTortoise>();
-        component.StoryUnfoldsByTimeStep(0);
+        component.StoryUnfoldsByTimeStep(component.cardData.timeStep);
+        component.cardData.timeStep++;
+    }
+
+    [MenuItem("FuncTest/F_GrayScale")]
+    public static void GrayScale()
+    {
+        PostProcess.SetPostProcess(Define.PostProcess.GrayScale);
+    }
+    
+    public void SendTest()
+    {
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 0, 0 }));
     }
 }
 #endif
