@@ -14,6 +14,12 @@ public class Flip : Singleton<Flip>
     public event FlipHandler OnStartFlipToHead;
     public event FlipHandler OnStartFlipToTail;
 
+    public delegate void NextFlipHandler();
+    public event NextFlipHandler OnFlipToHeadOnlyNextTime;
+    public event NextFlipHandler OnFlipToTailOnlyNextTime;
+    public event NextFlipHandler OnStartFlipToHeadOnlyNextTime;
+    public event NextFlipHandler OnStartFlipToTailOnlyNextTime;
+
     protected override void Awake()
     {
         base.Awake();
@@ -45,6 +51,8 @@ public class Flip : Singleton<Flip>
             {
                 isStartFlip = true;
                 OnStartFlipToHead?.Invoke();
+                OnStartFlipToHeadOnlyNextTime?.Invoke();
+                OnStartFlipToHeadOnlyNextTime = null;
             }
             
             if (curFace == Define.DisplayedFace.Tail && Input.gyro.gravity.z < -0.95f)
@@ -52,12 +60,16 @@ public class Flip : Singleton<Flip>
                 curFace = Define.DisplayedFace.Head;
                 isStartFlip = false;
                 OnFlipToHead?.Invoke();
+                OnFlipToHeadOnlyNextTime?.Invoke();
+                OnFlipToHeadOnlyNextTime = null;
             }
 
             if (!isStartFlip && curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0f)
             {
                 isStartFlip = true;
                 OnStartFlipToTail?.Invoke();
+                OnStartFlipToTailOnlyNextTime?.Invoke();
+                OnStartFlipToTailOnlyNextTime = null;
             }
 
             if (curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0.95f)
@@ -65,6 +77,8 @@ public class Flip : Singleton<Flip>
                 curFace = Define.DisplayedFace.Tail;
                 isStartFlip = false;
                 OnFlipToTail?.Invoke();
+                OnFlipToTailOnlyNextTime?.Invoke();
+                OnFlipToTailOnlyNextTime = null;
             }
         }
     }
