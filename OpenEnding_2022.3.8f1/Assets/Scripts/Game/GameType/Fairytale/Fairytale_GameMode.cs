@@ -79,7 +79,7 @@ public class Fairytale_GameMode : GameMode
         
         var cardTypes = new List<Define.FairyTaleGameCardType>();
         cardTypes.Add(Define.FairyTaleGameCardType.TheHareAndTheTortoise);
-        cardTypes.Add(Define.FairyTaleGameCardType.TheNumber);
+        cardTypes.Add(Define.FairyTaleGameCardType.ThereAreAlwaysMemos);
         
         Utils.ListRandomShuffle(cardTypes);
 

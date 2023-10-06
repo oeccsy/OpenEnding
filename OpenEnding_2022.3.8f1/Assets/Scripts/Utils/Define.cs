@@ -121,7 +121,7 @@ public class Define
         Eyes_LookIn,
         Eyes_LookOut,
         Eyes_LookUp,
-        Eyes_Rabid,
+        Eyes_Rabid = 10,
         Eyes_Sad,
         Eyes_Shrink,
         Eyes_Sleep,
@@ -140,5 +140,13 @@ public class Define
         Standstill,
         TakeStepBack,
         TakeOneStep
+    }
+
+    public enum MemoType
+    {
+        Book,
+        Drawing,
+        Studying,
+        
     }
 }
