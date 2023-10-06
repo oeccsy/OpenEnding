@@ -33,7 +33,7 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
         _sceneFunctions = new Function[]
         {
             (bytes) => _fairytaleScene.TheHareAndTheTortoise(),
-            (bytes) => _fairytaleScene.TheHareAndTheTortoise(),
+            (bytes) => _fairytaleScene.ThereAreAlwaysMemos(),
             (bytes) => _fairytaleScene.ShowPlayerCard(),
             (bytes) => _fairytaleScene.SetSceneGrayScale()
         };
@@ -64,7 +64,7 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
 
     public void ExecuteActionByPacket(string clientName, string characteristic, byte[] bytes)
     {
-        $"Execute {bytes[0]}{bytes[1]}".Log();
+        //$"Execute {bytes[0]}{bytes[1]}".Log();
         
         var targetClass = _classDict[bytes[(byte)Define.PacketIndex.Class]];
         var targetFunction = targetClass[bytes[(byte)Define.PacketIndex.Function]];
