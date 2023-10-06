@@ -35,7 +35,7 @@ public class Define
     {
         None = -1,
         TheHareAndTheTortoise = 0,
-        TheNumber
+        ThereAreAlwaysMemos
     }
 
     public enum FairyTaleGameCardStatus

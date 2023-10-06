@@ -10,10 +10,10 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
         card = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
     }
 
-    public void TheNumber()
+    public void ThereAreAlwaysMemos()
     {
-        var prefab = Resources.Load<GameObject>("Quirky/RabbitCard");
-        card = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
+        var prefab = Resources.Load<GameObject>("Prefabs/ThereAreAlwaysMemos");
+        card = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<ThereAreAlwaysMemos>();
     }
 
     public void ShowPlayerCard()
