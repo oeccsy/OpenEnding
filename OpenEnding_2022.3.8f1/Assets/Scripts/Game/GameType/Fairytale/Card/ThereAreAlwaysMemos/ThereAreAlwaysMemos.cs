@@ -50,6 +50,8 @@ public class ThereAreAlwaysMemos : Fairytale_Card
         instance.transform.position = new Vector3(availableMemoPosList[cardData.goal - cardData.achievement].x, availableMemoPosList[cardData.goal - cardData.achievement].y, 0);
         memoList.Add(instance.GetComponent<Memo>());
 
+        camFollow.position = new Vector3(instance.transform.position.x, camFollow.position.y, 0);
+
         cardData.achievement--;
     }
 
@@ -59,7 +61,12 @@ public class ThereAreAlwaysMemos : Fairytale_Card
         memoList.Remove(targetMemo);
         Destroy(targetMemo.gameObject);
 
+        camFollow.position = new Vector3(targetMemo.transform.position.x, camFollow.position.y, 0);
+        
         cardData.achievement++;
+        
+        targetMemo = memoList[cardData.goal - cardData.achievement - 1];
+        camFollow.position = new Vector3(targetMemo.transform.position.x, camFollow.position.y, 0);
     }
     
     public override void CreateStoryLine(int goal, int runningTime)
