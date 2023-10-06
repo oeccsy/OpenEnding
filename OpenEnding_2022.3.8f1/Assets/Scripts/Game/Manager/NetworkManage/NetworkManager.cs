@@ -82,8 +82,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     public IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
     {
         if (connectType != Define.ConnectType.Server) yield break;
-        
-        $"To Target : {isWritingData}".Log();
+   
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
 
@@ -107,8 +106,6 @@ public partial class NetworkManager : Singleton<NetworkManager>
         
         foreach (var targetDevice in connectedDeviceList)
         {
-            $"Send To All, isWriting : {isWritingData}".Log(); 
-        
             yield return new WaitWhile(() => isWritingData);
             isWritingData = true;
             
@@ -181,7 +178,6 @@ public partial class NetworkManager : Singleton<NetworkManager>
     
     public IEnumerator SendBytesToServer(Byte[] bytes)
     {
-        $"Send To Server isWriting : {isWritingData}".Log();
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
 

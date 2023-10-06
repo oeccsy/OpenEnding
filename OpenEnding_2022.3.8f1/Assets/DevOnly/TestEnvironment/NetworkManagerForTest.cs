@@ -46,7 +46,6 @@ public partial class NetworkManager
 
                         break;
                     default:
-                        SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
                         break;
                 }
             }
@@ -119,7 +118,6 @@ public partial class NetworkManager
             {
                 UdpReceiveResult result = await client.ReceiveAsync();
                 byte[] bytes = result.Buffer;
-                SealGame_PacketHandler.Instance.ExecuteFuncByPacket(bytes);
             }
             catch (SocketException e)
             {
