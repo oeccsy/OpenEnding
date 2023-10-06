@@ -43,9 +43,32 @@ public class TestManager : Singleton<TestManager>
         PostProcess.SetPostProcess(Define.PostProcess.GrayScale);
     }
     
+    [MenuItem("FuncTest/G_NetworkTest")]
     public void SendTest()
     {
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 0, 0 }));
     }
+    
+    [MenuItem("FuncTest/H_SelectMemoCard")]
+    public static void SelectMemoCard()
+    {
+        Fairytale_Scene.Instance.ThereAreAlwaysMemos();
+    }
+    
+    [MenuItem("FuncTest/I_CreateStory")]
+    public static void CreateStory_Memo()
+    {
+        var component = FindObjectOfType<ThereAreAlwaysMemos>();
+        component.CreateStoryLine(3, 15);
+    }
+    
+    [MenuItem("FuncTest/J_ShowNextCard")]
+    public static void ShowNextCard_Memo()
+    {
+        var component = FindObjectOfType<ThereAreAlwaysMemos>();
+        component.StoryUnfoldsByTimeStep(component.cardData.timeStep);
+        component.cardData.timeStep++;
+    }
+
 }
 #endif

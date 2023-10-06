@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ThereAreAlwaysMemos : Fairytale_Card
 {
+    public Transform camFollow;
     public List<Memo> memoList = new List<Memo>();
     public List<Vector2> availableMemoPosList = new List<Vector2>();
     
@@ -48,7 +49,7 @@ public class ThereAreAlwaysMemos : Fairytale_Card
         var instance = Instantiate(prefab, transform);
         instance.transform.position = new Vector3(availableMemoPosList[cardData.goal - cardData.achievement].x, availableMemoPosList[cardData.goal - cardData.achievement].y, 0);
         memoList.Add(instance.GetComponent<Memo>());
-        
+
         cardData.achievement--;
     }
 
@@ -86,11 +87,12 @@ public class ThereAreAlwaysMemos : Fairytale_Card
 
         if (temporaryAchievement + runningTime - timeStep - 1 >= goal)
         {
-            availableStory.Add(Define.Story.Standstill);
+            //availableStory.Add(Define.Story.Standstill);
         }
 
-        if (temporaryAchievement - 1 + runningTime - timeStep - 1 >= goal && temporaryAchievement > 0)
+        if (temporaryAchievement - 1 + runningTime - timeStep - 1 >= goal)
         {
+            availableStory.Add(Define.Story.TakeStepBack);
             availableStory.Add(Define.Story.TakeStepBack);
         }
 
