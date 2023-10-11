@@ -40,7 +40,7 @@ public class Fairytale_CardContainer
     {
         foreach (var cardData in cardList)
         {
-            if (cardData.color == targetDeviceColor)
+            if (cardData.Color == targetDeviceColor)
             {
                 if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
                 
@@ -66,7 +66,7 @@ public class Fairytale_CardContainer
     {
         foreach (var cardData in cardList)
         {
-            if (cardData.color == targetDeviceColor)
+            if (cardData.Color == targetDeviceColor)
             {
                 if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
                 
@@ -94,7 +94,7 @@ public class Fairytale_CardContainer
         
         foreach (var cardData in cardList)
         {
-            if (cardData.color == targetDeviceColor)
+            if (cardData.Color == targetDeviceColor)
             {
                 cardData.cardStatus = Define.FairyTaleGameCardStatus.Success;
                 switch (cardData.displayedFace)
@@ -116,7 +116,7 @@ public class Fairytale_CardContainer
         
         foreach (var cardData in cardList)
         {
-            if (cardData.color == targetDeviceColor)
+            if (cardData.Color == targetDeviceColor)
             {
                 cardData.cardStatus = Define.FairyTaleGameCardStatus.GiveUp;
                 switch (cardData.displayedFace)

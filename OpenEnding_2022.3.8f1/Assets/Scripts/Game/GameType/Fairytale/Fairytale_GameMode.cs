@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -86,7 +85,7 @@ public class Fairytale_GameMode : GameMode
         foreach (var device in NetworkManager.Instance.connectedDeviceList)
         {
             var newCard = new Fairytale_CardData(device);
-            newCard.cardType = cardTypes[(int)newCard.color];
+            newCard.cardType = cardTypes[(int)newCard.Color];
             cardContainer.cardList.Add(newCard);
             
             StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] {0, (byte)newCard.cardType}));
@@ -179,7 +178,7 @@ public class Fairytale_GameMode : GameMode
             if (card.displayedFace == Define.DisplayedFace.Tail && card.cardStatus == Define.FairyTaleGameCardStatus.Playing)
             {
                 StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 3, 0 }));
-                cardContainer.SetCardGiveUp(card.color);
+                cardContainer.SetCardGiveUp(card.Color);
             }
         }
         
@@ -187,7 +186,7 @@ public class Fairytale_GameMode : GameMode
         {
             if (card.displayedFace == Define.DisplayedFace.Head && card.runningTime - 1 == _timeStep)
             {
-                cardContainer.SetCardSuccess(card.color);
+                cardContainer.SetCardSuccess(card.Color);
             }
         }
         
