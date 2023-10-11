@@ -9,8 +9,6 @@ public class ThereAreAlwaysMemos : Fairytale_Card
     public List<Memo> memoList = new List<Memo>();
     public List<Vector2> availableMemoPosList = new List<Vector2>();
     
-    public List<Define.Story> storyLine = new List<Define.Story>();
-    public List<int> achievementProgress = new List<int>();
     private Coroutine currentStoryRoutine = null;
     
     protected override void Awake()
@@ -21,13 +19,6 @@ public class ThereAreAlwaysMemos : Fairytale_Card
         InitMemo();
         cardData.goal = 3;
         cardData.achievement = 0;
-    }
-
-    public override void Update()
-    {
-#if !UNITY_EDITOR
-        base.Update();
-#endif
     }
 
     private void InitMemo()
@@ -68,64 +59,7 @@ public class ThereAreAlwaysMemos : Fairytale_Card
         targetMemo = memoList[cardData.goal - cardData.achievement - 1];
         camFollow.position = new Vector3(targetMemo.transform.position.x, camFollow.position.y, 0);
     }
-    
-    public override void CreateStoryLine(int goal, int runningTime)
-    {
-        $"Create Story Line : {goal}, {runningTime}".Log();
-        cardData.runningTime = runningTime;
-        cardData.goal = goal;
 
-        int temporaryAchievement = 0;
-
-        for (int i = 0; i < runningTime; i++)
-        {
-            SelectStory(i, runningTime, ref temporaryAchievement, goal);
-        }
-    }
-
-    public override void SelectStory(int timeStep, int runningTime, ref int temporaryAchievement, int goal)
-    {
-        List<Define.Story> availableStory = new List<Define.Story>();
-
-        if (timeStep + 1 == runningTime || temporaryAchievement + 1 != goal)
-        {
-            availableStory.Add(Define.Story.TakeOneStep);
-        }
-
-        if (temporaryAchievement + runningTime - timeStep - 1 >= goal)
-        {
-            //availableStory.Add(Define.Story.Standstill);
-        }
-
-        if (temporaryAchievement - 1 + runningTime - timeStep - 1 >= goal)
-        {
-            availableStory.Add(Define.Story.TakeStepBack);
-            availableStory.Add(Define.Story.TakeStepBack);
-        }
-
-        Utils.ListRandomShuffle(availableStory);
-        Utils.ListRandomShuffle(availableStory);
-        Utils.ListRandomShuffle(availableStory);
-            
-        switch (availableStory[Random.Range(0, availableStory.Count)])
-        {
-            case Define.Story.Standstill:
-                storyLine.Add(Define.Story.Standstill);
-                achievementProgress.Add(temporaryAchievement);
-                break;
-            case Define.Story.TakeStepBack:
-                temporaryAchievement--;
-                storyLine.Add(Define.Story.TakeStepBack);
-                achievementProgress.Add(temporaryAchievement);
-                break;
-            case Define.Story.TakeOneStep:
-                temporaryAchievement++;
-                storyLine.Add(Define.Story.TakeOneStep);
-                achievementProgress.Add(temporaryAchievement);
-                break;
-        }
-    }
-    
     private void ShowResult()
     {
         
@@ -139,9 +73,9 @@ public class ThereAreAlwaysMemos : Fairytale_Card
 
         cardData.timeStep = timeStep;
         
-        Debug.Log($"{timeStep} : {storyLine[timeStep].ToString()}");
+        Debug.Log($"{timeStep} : {cardData.storyLine[timeStep].ToString()}");
         
-        switch (storyLine[timeStep])
+        switch (cardData.storyLine[timeStep])
         {
             case Define.Story.TakeOneStep:
                 if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
