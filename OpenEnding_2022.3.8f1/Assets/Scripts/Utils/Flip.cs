@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flip : Singleton<Flip>
+public class Flip : MonoBehaviour
 {
     [SerializeField]
     private Define.DisplayedFace curFace = Define.DisplayedFace.Head;
@@ -20,17 +20,14 @@ public class Flip : Singleton<Flip>
     public event NextFlipHandler OnStartFlipToHeadOnlyNextTime;
     public event NextFlipHandler OnStartFlipToTailOnlyNextTime;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-        
         Input.gyro.enabled = false;
     }
     
 #if DEVELOPMENT_BUILD
     private void Start()
     {
-        SetEnableGyroSensor(true);
         // OnFlipToHead += () => $"OnFlipToHead".Log();
         // OnFlipToTail += () => $"OnFlipToTail".Log();
         // OnStartFlipToHead += () => $"OnStartFlipToHead".Log();
