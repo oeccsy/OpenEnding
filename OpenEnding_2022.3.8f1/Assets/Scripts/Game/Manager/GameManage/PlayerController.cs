@@ -8,14 +8,14 @@ public class PlayerController : MonoBehaviour
     
     private void Awake()
     {
+        GameManager.Instance.PlayerController = this;
+        
         flip = GetComponent<Flip>();
         
         flip.OnFlipToTail += NotifyFlipToTail;
         flip.OnStartFlipToHead += NotifyStartFlipToHead;
         
         flip.SetEnableGyroSensor(true);
-
-        GameManager.Instance.PlayerController = this;
     }
     
     public void NotifyFlipToTail()

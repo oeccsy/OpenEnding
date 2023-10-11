@@ -8,6 +8,8 @@ public class GameFlow : MonoBehaviour
 {
     private void Awake()
     {
+        GameManager.Instance.GameFlow = this;
+        
         ConnectManager.Instance.OnAllDeviceConnected += () => StartCoroutine(GameJoinRoutine());
     }
 
