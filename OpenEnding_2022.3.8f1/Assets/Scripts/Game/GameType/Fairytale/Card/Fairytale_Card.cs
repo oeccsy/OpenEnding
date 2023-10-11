@@ -3,59 +3,22 @@ using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
-public class Fairytale_Card : MonoBehaviour
+public abstract class Fairytale_Card : MonoBehaviour
 {
     public Fairytale_CardData cardData;
-    
+
     protected virtual void Awake()
     {
         cardData = new Fairytale_CardData(NetworkManager.Instance.ownDeviceData);
-        SetFlipEvent();
-        Flip.Instance.SetEnableGyroSensor(true);
     }
 
-    public virtual void Update()
+    private void Start()
     {
-        if (Overlay.isOverlayActive) return;
-        if (!Input.gyro.enabled) return;
-
-        float alpha = 1.086956f * Input.gyro.gravity.z;
-        Overlay.image.color = Color.black * alpha;
+        var flip = GameManager.Instance.PlayerController.flip;
+        
+        flip.OnStartFlipToHead += () => cardData.displayedFace = Define.DisplayedFace.Head;
+        flip.OnFlipToTail += () => cardData.displayedFace = Define.DisplayedFace.Tail;
     }
 
-    public void SetFlipEvent()
-    {
-        Flip.Instance.OnFlipToTail += () => cardData.displayedFace = Define.DisplayedFace.Tail;
-        Flip.Instance.OnFlipToTail += NotifyFlipToTail;
-        Flip.Instance.OnFlipToHead += () => cardData.displayedFace = Define.DisplayedFace.Head;
-        Flip.Instance.OnStartFlipToHead += NotifyStartFlipToHead;
-    }
-
-    public void UnsetFlipEvent()
-    {
-        Flip.Instance.OnFlipToTail -= NotifyFlipToTail;
-        Flip.Instance.OnStartFlipToHead -= NotifyStartFlipToHead;
-    }
-
-    public void NotifyFlipToTail()
-    {
-        StartCoroutine(NetworkManager.Instance.SendBytesToServer(new byte[] {1, 1, (byte)NetworkManager.Instance.ownDeviceData.colorOrder}));
-    }
-    
-    public void NotifyStartFlipToHead()
-    {
-        StartCoroutine(NetworkManager.Instance.SendBytesToServer(new byte[] {1, 0, (byte)NetworkManager.Instance.ownDeviceData.colorOrder}));
-    }
-
-    public void Vibrate()
-    {
-        //"Vibrate".Log();
-        Handheld.Vibrate();
-    }
-
-    public virtual void StoryUnfoldsByTimeStep(int timeStep) { }
-    
-    public virtual void CreateStoryLine(int goal, int runningTime) { }
-    
-    public virtual void SelectStory(int timeStep, int runningTime, ref int cur, int goal) { }
+    public abstract void StoryUnfoldsByTimeStep(int timeStep);
 }
