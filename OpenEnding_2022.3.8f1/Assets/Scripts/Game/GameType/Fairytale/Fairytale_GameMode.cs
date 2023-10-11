@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Fairytale_GameMode : GameMode
@@ -10,33 +9,14 @@ public class Fairytale_GameMode : GameMode
     private int _timeStep = 0;
     private int _totalCardFlip = 0;
     private int _maxCardFlip = 0;
-    
-    private bool _isAllCardTail = false;
-    private bool _isTimerExpired = false;
-    private bool _isAllCardHead = false;
 
     private Coroutine _gameRoutine = null;
     private Coroutine _timer = null;
+    private bool _isTimerExpired = false;
 
     private void Awake()
     {
         GameManager.Instance.GameMode = this;
-        
-        cardContainer.OnAllCardHead += () =>
-        {
-            _isAllCardHead = true;
-            _isAllCardTail = false;
-        };
-        cardContainer.OnAllCardTail += () =>
-        {
-            _isAllCardHead = false;
-            _isAllCardTail = true;
-        };
-        cardContainer.OnFaceMixed += () =>
-        {
-            _isAllCardHead = false;
-            _isAllCardTail = false;
-        };
 
         if (NetworkManager.Instance.connectType == Define.ConnectType.Server)
         {
@@ -54,17 +34,16 @@ public class Fairytale_GameMode : GameMode
 
         while (_totalCardFlip < _maxCardFlip)
         {
-            yield return new WaitUntil(() => _isAllCardTail);
+            yield return new WaitUntil(() => cardContainer.IsAllCardTail);
             TheCardStoriesUnfolds(_timeStep);
             yield return new WaitForSecondsRealtime(0.5f);
             NotifyCardFlipAvailable();
-            
             StartTimerForDecide(10f);
-            yield return new WaitUntil(() => _isTimerExpired || _isAllCardHead);
+            yield return new WaitUntil(() => _isTimerExpired || cardContainer.IsAllCardHead);
             ResetTimer();
             UpdateGameData();
             UpdateCardDataByFace();
-            if (_isAllCardTail) break;
+            if (cardContainer.IsAllCardTail) break;
             yield return new WaitForSecondsRealtime(0.5f);
             NotifyCardFlipUnavailable();
         }
@@ -108,7 +87,7 @@ public class Fairytale_GameMode : GameMode
 
         for (int i = 0; i < Random.Range(5, 10); i++)
         {
-            var randomCardIndex = Random.Range(0, cardContainer.cardList.Count); 
+            var randomCardIndex = Random.Range(0, cardContainer.cardList.Count);
             cardContainer.cardList[randomCardIndex].runningTime += 1;
         }
         
@@ -148,7 +127,6 @@ public class Fairytale_GameMode : GameMode
         }
         
         _isTimerExpired = false;
-        _isAllCardHead = false;
 
         _timer = StartCoroutine(Timer());
     }
