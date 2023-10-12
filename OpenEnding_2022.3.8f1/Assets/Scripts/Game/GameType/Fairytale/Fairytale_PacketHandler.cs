@@ -12,9 +12,9 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
     // index 2 : 실행할 로직의 param
     // . . .
     
-    private Fairytale_Scene _fairytaleScene;
-    private Fairytale_CardContainer _cardContainer;
-    public Fairytale_Card OwnCard => _fairytaleScene.card; 
+    private Fairytale_Scene FairytaleScene => Fairytale_Scene.Instance;
+    private Fairytale_CardContainer CardContainer => (GameManager.Instance.GameMode as Fairytale_GameMode)?.cardContainer;
+    public Fairytale_Card OwnCard => FairytaleScene.card; 
     
     private Dictionary<byte, Function[]> _classDict;
     
@@ -22,40 +22,44 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
     private Function[] _sceneFunctions;
     private Function[] _cardContainerFunctions;
     private Function[] _cardFunctions;
+    private Function[] _utilFunctions;
 
     protected override void Awake()
     {
         base.Awake();
-        
-        _fairytaleScene = Fairytale_Scene.Instance;
-        _cardContainer = GameObject.Find("FairytaleManager").GetComponent<Fairytale_GameMode>().cardContainer;
 
         _sceneFunctions = new Function[]
         {
-            (bytes) => _fairytaleScene.TheHareAndTheTortoise(),
-            (bytes) => _fairytaleScene.ThereAreAlwaysMemos(),
-            (bytes) => _fairytaleScene.ShowPlayerCard(),
-            (bytes) => _fairytaleScene.SetSceneGrayScale()
+            (bytes) => FairytaleScene.TheHareAndTheTortoise(),
+            (bytes) => FairytaleScene.ThereAreAlwaysMemos(),
+            (bytes) => FairytaleScene.ShowPlayerCard(),
+            (bytes) => FairytaleScene.SetSceneGrayScale()
         };
 
         _cardContainerFunctions = new Function[]
         {
-            (bytes) => _cardContainer.SetCardHead((ColorPalette.ColorName)bytes[0]),
-            (bytes) => _cardContainer.SetCardTail((ColorPalette.ColorName)bytes[0])
+            (bytes) => CardContainer.SetCardHead((ColorPalette.ColorName)bytes[0]),
+            (bytes) => CardContainer.SetCardTail((ColorPalette.ColorName)bytes[0])
         };
         
         _cardFunctions = new Function[]
         {
-            (bytes) => { if(OwnCard != null) OwnCard.Vibrate(); },
-            (bytes) => { if(OwnCard != null) OwnCard.StoryUnfoldsByTimeStep(bytes[0]); },
-            (bytes) => { if(OwnCard != null) OwnCard.CreateStoryLine(5, bytes[0]);}
+            (bytes) => DeviceUtils.Vibrate(),
+            (bytes) => OwnCard.StoryUnfoldsByTimeStep(bytes[0]),
+            (bytes) => OwnCard.cardData.storyLine = Fairytale_StorylineFactory.GetStoryLine(5, bytes[0])
+        };
+
+        _utilFunctions = new Function[]
+        {
+            bytes => DeviceUtils.Vibrate()
         };
             
         _classDict = new Dictionary<byte, Function[]>
         {
             {0, _sceneFunctions},
             {1, _cardContainerFunctions},
-            {2, _cardFunctions}
+            {2, _cardFunctions},
+            {3, _utilFunctions}
         };
         
         NetworkManager.Instance.OnReceiveDataFromServer = ExecuteActionByPacket;
@@ -64,8 +68,6 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
 
     public void ExecuteActionByPacket(string clientName, string characteristic, byte[] bytes)
     {
-        //$"Execute {bytes[0]}{bytes[1]}".Log();
-        
         var targetClass = _classDict[bytes[(byte)Define.PacketIndex.Class]];
         var targetFunction = targetClass[bytes[(byte)Define.PacketIndex.Function]];
 
