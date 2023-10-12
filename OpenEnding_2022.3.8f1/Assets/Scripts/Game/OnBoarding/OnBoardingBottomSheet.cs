@@ -41,7 +41,7 @@ public class OnBoardingBottomSheet : MonoBehaviour, IUIElement
 
         Sequence sequence = DOTween.Sequence();
         sequence
-            .Append(contentRect.DOAnchorPos(new Vector2(-1080, 0) * targetIndex, 0.3f, true).SetEase(Ease.OutCirc))
+            .Append(contentRect.DOAnchorPos(new Vector2(-1080, 0) * targetIndex, 0.3f, true))
             .AppendCallback(() => scrollRect.enabled = true)
             .AppendCallback(() => contentDragEventHandler.dragable = true);
     }
@@ -58,8 +58,8 @@ public class OnBoardingBottomSheet : MonoBehaviour, IUIElement
 
         Sequence sequence = DOTween.Sequence();
         sequence
-            .Append(prevDot.DOColor(ColorPalette.GetColor(ColorPalette.ColorName.ProgressDotDefault), 0.3f).SetEase(Ease.OutCirc))
-            .Join(nextDot.transform.DOPunchScale(Vector3.one, 0.3f).SetEase(Ease.OutCirc))
+            .Append(prevDot.DOColor(ColorPalette.GetColor(ColorPalette.ColorName.ProgressDotDefault), 0.3f))
+            .Join(nextDot.transform.DOPunchScale(Vector3.one, 0.3f))
             .Join(nextDot.DOColor(ColorPalette.GetColor(ColorPalette.ColorName.ProgressDotActive), 0.3f));
     }
 
@@ -69,25 +69,16 @@ public class OnBoardingBottomSheet : MonoBehaviour, IUIElement
         if (targetPos.y > -400) targetPos.y = -400;
         if (targetPos.y < -2300) targetPos.y = -2300;
 
-        handleDragEventHandler.dragable = false;
-        
-        Sequence sequence = DOTween.Sequence();
-
         if (isBottomSheetActive)
         {
             if (targetPos.y < -1000)
             {
                 isBottomSheetActive = false;
-
-                sequence
-                    .Append(bottomSheetRect.DOAnchorPos(new Vector2(0, -2300), 0.3f, true).SetEase(Ease.OutCirc))
-                    .AppendCallback(() => handleDragEventHandler.dragable = true);
+                Hide();
             }
             else
             {
-                sequence
-                    .Append(bottomSheetRect.DOAnchorPos(new Vector2(0, -400), 0.3f, true).SetEase(Ease.OutCirc))
-                    .AppendCallback(() => handleDragEventHandler.dragable = true);
+                Show();
             }
             
         }
@@ -96,16 +87,11 @@ public class OnBoardingBottomSheet : MonoBehaviour, IUIElement
             if (targetPos.y > -2000)
             {
                 isBottomSheetActive = true;
-
-                sequence
-                    .Append(bottomSheetRect.DOAnchorPos(new Vector2(0, -400), 0.3f, true).SetEase(Ease.OutCirc))
-                    .AppendCallback(() => handleDragEventHandler.dragable = true);
+                Show();
             }
             else
             {
-                sequence
-                    .Append(bottomSheetRect.DOAnchorPos(new Vector2(0, -2300), 0.3f, true).SetEase(Ease.OutCirc))
-                    .AppendCallback(() => handleDragEventHandler.dragable = true);
+                Hide();
             }
         }
     }
@@ -121,11 +107,25 @@ public class OnBoardingBottomSheet : MonoBehaviour, IUIElement
 
     public void Show()
     {
+        handleDragEventHandler.dragable = false;
         
+        Sequence sequence = DOTween.Sequence();
+        sequence
+            .Append(bottomSheetRect.DOAnchorPos(new Vector2(0, -400), 0.3f, true))
+            .AppendCallback(() => handleDragEventHandler.dragable = true);
+        
+        Dimmed.SetDimmed(true);
     }
 
     public void Hide()
     {
+        handleDragEventHandler.dragable = false;
         
+        Sequence sequence = DOTween.Sequence();
+        sequence
+            .Append(bottomSheetRect.DOAnchorPos(new Vector2(0, -2300), 0.3f, true))
+            .AppendCallback(() => handleDragEventHandler.dragable = true);
+        
+        Dimmed.SetDimmed(false);
     }
 }
