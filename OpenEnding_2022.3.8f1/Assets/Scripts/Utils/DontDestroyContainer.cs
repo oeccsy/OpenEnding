@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class DontDestroyContainer : MonoBehaviour
+public class DontDestroyContainer : Singleton<DontDestroyContainer>
 {
     private void Awake()
     {
