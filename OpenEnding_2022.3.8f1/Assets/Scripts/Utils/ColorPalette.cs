@@ -14,7 +14,10 @@ public static class ColorPalette
         { ColorName.Gray, new Color(111/255f, 111/255f, 111/255f, 255/255f) },
         { ColorName.Beige, new Color(255/255f, 227/255f, 179/255f, 255/255f) },
         { ColorName.DeviceDefault, new Color(207/255f, 207/255f, 207/255f, 255/255f) },
-        { ColorName.DisplayDefault, new Color(248/255f, 248/255f, 248/255f) }
+        { ColorName.DisplayDefault, new Color(248/255f, 248/255f, 248/255f) },
+        { ColorName.ProgressDotDefault, new Color(222/255f, 222/255f, 222/255f) },
+        { ColorName.ProgressDotActive, new Color(92/255f, 92/255f, 92/255f) }
+        
     };
 
     public static Color GetColor(ColorName color)
@@ -30,6 +33,8 @@ public static class ColorPalette
         Gray,
         Beige,
         DeviceDefault,
-        DisplayDefault
+        DisplayDefault,
+        ProgressDotDefault,
+        ProgressDotActive
     }
 }
