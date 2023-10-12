@@ -14,7 +14,7 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
     
     private Fairytale_Scene FairytaleScene => Fairytale_Scene.Instance;
     private Fairytale_CardContainer CardContainer => (GameManager.Instance.GameMode as Fairytale_GameMode)?.cardContainer;
-    public Fairytale_Card OwnCard => FairytaleScene.card; 
+    public Fairytale_Card OwnCard => Fairytale_Scene.Instance.card; 
     
     private Dictionary<byte, Function[]> _classDict;
     
@@ -46,7 +46,12 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
         {
             (bytes) => DeviceUtils.Vibrate(),
             (bytes) => OwnCard.StoryUnfoldsByTimeStep(bytes[0]),
-            (bytes) => OwnCard.cardData.storyLine = Fairytale_StorylineFactory.GetStoryLine(5, bytes[0])
+            (bytes) =>
+            {
+                OwnCard.cardData.goal = 3;
+                OwnCard.cardData.runningTime = bytes[0];
+                OwnCard.cardData.storyLine = Fairytale_StorylineFactory.GetStoryLine(3, bytes[0]);
+            }
         };
 
         _utilFunctions = new Function[]

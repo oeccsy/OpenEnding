@@ -10,23 +10,32 @@ public class TortoiseCardStoryLineFactory : Fairytale_StorylineFactory
         if (timeStep + 1 == runningTime || temporaryAchievement + 1 != goal)
         {
             availableStory.Add(Define.Story.TakeOneStep);
+            availableStory.Add(Define.Story.TakeOneStep);
+            availableStory.Add(Define.Story.TakeOneStep);
+            availableStory.Add(Define.Story.TakeOneStep);
         }
 
         if (temporaryAchievement + runningTime - timeStep - 1 >= goal)
         {
-            //availableStory.Add(Define.Story.Standstill);
+            availableStory.Add(Define.Story.Standstill);
+            availableStory.Add(Define.Story.Standstill);
         }
 
-        if (temporaryAchievement - 1 + runningTime - timeStep - 1 >= goal)
+        if (temporaryAchievement - 1 + runningTime - timeStep - 1 >= goal && temporaryAchievement > 0)
         {
             availableStory.Add(Define.Story.TakeStepBack);
             availableStory.Add(Define.Story.TakeStepBack);
         }
 
-        Utils.ListRandomShuffle(availableStory);
-        Utils.ListRandomShuffle(availableStory);
-        Utils.ListRandomShuffle(availableStory);
+        if (runningTime - timeStep - 1 >= goal && temporaryAchievement > 0)
+        {
+            availableStory.Add(Define.Story.LoseAll);
+        }
 
+        Utils.ListRandomShuffle(availableStory);
+        Utils.ListRandomShuffle(availableStory);
+        Utils.ListRandomShuffle(availableStory);
+        
         return availableStory[Random.Range(0, availableStory.Count)];
     }
 }

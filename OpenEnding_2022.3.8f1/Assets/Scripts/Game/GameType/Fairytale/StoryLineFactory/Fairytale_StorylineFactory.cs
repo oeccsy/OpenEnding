@@ -59,6 +59,7 @@ public abstract class Fairytale_StorylineFactory
                 break;
         }
 
-        return factory.CreateStoryLine(goal, runningTime);
+        List<Define.Story> storyLine = factory.CreateStoryLine(goal, runningTime);
+        return storyLine;
     }
 }

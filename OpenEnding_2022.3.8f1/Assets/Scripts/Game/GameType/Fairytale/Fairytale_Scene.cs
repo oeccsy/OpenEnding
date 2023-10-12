@@ -27,12 +27,14 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
     {
         var prefab = Resources.Load<GameObject>("Prefabs/TheHareAndTheTortoise");
         card = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
+        card.cardData.cardType = Define.FairyTaleGameCardType.TheHareAndTheTortoise;
     }
 
     public void ThereAreAlwaysMemos()
     {
         var prefab = Resources.Load<GameObject>("Prefabs/ThereAreAlwaysMemos");
         card = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<ThereAreAlwaysMemos>();
+        card.cardData.cardType = Define.FairyTaleGameCardType.ThereAreAlwaysMemos;
     }
 
     public void ShowPlayerCard()
