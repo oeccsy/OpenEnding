@@ -72,9 +72,7 @@ public class ThereAreAlwaysMemos : Fairytale_Card
         if (cardData.runningTime <= timeStep) return;
 
         cardData.timeStep = timeStep;
-        
-        Debug.Log($"{timeStep} : {cardData.storyLine[timeStep].ToString()}");
-        
+
         switch (cardData.storyLine[timeStep])
         {
             case Define.Story.TakeOneStep:

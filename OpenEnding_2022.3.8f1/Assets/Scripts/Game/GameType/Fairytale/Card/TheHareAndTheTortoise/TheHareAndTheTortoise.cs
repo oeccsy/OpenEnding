@@ -4,15 +4,13 @@ using DG.Tweening;
 using UnityEngine;
 public class TheHareAndTheTortoise : Fairytale_Card
 {
-    public List<Define.Story> storyLine = new List<Define.Story>();
-    public List<int> achievementProgress = new List<int>();
-    private Coroutine currentStoryRoutine = null;
-    
     [SerializeField]
     private Animal hare;
     [SerializeField]
     private Animal tortoise;
 
+    private Coroutine currentStoryRoutine = null;
+    
     protected override void Awake()
     {
 #if !UNITY_EDITOR
@@ -158,10 +156,8 @@ public class TheHareAndTheTortoise : Fairytale_Card
         if (cardData.runningTime <= timeStep) return;
 
         cardData.timeStep = timeStep;
-        
-        Debug.Log($"{timeStep} : {storyLine[timeStep].ToString()}");
-        
-        switch (storyLine[timeStep])
+
+        switch (cardData.storyLine[timeStep])
         {
             case Define.Story.LoseAll:
                 if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
