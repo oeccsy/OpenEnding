@@ -14,9 +14,14 @@ public class PlayerController : MonoBehaviour
         
         flip.OnFlipToTail += NotifyFlipToTail;
         flip.OnStartFlipToHead += NotifyStartFlipToHead;
-        
+    }
+
+#if !UNITY_EDITOR
+    private void Start()
+    {
         flip.SetEnableGyroSensor(true);
     }
+#endif
     
     public void NotifyFlipToTail()
     {
