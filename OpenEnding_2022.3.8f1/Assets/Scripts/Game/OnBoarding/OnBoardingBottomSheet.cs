@@ -98,7 +98,7 @@ public class OnBoardingBottomSheet : MonoBehaviour, IUIElement
     
     private void UpdateBottomSheetPos(PointerEventData eventData)
     {
-        var targetPos = new Vector2(0, eventData.position.y - 2300 - 50);
+        var targetPos = new Vector2(0, eventData.position.y / Screen.height * 2400 - 2300 - 50);
         if (targetPos.y > -400) targetPos.y = -400;
         if (targetPos.y < -2300) targetPos.y = -2300;
         
