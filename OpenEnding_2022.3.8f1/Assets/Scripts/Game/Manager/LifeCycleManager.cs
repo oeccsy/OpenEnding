@@ -20,9 +20,7 @@ public class LifeCycleManager : Singleton<LifeCycleManager>
 
     private void OnApplicationFocus(bool hasFocus)
     {
-#if UNITY_IOS
         Application.targetFrameRate = 60;
-#endif
     }
 
     private void OnApplicationQuit()
