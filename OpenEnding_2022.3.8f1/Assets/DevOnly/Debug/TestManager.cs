@@ -32,7 +32,9 @@ public class TestManager : Singleton<TestManager>
     [MenuItem("FuncTest/E_ShowNextCard")]
     public static void ShowNextCard()
     {
-
+        var timeStep = Fairytale_Scene.Instance.card.cardData.timeStep;
+        Fairytale_Scene.Instance.card.StoryUnfoldsByTimeStep(timeStep);
+        Fairytale_Scene.Instance.card.cardData.timeStep++;
     }
 
     [MenuItem("FuncTest/F_GrayScale")]
@@ -40,13 +42,7 @@ public class TestManager : Singleton<TestManager>
     {
         PostProcess.SetPostProcess(Define.PostProcess.GrayScale);
     }
-    
-    [MenuItem("FuncTest/G_NetworkTest")]
-    public void SendTest()
-    {
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 0, 0 }));
-    }
-    
+
     [MenuItem("FuncTest/H_SelectMemoCard")]
     public static void SelectMemoCard()
     {
@@ -56,13 +52,23 @@ public class TestManager : Singleton<TestManager>
     [MenuItem("FuncTest/I_CreateStory")]
     public static void CreateStory_Memo()
     {
-        Fairytale_Scene.Instance.card.cardData.storyLine = Fairytale_StorylineFactory.GetStoryLine(3, 12);
+        Fairytale_Scene.Instance.card.InitCardStory(3, 12);
+        // Fairytale_Scene.Instance.card.cardData.storyLine.Clear();
+        //
+        // for (int i = 0; i < 10; i++)
+        // {
+        //     Fairytale_Scene.Instance.card.cardData.storyLine.Add(Define.Story.TakeStepBack);
+        //     Fairytale_Scene.Instance.card.cardData.storyLine.Add(Define.Story.TakeOneStep);    
+        // }
+        
     }
     
     [MenuItem("FuncTest/J_ShowNextCard")]
     public static void ShowNextCard_Memo()
     {
-
+        var timeStep = Fairytale_Scene.Instance.card.cardData.timeStep;
+        Fairytale_Scene.Instance.card.StoryUnfoldsByTimeStep(timeStep);
+        Fairytale_Scene.Instance.card.cardData.timeStep++;
     }
     
     [MenuItem("FuncTest/K_ShowSuccessSceneUI")]
@@ -84,8 +90,5 @@ public class TestManager : Singleton<TestManager>
     {
         GameManager.Instance.GameFlow.LoadConnectScene();
     }
-    
-    
-
 }
 #endif
