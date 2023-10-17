@@ -44,8 +44,8 @@ public class Fairytale_GameMode : GameMode
             yield return UpdateCardDataByFace();
             yield return SynchronizeState();
             
-            if (cardContainer.IsAllCardTail) break;
             yield return NotifyCardFlipUnavailable();
+            if (cardContainer.IsAllCardTail) break;
         }
         
         yield return ShowResult();
@@ -192,7 +192,7 @@ public class Fairytale_GameMode : GameMode
 
     private IEnumerator NotifyCardFlipUnavailable()
     {
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return new WaitForSecondsRealtime(5f);
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 0, 0 }));
     }
 

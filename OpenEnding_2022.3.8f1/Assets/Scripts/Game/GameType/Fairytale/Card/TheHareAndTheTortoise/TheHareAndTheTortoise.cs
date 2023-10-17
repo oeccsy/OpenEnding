@@ -77,7 +77,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
         var butterfliesPrefab = Resources.Load<GameObject>("Prefabs/Butterflies");
         var butterfliesInstance = Instantiate(butterfliesPrefab, transform);
         var butterfliesOrbit = butterfliesInstance.GetComponent<Orbit>();
-        butterfliesOrbit.Theta = tortoise.orbit.Theta + 40f;
+        butterfliesOrbit.Theta = tortoise.orbit.Theta + 20f;
         
         yield return new WaitUntil( ()=> (butterfliesOrbit.Theta - tortoise.orbit.Theta) % 360 <= 0f);
 
@@ -100,7 +100,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
         tortoise.Shape(Define.Shape.Eyes_Happy);
         tortoise.speed = 0f;
         
-        yield return new WaitForSecondsRealtime(4f);
+        yield return new WaitForSecondsRealtime(3f);
         
         tortoise.ActNaturally(Define.Act.Idle_A);
         tortoise.Shape(Define.Shape.Eyes_Squint);
@@ -109,7 +109,7 @@ public class TheHareAndTheTortoise : Fairytale_Card
         
         tortoise.ActNaturally(Define.Act.Run);
         tortoise.Shape(Define.Shape.Teardrop_R);
-        tortoise.speed = 8f;
+        tortoise.speed = 20f;
 
         yield return new WaitUntil(() => (hare.orbit.Theta - tortoise.orbit.Theta) % 360 <= (cardData.goal - 1 - cardData.achievement) * 10);
         
