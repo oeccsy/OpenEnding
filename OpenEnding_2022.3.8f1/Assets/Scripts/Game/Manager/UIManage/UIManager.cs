@@ -8,6 +8,19 @@ public class UIManager : Singleton<UIManager>
     public Transform SceneUIRoot { get; set; }
     public Transform PopupUIRoot { get; set; }
     
+    public GameObject ShowSceneUI(string resourcePath, int orderInLayer = 0)
+    {
+        var sceneUIPrefab = Resources.Load<GameObject>(resourcePath);
+        var sceneUIInstance = Instantiate(sceneUIPrefab, SceneUIRoot);
+        var uiElement = sceneUIInstance.GetComponentInChildren<IUIElement>();
+
+        CanvasSettings(sceneUIInstance, "SceneUI", orderInLayer);
+        
+        uiElement.Show();
+        
+        return sceneUIInstance;
+    }
+    
     public GameObject ShowPopup(string resourcePath, int orderInLayer = 0)
     {
         var popupPrefab = Resources.Load<GameObject>(resourcePath);
