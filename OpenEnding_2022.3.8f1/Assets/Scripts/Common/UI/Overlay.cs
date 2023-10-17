@@ -8,9 +8,10 @@ using UnityEngine.UI;
 public class Overlay : MonoBehaviour
 {
     public static RawImage image;
-    private Canvas _canvas;
     public static Sequence overlaySequence;
     public static bool isOverlayActive = false;
+    
+    private Canvas _canvas;
 
     private void Awake()
     {
