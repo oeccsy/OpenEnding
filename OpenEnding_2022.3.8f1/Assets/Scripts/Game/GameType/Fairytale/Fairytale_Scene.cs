@@ -29,16 +29,20 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
 
     public void TheHareAndTheTortoise()
     {
-        var prefab = Resources.Load<GameObject>("Prefabs/TheHareAndTheTortoise");
-        card = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
+        var cardPrefab = Resources.Load<GameObject>("Prefabs/TheHareAndTheTortoise");
+        card = Instantiate(cardPrefab, GameObject.Find("GameObjectRoot").transform).GetComponent<TheHareAndTheTortoise>();
         card.cardData.cardType = Define.FairyTaleGameCardType.TheHareAndTheTortoise;
+
+        UIManager.Instance.ShowPopup("Prefabs/TortoiseCardDescPopupCanvas", 9);
     }
 
     public void ThereAreAlwaysMemos()
     {
-        var prefab = Resources.Load<GameObject>("Prefabs/ThereAreAlwaysMemos");
-        card = Instantiate(prefab, GameObject.Find("GameObjectRoot").transform).GetComponent<ThereAreAlwaysMemos>();
+        var cardPrefab = Resources.Load<GameObject>("Prefabs/ThereAreAlwaysMemos");
+        card = Instantiate(cardPrefab, GameObject.Find("GameObjectRoot").transform).GetComponent<ThereAreAlwaysMemos>();
         card.cardData.cardType = Define.FairyTaleGameCardType.ThereAreAlwaysMemos;
+        
+        UIManager.Instance.ShowPopup("Prefabs/MemoCardDescPopupCanvas", 9);
     }
 
     public void SetSceneGrayScale()
