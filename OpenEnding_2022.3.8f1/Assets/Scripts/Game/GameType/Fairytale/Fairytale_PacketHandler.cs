@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Shatalmic;
+using UnityEditor;
 using UnityEngine;
 
 public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
@@ -14,7 +15,9 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
     
     private Fairytale_Scene FairytaleScene => Fairytale_Scene.Instance;
     private Fairytale_CardContainer CardContainer => (GameManager.Instance.GameMode as Fairytale_GameMode)?.cardContainer;
-    public Fairytale_Card OwnCard => Fairytale_Scene.Instance.card; 
+    public Fairytale_Card OwnCard => Fairytale_Scene.Instance.card;
+    public Fairytale_GameState GameState => GameManager.Instance.GameState as Fairytale_GameState;
+    public GameFlow GameFlow => GameManager.Instance.GameFlow;
     
     private Dictionary<byte, Function[]> _classDict;
     
@@ -33,7 +36,10 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
             (bytes) => FairytaleScene.TheHareAndTheTortoise(),
             (bytes) => FairytaleScene.ThereAreAlwaysMemos(),
             (bytes) => FairytaleScene.ShowPlayerCard(),
-            (bytes) => FairytaleScene.SetSceneGrayScale()
+            (bytes) => FairytaleScene.SetSceneGrayScale(),
+            (bytes) => FairytaleScene.ShowSuccessSceneUI(),
+            (bytes) => FairytaleScene.ShowResultPopup(),
+            (bytes) => GameFlow.LoadConnectScene()
         };
 
         _cardContainerFunctions = new Function[]
@@ -56,7 +62,10 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
 
         _utilFunctions = new Function[]
         {
-            bytes => DeviceUtils.Vibrate()
+            (bytes) => DeviceUtils.Vibrate(),
+            (bytes) => GameState.AddSuccessCard((Define.FairyTaleGameCardType)bytes[0]),
+            (bytes) => GameState.AddGiveUpCard((Define.FairyTaleGameCardType)bytes[0]),
+            (bytes) => GameState.SetGameState(bytes[0], bytes[1])
         };
             
         _classDict = new Dictionary<byte, Function[]>

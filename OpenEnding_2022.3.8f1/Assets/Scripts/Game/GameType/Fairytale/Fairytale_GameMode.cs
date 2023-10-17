@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class Fairytale_GameMode : GameMode
 {
@@ -43,12 +44,19 @@ public class Fairytale_GameMode : GameMode
             ResetTimer();
             UpdateGameData();
             UpdateCardDataByFace();
+            yield return new WaitForSecondsRealtime(0.5f);
+            SynchronizeState();
             if (cardContainer.IsAllCardTail) break;
             yield return new WaitForSecondsRealtime(0.5f);
             NotifyCardFlipUnavailable();
         }
-        
+
+        yield return new WaitForSecondsRealtime(5f);
         ShowResult();
+        yield return new WaitForSecondsRealtime(5f);
+        HideResult();
+        yield return new WaitForSecondsRealtime(5f);
+        LoadConnectScene();
     }
 
     private void SelectCardTypes()
@@ -164,12 +172,22 @@ public class Fairytale_GameMode : GameMode
         {
             if (card.displayedFace == Define.DisplayedFace.Head && card.runningTime - 1 == _timeStep)
             {
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 4, 0}));
                 cardContainer.SetCardSuccess(card.Color);
             }
         }
         
         $"head : {cardContainer.headCount}".Log();
         $"tail : {cardContainer.tailCount}".Log();
+    }
+
+    private void SynchronizeState()
+    {
+        var gameState = GameManager.Instance.GameState as Fairytale_GameState;
+        int successCardCount = gameState.successCardCount;
+        int giveUpCardCount = gameState.giveUpCardCount;
+        
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 3, (byte)successCardCount, (byte)giveUpCardCount }));
     }
 
     private void NotifyCardFlipUnavailable()
@@ -179,11 +197,17 @@ public class Fairytale_GameMode : GameMode
 
     private void ShowResult()
     {
-        "ShowResult".Log();
-        "ShowResult".Log();
-        "ShowResult".Log();
-        "ShowResult".Log();
-        "ShowResult".Log();
-        "ShowResult".Log();
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 5, 0 }));
+    }
+    
+    private void HideResult()
+    {
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 5, 0 }));
+    }
+
+    private void LoadConnectScene()
+    {
+        
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 6, 0 }));
     }
 }

@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Fairytale_Scene : Singleton<Fairytale_Scene>
 {
@@ -45,5 +48,20 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
     public void SetSceneGrayScale()
     {
         PostProcess.SetPostProcess(Define.PostProcess.GrayScale);
+    }
+
+    public void ShowSuccessSceneUI()
+    {
+        UIManager.Instance.ShowSceneUI("Prefabs/SuccessUICanvas");
+    }
+
+    public void ShowResultPopup()
+    {
+        var instance = UIManager.Instance.ShowPopup("Prefabs/ResultPopupCanvas", 1);
+        var ui = instance.GetComponentInChildren<FairyTale_ResultPopup>();
+        
+        var gameState = GameManager.Instance.GameState as Fairytale_GameState;
+        var successCardCount = gameState.successCardCount;
+        ui.RefreshSuccessCountText(successCardCount);
     }
 }
