@@ -28,4 +28,5 @@ public abstract class Fairytale_Card : MonoBehaviour
     }
 
     public abstract void StoryUnfoldsByTimeStep(int timeStep);
+    public abstract void GiveUp();
 }

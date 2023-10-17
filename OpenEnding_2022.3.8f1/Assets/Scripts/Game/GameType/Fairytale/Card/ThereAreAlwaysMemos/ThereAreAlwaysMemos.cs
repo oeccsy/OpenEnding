@@ -110,4 +110,11 @@ public class ThereAreAlwaysMemos : Fairytale_Card
                 break;
         }
     }
+
+    public override void GiveUp()
+    {
+        cardData.cardStatus = Define.FairyTaleGameCardStatus.GiveUp;
+        if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
+        PostProcess.SetPostProcess(Define.PostProcess.GrayScale);
+    }
 }

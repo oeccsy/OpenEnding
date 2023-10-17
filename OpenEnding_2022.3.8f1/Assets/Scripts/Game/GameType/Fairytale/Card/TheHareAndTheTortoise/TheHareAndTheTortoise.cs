@@ -182,4 +182,11 @@ public class TheHareAndTheTortoise : Fairytale_Card
             ShowResult();
         }
     }
+    
+    public override void GiveUp()
+    {
+        cardData.cardStatus = Define.FairyTaleGameCardStatus.GiveUp;
+        if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
+        PostProcess.SetPostProcess(Define.PostProcess.GrayScale);
+    }
 }

@@ -159,7 +159,7 @@ public class Fairytale_GameMode : GameMode
         {
             if (card.displayedFace == Define.DisplayedFace.Tail && card.cardStatus == Define.FairyTaleGameCardStatus.Playing)
             {
-                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 2, 0 }));
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 2, 2, 0 }));
                 cardContainer.SetCardGiveUp(card.Color);
                 (GameManager.Instance.GameState as Fairytale_GameState).AddGiveUpCard(card.cardType);
             }

@@ -41,6 +41,7 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
             
             {Tuple.Create<byte, byte>(2, 0), (bytes) => OwnCard.StoryUnfoldsByTimeStep(bytes[0])},
             {Tuple.Create<byte, byte>(2, 1), (bytes) => OwnCard.InitCardStory(3, bytes[0])},
+            {Tuple.Create<byte, byte>(2, 2), (bytes) => OwnCard.GiveUp()},
 
             {Tuple.Create<byte, byte>(3, 0), (bytes) => DeviceUtils.Vibrate()},
             
