@@ -48,7 +48,13 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
 
     public void ShowSuccessSceneUI()
     {
-        UIManager.Instance.ShowSceneUI("Prefabs/SuccessUICanvas", 0);
+        IEnumerator ShowRoutine()
+        {
+            yield return new WaitForSecondsRealtime(5f);
+            UIManager.Instance.ShowSceneUI("Prefabs/SuccessUICanvas", 0);    
+        }
+
+        StartCoroutine(ShowRoutine());
     }
 
     public void ShowResultPopup()
@@ -64,10 +70,5 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
     public void HideResultPopup()
     {
         resultPopup.Hide();
-    }
-
-    public void Temp()
-    {
-        
     }
 }
