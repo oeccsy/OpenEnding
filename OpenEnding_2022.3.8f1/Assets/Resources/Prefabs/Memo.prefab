@@ -45,12 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01d5ac366d966d44c80f83e91b37ca04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memoData:
-    textContent: 
-    sprite: {fileID: 0}
+  memoData: {fileID: 0}
   boneTransform: {fileID: 8236956314754091830}
   text: {fileID: 4800676867521695346}
   image: {fileID: 4195365426332137833}
+  textRectTransform: {fileID: 7171114117401180003}
+  imageRectTransform: {fileID: 5553201464324512500}
 --- !u!1 &3384429982032087747
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC5B8\uC820\uAC00 \uAF2D\n\uC644\uC131\uD558\uAE30!"
+  m_text: "\uC5B8\uC820\uAC00 \uAF2D \uC644\uC131\uD558\uAE30!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5a15616ece090784f9025df38f496b1d, type: 2}
   m_sharedMaterial: {fileID: 8001239708516222027, guid: 5a15616ece090784f9025df38f496b1d,

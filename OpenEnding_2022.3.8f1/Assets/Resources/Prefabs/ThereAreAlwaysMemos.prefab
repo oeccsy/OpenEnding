@@ -192,11 +192,21 @@ MonoBehaviour:
     timeStep: 0
     goal: 0
     achievement: 0
+    storyLine: 
+    achievementProgress: 
   camFollow: {fileID: 6461483765299369051}
   memoList: []
   availableMemoPosList: []
-  storyLine: 
-  achievementProgress: 
+  memoDatas:
+  - {fileID: 11400000, guid: 367ae2f9af848a449bfff121a84cefed, type: 2}
+  - {fileID: 11400000, guid: 23d810b722f7389438468fd12c7b7172, type: 2}
+  - {fileID: 11400000, guid: 1c16be7b44c938f44826a5bf3f74d6a7, type: 2}
+  - {fileID: 11400000, guid: 491a5d2d50dad1e4792b59129825261b, type: 2}
+  - {fileID: 11400000, guid: 1d873c8c1a5d6a4428c3cafcc1b7c310, type: 2}
+  - {fileID: 11400000, guid: 1b17e01bb14daef4980c82bff6296656, type: 2}
+  - {fileID: 11400000, guid: 94e82b38684d92d4391397cdd20eaa86, type: 2}
+  - {fileID: 11400000, guid: f13a4d41a09e8474a984d80ccfeba0a6, type: 2}
+  - {fileID: 11400000, guid: 36ab8f9e58b77074c8b5172d72737a0b, type: 2}
 --- !u!1 &8887584602351204663
 GameObject:
   m_ObjectHideFlags: 0

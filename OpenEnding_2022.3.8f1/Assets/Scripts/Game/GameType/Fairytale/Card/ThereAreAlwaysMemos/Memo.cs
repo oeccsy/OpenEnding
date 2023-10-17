@@ -15,15 +15,19 @@ public class Memo : MonoBehaviour
     private TMP_Text text;
     [SerializeField]
     private Image image;
-    
-    private void Awake()
-    {
-        InitMemo();
-    }
+    [SerializeField]
+    private RectTransform textRectTransform;
+    [SerializeField]
+    private RectTransform imageRectTransform;
 
-    private void InitMemo()
+    public void InitMemo(MemoData data)
     {
+        memoData = data;
         
+        text.text = memoData.textContent;
+        image.sprite = memoData.sprite;
+        textRectTransform.anchoredPosition = memoData.textPos;
+        imageRectTransform.anchoredPosition = memoData.imagePos;
     }
 
     public void Attach()

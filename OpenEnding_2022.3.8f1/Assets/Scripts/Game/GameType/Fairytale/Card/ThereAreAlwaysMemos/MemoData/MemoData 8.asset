@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eef85996bb7971f408fb3f3d7e5994a2, type: 3}
+  m_Name: MemoData 8
+  m_EditorClassIdentifier: 
+  textContent: "\uB05D\uAE4C\uC9C0\n\uC77D\uC5B4\uBCF4\uAE30!"
+  sprite: {fileID: 21300000, guid: d7b43b3379900484d883dbd36e7520e5, type: 3}
+  textPos: {x: 0.25, y: 0.252}
+  imagePos: {x: -0.233, y: -0.326}

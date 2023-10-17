@@ -10,6 +10,8 @@ public class ThereAreAlwaysMemos : Fairytale_Card
     public List<Memo> memoList = new List<Memo>();
     public List<Vector2> availableMemoPosList = new List<Vector2>();
     
+    public List<MemoData> memoDatas = new List<MemoData>();
+    
     private Coroutine currentStoryRoutine = null;
     
     protected override void Awake()
@@ -23,13 +25,14 @@ public class ThereAreAlwaysMemos : Fairytale_Card
     private void InitMemo()
     {
         availableMemoPosList = PoissonDiscSampling.GeneratePoints(1.8f, new Vector2(20, 5));
-        var prefab = Resources.Load<GameObject>("Prefabs/Memo");
+        var memoPrefab = Resources.Load<GameObject>("Prefabs/Memo");
 
         for (int i = 0; i < 3; i++)
         {
-            var instance = Instantiate(prefab, transform);
-            instance.transform.position = new Vector3(availableMemoPosList[i].x, availableMemoPosList[i].y, 0);
-            memoList.Add(instance.GetComponent<Memo>());
+            var newMemo = Instantiate(memoPrefab, transform).GetComponent<Memo>();
+            newMemo.InitMemo(memoDatas[Random.Range(0, memoDatas.Count)]);
+            newMemo.transform.position = new Vector3(availableMemoPosList[i].x, availableMemoPosList[i].y, 0);
+            memoList.Add(newMemo);
         }
     }
 
@@ -37,6 +40,7 @@ public class ThereAreAlwaysMemos : Fairytale_Card
     {
         var memoPrefab = Resources.Load<GameObject>("Prefabs/Memo");
         var newMemo = Instantiate(memoPrefab, transform).GetComponent<Memo>();
+        newMemo.InitMemo(memoDatas[Random.Range(0, memoDatas.Count)]);
         newMemo.transform.position = new Vector3(availableMemoPosList[cardData.goal - cardData.achievement].x, availableMemoPosList[cardData.goal - cardData.achievement].y, -10);
         memoList.Add(newMemo);
 
