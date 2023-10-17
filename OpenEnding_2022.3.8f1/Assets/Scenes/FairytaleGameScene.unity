@@ -612,6 +612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1654405866}
   - component: {fileID: 1654405868}
+  - component: {fileID: 1654405871}
   - component: {fileID: 1654405867}
   - component: {fileID: 1654405869}
   - component: {fileID: 1654405870}
@@ -693,6 +694,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curFace: 0
   isStartFlip: 0
+--- !u!114 &1654405871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654405863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b89a49ccd98754b8c620c265891c59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  successCardCount: 0
+  giveUpCardCount: 0
+  successCardList: 
+  giveUpCardList: 
 --- !u!1 &1829183953
 GameObject:
   m_ObjectHideFlags: 0
