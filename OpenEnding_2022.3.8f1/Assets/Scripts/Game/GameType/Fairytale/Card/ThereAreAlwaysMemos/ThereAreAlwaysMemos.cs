@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,13 +18,11 @@ public class ThereAreAlwaysMemos : Fairytale_Card
         base.Awake();
 #endif
         InitMemo();
-        cardData.goal = 3;
-        cardData.achievement = 0;
     }
 
     private void InitMemo()
     {
-        availableMemoPosList = PoissonDiscSampling.GeneratePoints(1.8f, new Vector2(8, 5));
+        availableMemoPosList = PoissonDiscSampling.GeneratePoints(1.8f, new Vector2(20, 5));
         var prefab = Resources.Load<GameObject>("Prefabs/Memo");
 
         for (int i = 0; i < 3; i++)
@@ -34,37 +33,59 @@ public class ThereAreAlwaysMemos : Fairytale_Card
         }
     }
 
-    private void AddMemo()
+    private IEnumerator AddMemo()
     {
-        var prefab = Resources.Load<GameObject>("Prefabs/Memo");
-        var instance = Instantiate(prefab, transform);
-        instance.transform.position = new Vector3(availableMemoPosList[cardData.goal - cardData.achievement].x, availableMemoPosList[cardData.goal - cardData.achievement].y, 0);
-        memoList.Add(instance.GetComponent<Memo>());
-
-        camFollow.position = new Vector3(instance.transform.position.x, camFollow.position.y, 0);
+        var memoPrefab = Resources.Load<GameObject>("Prefabs/Memo");
+        var newMemo = Instantiate(memoPrefab, transform).GetComponent<Memo>();
+        newMemo.transform.position = new Vector3(availableMemoPosList[cardData.goal - cardData.achievement].x, availableMemoPosList[cardData.goal - cardData.achievement].y, -10);
+        memoList.Add(newMemo);
 
         cardData.achievement--;
+        
+        yield return new WaitUntil(() => cardData.displayedFace == Define.DisplayedFace.Head);
+        yield return new WaitForSecondsRealtime(3f);
+        
+        camFollow.position = new Vector3(newMemo.transform.position.x, camFollow.position.y, 0);
+
+        yield return new WaitForSecondsRealtime(1f);
+
+        newMemo.Attach();
+
+        foreach (var memo in memoList)
+        {
+            if(memo == newMemo) continue;
+            
+            float delay = Vector3.Distance(newMemo.transform.position, memo.transform.position) - 9.5f;
+            memo.Flutter(delay);
+        }
     }
 
-    private void RemoveMemo()
+    private IEnumerator RemoveMemo()
     {
         var targetMemo = memoList[cardData.goal - cardData.achievement - 1];
         memoList.Remove(targetMemo);
-        Destroy(targetMemo.gameObject);
-
-        camFollow.position = new Vector3(targetMemo.transform.position.x, camFollow.position.y, 0);
-        
         cardData.achievement++;
         
+        camFollow.position = new Vector3(targetMemo.transform.position.x, camFollow.position.y, 0);
+        
+        yield return new WaitUntil(() => cardData.displayedFace == Define.DisplayedFace.Head);
+        yield return new WaitForSecondsRealtime(3f);
+        
+        targetMemo.Remove();
+        
+        foreach (var memo in memoList)
+        {
+            float delay = Vector3.Distance(targetMemo.transform.position, memo.transform.position) * 0.3f;
+            memo.Flutter(delay);
+        }
+
+        yield return new WaitForSecondsRealtime(3f);
+
+        if (cardData.goal <= cardData.achievement) yield break;
         targetMemo = memoList[cardData.goal - cardData.achievement - 1];
         camFollow.position = new Vector3(targetMemo.transform.position.x, camFollow.position.y, 0);
     }
 
-    private void ShowResult()
-    {
-        
-    }
-    
     [ContextMenu("FuncTest/ShowNextStep")]
     public override void StoryUnfoldsByTimeStep(int timeStep)
     {
@@ -77,19 +98,12 @@ public class ThereAreAlwaysMemos : Fairytale_Card
         {
             case Define.Story.TakeOneStep:
                 if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
-                //currentStoryRoutine = StartCoroutine(TortoiseRunFast());
-                RemoveMemo();
+                currentStoryRoutine = StartCoroutine(RemoveMemo());
                 break;
             case Define.Story.TakeStepBack:
                 if(currentStoryRoutine != null) StopCoroutine(currentStoryRoutine);
-                //currentStoryRoutine = StartCoroutine(TortoiseDance());
-                AddMemo();
+                currentStoryRoutine = StartCoroutine(AddMemo());
                 break;
-        }
-
-        if (cardData.achievement == cardData.goal)
-        {
-            ShowResult();
         }
     }
 }

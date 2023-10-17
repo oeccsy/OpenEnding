@@ -47,14 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   memoData:
     textContent: 
-    textPosition: {x: 0, y: 0}
-    textRotation: {x: 0, y: 0, z: 0, w: 0}
-    imageType: 0
-    imagePosition: {x: 0, y: 0}
-    imageRotation: {x: 0, y: 0, z: 0, w: 0}
-    boneRotation: {x: 0, y: 0, z: 0, w: 0}
-    boneSpeed: 0
-    boneMovingCycle: 0
+    sprite: {fileID: 0}
   boneTransform: {fileID: 8236956314754091830}
   text: {fileID: 4800676867521695346}
   image: {fileID: 4195365426332137833}
