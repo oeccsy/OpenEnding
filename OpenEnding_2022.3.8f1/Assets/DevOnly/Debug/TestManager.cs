@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class TestManager : Singleton<TestManager>
     [MenuItem("FuncTest/A_LoadFairytaleScene")]
     public static void LoadFairytaleScene()
     {
-        Connect_Scene.Instance.LoadFairytaleScene(null);
+        GameManager.Instance.GameFlow.LoadFairytaleScene();
     }
 
     [MenuItem("FuncTest/B_UnsetOverlay")]
@@ -25,16 +26,13 @@ public class TestManager : Singleton<TestManager>
     [MenuItem("FuncTest/D_CreateStory")]
     public static void CreateStory()
     {
-        var component = FindObjectOfType<TheHareAndTheTortoise>();
-        component.CreateStoryLine(5, 15);
+        Fairytale_Scene.Instance.card.cardData.storyLine = Fairytale_StorylineFactory.GetStoryLine(3, 12);
     }
     
     [MenuItem("FuncTest/E_ShowNextCard")]
     public static void ShowNextCard()
     {
-        var component = FindObjectOfType<TheHareAndTheTortoise>();
-        component.StoryUnfoldsByTimeStep(component.cardData.timeStep);
-        component.cardData.timeStep++;
+
     }
 
     [MenuItem("FuncTest/F_GrayScale")]
@@ -58,17 +56,36 @@ public class TestManager : Singleton<TestManager>
     [MenuItem("FuncTest/I_CreateStory")]
     public static void CreateStory_Memo()
     {
-        var component = FindObjectOfType<ThereAreAlwaysMemos>();
-        component.CreateStoryLine(3, 15);
+        Fairytale_Scene.Instance.card.cardData.storyLine = Fairytale_StorylineFactory.GetStoryLine(3, 12);
     }
     
     [MenuItem("FuncTest/J_ShowNextCard")]
     public static void ShowNextCard_Memo()
     {
-        var component = FindObjectOfType<ThereAreAlwaysMemos>();
-        component.StoryUnfoldsByTimeStep(component.cardData.timeStep);
-        component.cardData.timeStep++;
+
     }
+    
+    [MenuItem("FuncTest/K_ShowSuccessSceneUI")]
+    public static void ShowSuccessSceneUI()
+    {
+        UIManager.Instance.SceneUIRoot = GameObject.Find("SceneUIRoot").transform;
+        UIManager.Instance.ShowSceneUI("Prefabs/SuccessUICanvas", 0);
+    }
+    
+    [MenuItem("FuncTest/L_ResultPopup")]
+    public static void ShowResultPopup()
+    {
+        UIManager.Instance.PopupUIRoot = GameObject.Find("PopupUIRoot").transform;
+        UIManager.Instance.ShowPopup("Prefabs/ResultPopupCanvas", 9);
+    }
+    
+    [MenuItem("FuncTest/M_GameExit")]
+    public static void GameExit()
+    {
+        GameManager.Instance.GameFlow.LoadConnectScene();
+    }
+    
+    
 
 }
 #endif
