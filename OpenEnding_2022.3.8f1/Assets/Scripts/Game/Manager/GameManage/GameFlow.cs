@@ -23,4 +23,32 @@ public class GameFlow : MonoBehaviour
 
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] {0, 1, 0}));
     }
+    
+    public void LoadFairytaleScene()
+    {
+        IEnumerator LoadFairytaleSceneRoutine()
+        {
+            Overlay.SetActiveOverlay();
+            yield return new WaitForSeconds(3f);
+            SceneManager.LoadScene("FairytaleGameScene");
+            yield return new WaitForSeconds(1f);
+            Overlay.UnsetActiveOverlay();
+        }
+
+        StartCoroutine(LoadFairytaleSceneRoutine());
+    }
+    
+    public void LoadConnectScene()
+    {
+        IEnumerator LoadConnectSceneRoutine()
+        {
+            Overlay.SetActiveOverlay();
+            yield return new WaitForSeconds(3f);
+            SceneManager.LoadScene("ConnectScene");
+            yield return new WaitForSeconds(1f);
+            Overlay.UnsetActiveOverlay();
+        }
+
+        StartCoroutine(LoadConnectSceneRoutine());
+    }
 }

@@ -25,7 +25,7 @@ public class Connect_PacketHandler : Singleton<Connect_PacketHandler>
         _sceneFunctions = new Function[]
         {
             Connect_Scene.Instance.SynchronizeDevicesWithAnimation,
-            Connect_Scene.Instance.LoadFairytaleScene
+            (bytes) => GameManager.Instance.GameFlow.LoadFairytaleScene()
         };
         
         _classDict = new Dictionary<byte, Function[]>

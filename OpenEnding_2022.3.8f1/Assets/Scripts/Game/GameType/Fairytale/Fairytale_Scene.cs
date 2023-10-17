@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Fairytale_Scene : Singleton<Fairytale_Scene>
 {
     public Fairytale_Card card;
+    public FairyTale_ResultPopup resultPopup;
 
     protected override void Awake()
     {
@@ -40,11 +41,6 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
         card.cardData.cardType = Define.FairyTaleGameCardType.ThereAreAlwaysMemos;
     }
 
-    public void ShowPlayerCard()
-    {
-        Overlay.UnsetActiveOverlay();
-    }
-
     public void SetSceneGrayScale()
     {
         PostProcess.SetPostProcess(Define.PostProcess.GrayScale);
@@ -52,16 +48,26 @@ public class Fairytale_Scene : Singleton<Fairytale_Scene>
 
     public void ShowSuccessSceneUI()
     {
-        UIManager.Instance.ShowSceneUI("Prefabs/SuccessUICanvas");
+        UIManager.Instance.ShowSceneUI("Prefabs/SuccessUICanvas", 0);
     }
 
     public void ShowResultPopup()
     {
-        var instance = UIManager.Instance.ShowPopup("Prefabs/ResultPopupCanvas", 1);
-        var ui = instance.GetComponentInChildren<FairyTale_ResultPopup>();
+        var instance = UIManager.Instance.ShowPopup("Prefabs/ResultPopupCanvas", 9);
+        resultPopup = instance.GetComponentInChildren<FairyTale_ResultPopup>();
         
         var gameState = GameManager.Instance.GameState as Fairytale_GameState;
         var successCardCount = gameState.successCardCount;
-        ui.RefreshSuccessCountText(successCardCount);
+        resultPopup.RefreshSuccessCountText(successCardCount);
+    }
+
+    public void HideResultPopup()
+    {
+        resultPopup.Hide();
+    }
+
+    public void Temp()
+    {
+        
     }
 }

@@ -35,10 +35,11 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
         {
             (bytes) => FairytaleScene.TheHareAndTheTortoise(),
             (bytes) => FairytaleScene.ThereAreAlwaysMemos(),
-            (bytes) => FairytaleScene.ShowPlayerCard(),
+            (bytes) => FairytaleScene.Temp(),
             (bytes) => FairytaleScene.SetSceneGrayScale(),
             (bytes) => FairytaleScene.ShowSuccessSceneUI(),
             (bytes) => FairytaleScene.ShowResultPopup(),
+            (bytes) => FairytaleScene.HideResultPopup(),
             (bytes) => GameFlow.LoadConnectScene()
         };
 

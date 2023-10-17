@@ -55,7 +55,7 @@ public class Fairytale_GameMode : GameMode
         ShowResult();
         yield return new WaitForSecondsRealtime(5f);
         HideResult();
-        yield return new WaitForSecondsRealtime(5f);
+        yield return new WaitForSecondsRealtime(2f);
         LoadConnectScene();
     }
 
@@ -165,6 +165,7 @@ public class Fairytale_GameMode : GameMode
             {
                 StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 3, 0 }));
                 cardContainer.SetCardGiveUp(card.Color);
+                (GameManager.Instance.GameState as Fairytale_GameState).AddGiveUpCard(card.cardType);
             }
         }
         
@@ -174,6 +175,7 @@ public class Fairytale_GameMode : GameMode
             {
                 StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 4, 0}));
                 cardContainer.SetCardSuccess(card.Color);
+                (GameManager.Instance.GameState as Fairytale_GameState).AddSuccessCard(card.cardType);
             }
         }
         
@@ -202,12 +204,12 @@ public class Fairytale_GameMode : GameMode
     
     private void HideResult()
     {
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 5, 0 }));
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 6, 0 }));
     }
 
     private void LoadConnectScene()
     {
         
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 6, 0 }));
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 7, 0 }));
     }
 }

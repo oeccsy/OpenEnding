@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Fairytale_GameState : GameState
 {
@@ -27,7 +28,10 @@ public class Fairytale_GameState : GameState
     
     public void SetGameState(int successCardCount, int giveUpCardCount)
     {
+        $"SetGameState".Log();
         this.successCardCount = successCardCount;
         this.giveUpCardCount = giveUpCardCount;
+
+        $"SetGameState : {this.successCardCount}, {this.giveUpCardCount}".Log();
     }
 }
