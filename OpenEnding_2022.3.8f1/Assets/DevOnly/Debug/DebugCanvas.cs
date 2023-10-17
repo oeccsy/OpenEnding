@@ -19,7 +19,7 @@ public class DebugCanvas : Singleton<DebugCanvas>
 
     public void InitDebugCanvas()
     {
-        transform.SetParent(GameObject.Find("DontDestroyOnloadContainer").transform);
+        transform.SetParent(DontDestroyOnLoadContainer.Instance.transform);
         
         if(_canvas == null) _canvas = gameObject.AddComponent<Canvas>();
         _canvas.renderMode = RenderMode.ScreenSpaceCamera;
