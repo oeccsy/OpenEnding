@@ -7,14 +7,15 @@ using UnityEngine.UI;
 
 public class Overlay : MonoBehaviour
 {
-    public static Image image;
-    private Canvas _canvas;
+    public static RawImage image;
     public static Sequence overlaySequence;
     public static bool isOverlayActive = false;
+    
+    private Canvas _canvas;
 
     private void Awake()
     {
-        image = GetComponent<Image>();
+        image = GetComponent<RawImage>();
         _canvas = transform.parent.GetComponent<Canvas>();
 
         SceneManager.sceneLoaded += (scene, mode) => SetCanvas();

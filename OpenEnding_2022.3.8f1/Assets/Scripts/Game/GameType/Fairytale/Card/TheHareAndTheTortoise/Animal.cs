@@ -1,41 +1,47 @@
-﻿using System.Linq.Expressions;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Animal : MonoBehaviour
 {
     public Define.Act curAction = Define.Act.Walk;
     public Define.Shape curShape = Define.Shape.Eyes_Blink;
+    public float speed;
     
-    private Animator animator;
+    private Animator _animator;
+    public Orbit orbit;
     
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-        ActNaturally(curAction);
-        Shape(curShape);
+        _animator = GetComponent<Animator>();
+        orbit = GetComponent<Orbit>();
+        ActNaturally(Define.Act.Walk);
+        Shape(Define.Shape.Eyes_Blink);
+    }
+
+    public void Update()
+    {
+        orbit.Theta += speed * Time.deltaTime;
     }
 
     public void ActImmediately(Define.Act act)
     {
         curAction = act;
-        animator.Play(act.ToString());
+        _animator.Play(act.ToString());
     }
     public void ActNaturally(Define.Act act, float transitionDuration = 0.5f)
     {
         curAction = act;
-        animator.CrossFade(act.ToString(), transitionDuration);
+        _animator.CrossFade(act.ToString(), transitionDuration);
     }
 
     public void ActWithNormalizedTime(Define.Act act, float normalizedTime = 0.2f)
     {
         curAction = act;
-        animator.CrossFade(act.ToString(), 0.5f, -1, normalizedTime);
+        _animator.CrossFade(act.ToString(), 0.5f, -1, normalizedTime);
     }
 
     public void Shape(Define.Shape shape)
     {
         curShape = shape;
-        animator.Play(shape.ToString());
+        _animator.Play(shape.ToString());
     }
 }

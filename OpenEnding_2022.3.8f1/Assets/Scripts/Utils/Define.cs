@@ -31,13 +31,20 @@ public class Define
         Tail
     }
 
-    public enum FairyTailGameCardType
+    public enum FairyTaleGameCardType
     {
         None = -1,
         TheHareAndTheTortoise = 0,
-        TheNumber
+        ThereAreAlwaysMemos
     }
-    
+
+    public enum FairyTaleGameCardStatus
+    {
+        Playing = 0,
+        Success = 1,
+        GiveUp = 2
+    }
+
     public enum SealGameStep
     {
         GameReady,
@@ -65,6 +72,12 @@ public class Define
     {
         Main,
         UI
+    }
+
+    public enum PostProcess
+    {
+        None,
+        GrayScale
     }
 
     public enum PacketIndex
@@ -108,16 +121,32 @@ public class Define
         Eyes_LookIn,
         Eyes_LookOut,
         Eyes_LookUp,
-        Eyes_Rabid,
+        Eyes_Rabid = 10,
         Eyes_Sad,
         Eyes_Shrink,
         Eyes_Sleep,
         Eyes_Spin,
         Eyes_Squint,
         Eyes_Trauma,
-        Eyes_Sweat_L,
-        Eyes_Sweat_R,
-        Eyes_Teardrop_L,
-        Eyes_Teardrop_R = 20
+        Sweat_L,
+        Sweat_R,
+        Teardrop_L,
+        Teardrop_R = 20
+    }
+
+    public enum Story
+    {
+        LoseAll,
+        Standstill,
+        TakeStepBack,
+        TakeOneStep
+    }
+
+    public enum MemoType
+    {
+        Book,
+        Drawing,
+        Studying,
+        
     }
 }

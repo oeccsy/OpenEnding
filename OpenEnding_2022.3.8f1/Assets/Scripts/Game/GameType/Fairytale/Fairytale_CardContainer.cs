@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [Serializable]
 public class Fairytale_CardContainer
@@ -9,78 +10,94 @@ public class Fairytale_CardContainer
     public delegate void CardFaceHandler();
     public event CardFaceHandler OnAllCardHead;
     public event CardFaceHandler OnAllCardTail;
-    public event CardFaceHandler OnFaceMixed;
     
-    private int _headCount = 0;
-    private int _tailCount = 0;
-
+    public int playingCardCount = 0;
+    public int headCount = 0;
+    public int tailCount = 0;
+    
+    public bool IsAllCardHead => headCount == playingCardCount;
+    public bool IsAllCardTail => tailCount == playingCardCount;
+    
     public void InitFaceCounter()
     {
-        _headCount = 0;
-        _tailCount = 0;
-        
-        foreach (var cardData in cardList)
-        {
-            switch (cardData.displayedFace)
-            {
-                case Define.DisplayedFace.Head :
-                    _headCount++;
-                    break;
-                case Define.DisplayedFace.Tail :
-                    _tailCount++;
-                    break;
-            }
-        }
+        playingCardCount = cardList.Count(cardData => cardData.cardStatus == Define.FairyTaleGameCardStatus.Playing);
+        headCount = cardList.Count(cardData => cardData.displayedFace == Define.DisplayedFace.Head);
+        tailCount = cardList.Count(cardData => cardData.displayedFace == Define.DisplayedFace.Tail);
+    }
 
-        OnAllCardHead += () => "OnAllCardHead".Log();
-        OnAllCardTail += () => "OnAllCardTail".Log();
+    public void SetCardHead(ColorPalette.ColorName targetColor)
+    {
+        var cardData = cardList.Single(cardData => cardData.Color == targetColor);
+        
+        if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
+        if (cardData.displayedFace == Define.DisplayedFace.Head) return;
+        
+        cardData.displayedFace = Define.DisplayedFace.Head;
+        
+        headCount++;
+        tailCount--;
+                
+        if (headCount == playingCardCount)
+        {
+            OnAllCardHead?.Invoke();
+        }
     }
     
-    public void SetCardHead(ColorPalette.ColorName targetDeviceColor)
+    public void SetCardTail(ColorPalette.ColorName targetColor)
     {
-        $"Set {targetDeviceColor} Head".Log();
+        var cardData = cardList.Single(cardData => cardData.Color == targetColor);
+
+        if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
+        if (cardData.displayedFace == Define.DisplayedFace.Tail) return;
         
-        foreach (var cardData in cardList)
-        {
-            if (cardData.color == targetDeviceColor)
-            {
-                cardData.displayedFace = Define.DisplayedFace.Head;
-                _headCount++;
-                _tailCount--;
+        cardData.displayedFace = Define.DisplayedFace.Tail;
+        
+        headCount--;
+        tailCount++;
                 
-                if (_tailCount == 0)
-                {
-                    OnAllCardHead?.Invoke();
-                }
-                else
-                {
-                    OnFaceMixed?.Invoke();
-                }
-            }
+        if (tailCount == playingCardCount)
+        {
+            OnAllCardTail?.Invoke();
         }
     }
-
-    public void SetCardTail(ColorPalette.ColorName targetDeviceColor)
+    
+    public void SetCardSuccess(ColorPalette.ColorName targetColor)
     {
-        $"Set {targetDeviceColor} Tail".Log();
+        var cardData = cardList.Single(cardData => cardData.Color == targetColor);
+
+        if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
+
+        cardData.cardStatus = Define.FairyTaleGameCardStatus.Success;
+        playingCardCount--;
         
-        foreach (var cardData in cardList)
+        switch (cardData.displayedFace)
         {
-            if (cardData.color == targetDeviceColor)
-            {
-                cardData.displayedFace = Define.DisplayedFace.Tail;
-                _headCount--;
-                _tailCount++;
-                
-                if (_headCount == 0)
-                {
-                    OnAllCardTail?.Invoke();
-                }
-                else
-                {
-                    OnFaceMixed?.Invoke();
-                }
-            }
+            case Define.DisplayedFace.Head :
+                headCount--;
+                break;
+            case Define.DisplayedFace.Tail :
+                tailCount--;
+                break;
+        }
+    }
+    
+    public void SetCardGiveUp(ColorPalette.ColorName targetColor)
+    {
+        var cardData = cardList.Single(cardData => cardData.Color == targetColor);
+
+        if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
+
+        cardData.cardStatus = Define.FairyTaleGameCardStatus.GiveUp;
+        playingCardCount--;
+        
+        switch (cardData.displayedFace)
+        {
+            case Define.DisplayedFace.Head :
+                headCount--;
+                break;
+            case Define.DisplayedFace.Tail :
+                tailCount--;
+                break;
         }
     }
 }

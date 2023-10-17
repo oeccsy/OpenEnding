@@ -3,54 +3,30 @@ using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
-public class Fairytale_Card : MonoBehaviour
+public abstract class Fairytale_Card : MonoBehaviour
 {
     public Fairytale_CardData cardData;
+
     protected virtual void Awake()
     {
-        SetFlipEvent();
-        Flip.Instance.SetEnableGyroSensor(true);
-        Fairytale_PacketHandler.Instance.ownCard = this;
+        cardData = new Fairytale_CardData(NetworkManager.Instance.ownDeviceData);
     }
 
-    public virtual void Update()
+    private void Start()
     {
-        if (Overlay.isOverlayActive) return;
-        if (!Input.gyro.enabled) return;
-
-        float alpha = 1.086956f * Input.gyro.gravity.z;
-        Overlay.image.color = Color.black * alpha;
+        var flip = GameManager.Instance.PlayerController.flip;
+        
+        flip.OnStartFlipToHead += () => cardData.displayedFace = Define.DisplayedFace.Head;
+        flip.OnFlipToTail += () => cardData.displayedFace = Define.DisplayedFace.Tail;
     }
 
-    public void SetFlipEvent()
+    public void InitCardStory(int goal, int runningTime)
     {
-        Flip.Instance.OnFlipToTail += NotifyFlipToTail;
-        Flip.Instance.OnStartFlipToHead += NotifyStartFlipToHead;
+        cardData.goal = goal;
+        cardData.runningTime = runningTime;
+        cardData.storyLine = Fairytale_StorylineFactory.GetStoryLine(goal, runningTime);
     }
 
-    public void UnsetFlipEvent()
-    {
-        Flip.Instance.OnFlipToTail -= NotifyFlipToTail;
-        Flip.Instance.OnStartFlipToHead -= NotifyStartFlipToHead;
-    }
-
-    public void NotifyFlipToTail()
-    {
-        StartCoroutine(NetworkManager.Instance.SendBytesToServer(new byte[] {1, 1, (byte)NetworkManager.Instance.ownDeviceData.colorOrder}));
-    }
-    
-    public void NotifyStartFlipToHead()
-    {
-        StartCoroutine(NetworkManager.Instance.SendBytesToServer(new byte[] {1, 0, (byte)NetworkManager.Instance.ownDeviceData.colorOrder}));
-    }
-
-    public void Vibrate()
-    {
-        Handheld.Vibrate();
-    }
-
-    public virtual void ShowNextStep()
-    {
-        "Just Card ShowNextStep".Log();
-    }
+    public abstract void StoryUnfoldsByTimeStep(int timeStep);
+    public abstract void GiveUp();
 }

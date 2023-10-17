@@ -36,6 +36,8 @@ public partial class NetworkManager : Singleton<NetworkManager>
 
     private void NetworkingInit()
     {
+        if (networking == null) networking = gameObject.AddComponent<Networking>();
+        
         networking.Initialize((error) =>
         {
             switch (error)
@@ -80,12 +82,14 @@ public partial class NetworkManager : Singleton<NetworkManager>
     public IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, Byte[] bytes)
     {
         if (connectType != Define.ConnectType.Server) yield break;
+   
         yield return new WaitWhile(() => isWritingData);
         isWritingData = true;
 
         if (targetDevice == ownDeviceData)
         {
             OnReceiveDataFromServer?.Invoke(null, null, bytes);
+            isWritingData = false;
         }
         else
         {
@@ -100,26 +104,24 @@ public partial class NetworkManager : Singleton<NetworkManager>
     {
         if (connectType != Define.ConnectType.Server) yield break;
         
-        yield return new WaitWhile(() => isWritingData);
-        isWritingData = true;
-
         foreach (var targetDevice in connectedDeviceList)
         {
+            yield return new WaitWhile(() => isWritingData);
+            isWritingData = true;
+            
             if (targetDevice == ownDeviceData)
             {
                 OnReceiveDataFromServer?.Invoke(null, null, bytes);
+                isWritingData = false;
             }
             else
             {
-                $"Send to {(ColorPalette.ColorName)targetDevice.colorOrder} {bytes[0]}{bytes[1]}".Log();
                 networking.WriteDevice(targetDevice, bytes, () =>
                 {
-                    $"Send Done {(ColorPalette.ColorName)targetDevice.colorOrder} {bytes[0]}{bytes[1]}".Log();
+                    isWritingData = false;
                 });     
             }
         }
-        
-        isWritingData = false;
     }
     
     public IEnumerator SendBytesExceptOneDevice(Networking.NetworkDevice skipDevice, Byte[] bytes)

@@ -1,40 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class Fairytale_GameMode : GameMode
 {
     public Fairytale_CardContainer cardContainer = new Fairytale_CardContainer();
     
     private int _timeStep = 0;
-    private int _timeStepLimit = 1;
-    
-    private bool _isAllCardTail = false;
-    private bool _isTimerExpired = false;
-    private bool _isAllCardHead = false;
+    private int _totalCardFlip = 0;
+    private int _maxCardFlip = 0;
 
     private Coroutine _gameRoutine = null;
     private Coroutine _timer = null;
+    private bool _isTimerExpired = false;
 
     private void Awake()
     {
         GameManager.Instance.GameMode = this;
-        
-        cardContainer.OnAllCardHead += () =>
-        {
-            _isAllCardHead = true;
-            _isAllCardTail = false;
-        };
-        cardContainer.OnAllCardTail += () =>
-        {
-            _isAllCardHead = false;
-            _isAllCardTail = true;
-        };
-        cardContainer.OnFaceMixed += () =>
-        {
-            _isAllCardHead = false;
-            _isAllCardTail = false;
-        };
 
         if (NetworkManager.Instance.connectType == Define.ConnectType.Server)
         {
@@ -44,101 +27,190 @@ public class Fairytale_GameMode : GameMode
     
     private IEnumerator GameRoutine()
     {
-        GameReady();
-        yield return new WaitForSecondsRealtime(0.5f);
-        ShowPlayerCard();
+        SelectCardTypes();
+        yield return CreateStories();
 
-        while (_timeStep < _timeStepLimit)
+        while (_totalCardFlip < _maxCardFlip)
         {
-            yield return new WaitUntil(() => _isAllCardTail);
-            NotifyCardFlipAvailable();
-            yield return new WaitForSecondsRealtime(0.5f);
-            UpdateCard();
-            StartTimerForDecide();
-            yield return new WaitUntil(() => _isTimerExpired || _isAllCardHead);
-            UpdateData();
-            UpdateTailCard();
-            NotifyCardFlipUnavailable();
-            if (_isAllCardTail) break;
+            yield return new WaitUntil(() => cardContainer.IsAllCardTail);
+            yield return TheCardStoriesUnfolds(_timeStep);
+            yield return NotifyCardFlipAvailable();
+            
+            StartTimerForDecide(10f);
+            yield return new WaitUntil(() => _isTimerExpired || cardContainer.IsAllCardHead);
+            ResetTimer();
+            UpdateGameData();
+            
+            yield return UpdateCardDataByFace();
+            yield return SynchronizeState();
+            
+            yield return NotifyCardFlipUnavailable();
+            if (cardContainer.IsAllCardTail) break;
         }
         
-        ShowResult();
+        yield return ShowResult();
+        yield return HideResult();
+        yield return LoadConnectScene();
     }
 
-    private void GameReady()
+    private void SelectCardTypes()
     {
         "GameReady".Log();
-        _timeStepLimit = Random.Range(3, 5);
-
-        var cardTypes = new List<Define.FairyTailGameCardType>();
-        cardTypes.Add(Define.FairyTailGameCardType.TheHareAndTheTortoise);
-        cardTypes.Add(Define.FairyTailGameCardType.TheNumber);
+        
+        var cardTypes = new List<Define.FairyTaleGameCardType>();
+        cardTypes.Add(Define.FairyTaleGameCardType.TheHareAndTheTortoise);
+        cardTypes.Add(Define.FairyTaleGameCardType.ThereAreAlwaysMemos);
         
         Utils.ListRandomShuffle(cardTypes);
 
         foreach (var device in NetworkManager.Instance.connectedDeviceList)
         {
             var newCard = new Fairytale_CardData(device);
-            newCard.cardType = cardTypes[(int)newCard.color];
+            newCard.cardType = cardTypes[(int)newCard.Color];
             cardContainer.cardList.Add(newCard);
-
+            
             StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] {0, (byte)newCard.cardType}));
         }
-        
+
         cardContainer.InitFaceCounter();
+
+        _timeStep = 0;
+        _totalCardFlip = 0;
+        _maxCardFlip = Random.Range(21, 31);
+        $"maxCardFlip : {_maxCardFlip}".Log();
     }
 
-    private void ShowPlayerCard()
+    private IEnumerator CreateStories()
     {
-        "ShowPlayerCard".Log();
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 2, 0 }));
+        foreach (var cardData in cardContainer.cardList)
+        {
+            cardData.runningTime += 10;
+        }
+
+        for (int i = 0; i < Random.Range(5, 10); i++)
+        {
+            var randomCardIndex = Random.Range(0, cardContainer.cardList.Count);
+            cardContainer.cardList[randomCardIndex].runningTime += 1;
+        }
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        
+        foreach (var cardData in cardContainer.cardList)
+        {
+            StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(cardData.networkDevice, new byte[] { 2, 1, (byte)cardData.runningTime }));    
+        }
     }
 
-    private void NotifyCardFlipAvailable()
+    private IEnumerator TheCardStoriesUnfolds(int timeStep)
     {
-        "NotifyCardFlipAvailable".Log();
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 0, 0 }));
+        yield return new WaitForSecondsRealtime(0.5f);
+        
+        foreach (var card in cardContainer.cardList)
+        {
+            if (card.cardStatus == Define.FairyTaleGameCardStatus.Playing)
+            {
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 2, 0, (byte)timeStep }));    
+            }
+        }
     }
 
-    private void UpdateCard()
+    private IEnumerator NotifyCardFlipAvailable()
     {
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 1, 0 }));
+        yield return new WaitForSecondsRealtime(0.5f);
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 0, 0 }));
     }
 
-    private void StartTimerForDecide()
+    private void StartTimerForDecide(float timer)
     {
         IEnumerator Timer()
         {
-            yield return new WaitForSecondsRealtime(10f);
+            yield return new WaitForSecondsRealtime(timer);
             _isTimerExpired = true;
         }
         
         _isTimerExpired = false;
-        _isAllCardHead = false;
 
         _timer = StartCoroutine(Timer());
     }
 
-    private void UpdateData()
+    private void ResetTimer()
     {
         if(_timer != null) StopCoroutine(_timer);
         _isTimerExpired = false;
-        _timeStep++;
     }
 
-    private void UpdateTailCard()
+    private void UpdateGameData()
     {
+        _timeStep++;
+
+        foreach (var cardData in cardContainer.cardList)
+        {
+            if (cardData.displayedFace == Define.DisplayedFace.Head) _totalCardFlip++;
+        }
+
+        $"total card flip : {_totalCardFlip}".Log();
+    }
+
+    private IEnumerator UpdateCardDataByFace()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
         
+        foreach (var card in cardContainer.cardList)
+        {
+            if (card.displayedFace == Define.DisplayedFace.Tail && card.cardStatus == Define.FairyTaleGameCardStatus.Playing)
+            {
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 2, 2, 0 }));
+                cardContainer.SetCardGiveUp(card.Color);
+                (GameManager.Instance.GameState as Fairytale_GameState).AddGiveUpCard(card.cardType);
+            }
+        }
+        
+        foreach (var card in cardContainer.cardList)
+        {
+            if (card.displayedFace == Define.DisplayedFace.Head && card.runningTime - 1 == _timeStep)
+            {
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 3, 0}));
+                cardContainer.SetCardSuccess(card.Color);
+                (GameManager.Instance.GameState as Fairytale_GameState).AddSuccessCard(card.cardType);
+            }
+        }
+        
+        $"head : {cardContainer.headCount}".Log();
+        $"tail : {cardContainer.tailCount}".Log();
+    }
+
+    private IEnumerator SynchronizeState()
+    {
+        var gameState = GameManager.Instance.GameState as Fairytale_GameState;
+        int successCardCount = gameState.successCardCount;
+        int giveUpCardCount = gameState.giveUpCardCount;
+        
+        yield return new WaitForSecondsRealtime(0.5f);
+        
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 4, 0, (byte)successCardCount, (byte)giveUpCardCount }));
+    }
+
+    private IEnumerator NotifyCardFlipUnavailable()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 0, 0 }));
+    }
+
+    private IEnumerator ShowResult()
+    {
+        yield return new WaitForSecondsRealtime(10f);
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 4, 0 }));
     }
     
-    private void NotifyCardFlipUnavailable()
+    private IEnumerator HideResult()
     {
-        "NotifyCardFlipUnavailable".Log();
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 0, 0 }));
+        yield return new WaitForSecondsRealtime(5f);
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 5, 0 }));
     }
 
-    private void ShowResult()
+    private IEnumerator LoadConnectScene()
     {
-        "ShowResult".Log();
+        yield return new WaitForSecondsRealtime(2f);
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 5, 0, 0 }));
     }
 }

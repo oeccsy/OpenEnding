@@ -95,16 +95,4 @@ public class Connect_Scene : Singleton<Connect_Scene>
         selectedDevice.OnTouchDevice -= LeavePartyWithAnimation;
         selectedDevice.OnTouchDevice += SelectOwnDeviceWithAnimation;
     }
-
-    public void LoadFairytaleScene(Byte[] temp)
-    {
-        IEnumerator LoadFairytaleSceneRoutine()
-        {
-            Overlay.SetActiveOverlay();
-            yield return new WaitForSeconds(3f);
-            SceneManager.LoadScene("FairytaleGameScene");
-        }
-
-        StartCoroutine(LoadFairytaleSceneRoutine());
-    }
 }

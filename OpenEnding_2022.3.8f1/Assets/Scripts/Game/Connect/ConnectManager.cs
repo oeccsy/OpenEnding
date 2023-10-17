@@ -109,9 +109,7 @@ public class ConnectManager : Singleton<ConnectManager>
 
     private void RequestSynchronizeDevices(Networking.NetworkDevice temp)
     {
-        var packet = new List<byte>();
-        packet.Add(0);
-        packet.Add(0);
+        var packet = new List<byte> {0, 0};
         
         foreach (var device in NetworkManager.Instance.connectedDeviceList)
         {
