@@ -31,7 +31,6 @@ public class Fairytale_GameMode : GameMode
         yield return new WaitForSecondsRealtime(0.5f);
         CreateStories();
         yield return new WaitForSecondsRealtime(0.5f);
-        ShowPlayerCard();
 
         while (_totalCardFlip < _maxCardFlip)
         {
@@ -101,29 +100,24 @@ public class Fairytale_GameMode : GameMode
         
         foreach (var cardData in cardContainer.cardList)
         {
-            StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(cardData.networkDevice, new byte[] { 2, 2, (byte)cardData.runningTime }));    
+            StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(cardData.networkDevice, new byte[] { 2, 1, (byte)cardData.runningTime }));    
         }
     }
 
-    private void ShowPlayerCard()
-    {
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 2, 0 }));
-    }
-    
     private void TheCardStoriesUnfolds(int timeStep)
     {
         foreach (var card in cardContainer.cardList)
         {
             if (card.cardStatus == Define.FairyTaleGameCardStatus.Playing)
             {
-                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 2, 1, (byte)timeStep }));    
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 2, 0, (byte)timeStep }));    
             }
         }
     }
 
     private void NotifyCardFlipAvailable()
     {
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 0, 0 }));
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 0, 0 }));
     }
 
     private void StartTimerForDecide(float timer)
@@ -163,7 +157,7 @@ public class Fairytale_GameMode : GameMode
         {
             if (card.displayedFace == Define.DisplayedFace.Tail && card.cardStatus == Define.FairyTaleGameCardStatus.Playing)
             {
-                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 3, 0 }));
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 2, 0 }));
                 cardContainer.SetCardGiveUp(card.Color);
                 (GameManager.Instance.GameState as Fairytale_GameState).AddGiveUpCard(card.cardType);
             }
@@ -173,7 +167,7 @@ public class Fairytale_GameMode : GameMode
         {
             if (card.displayedFace == Define.DisplayedFace.Head && card.runningTime - 1 == _timeStep)
             {
-                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 4, 0}));
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(card.networkDevice, new byte[] { 0, 3, 0}));
                 cardContainer.SetCardSuccess(card.Color);
                 (GameManager.Instance.GameState as Fairytale_GameState).AddSuccessCard(card.cardType);
             }
@@ -189,27 +183,26 @@ public class Fairytale_GameMode : GameMode
         int successCardCount = gameState.successCardCount;
         int giveUpCardCount = gameState.giveUpCardCount;
         
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 3, (byte)successCardCount, (byte)giveUpCardCount }));
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 4, 0, (byte)successCardCount, (byte)giveUpCardCount }));
     }
 
     private void NotifyCardFlipUnavailable()
     {
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 2, 0, 0 }));
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 0, 0 }));
     }
 
     private void ShowResult()
     {
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 5, 0 }));
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 4, 0 }));
     }
     
     private void HideResult()
     {
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 6, 0 }));
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 5, 0 }));
     }
 
     private void LoadConnectScene()
     {
-        
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 7, 0 }));
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 5, 0, 0 }));
     }
 }

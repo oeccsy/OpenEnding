@@ -20,5 +20,12 @@ public abstract class Fairytale_Card : MonoBehaviour
         flip.OnFlipToTail += () => cardData.displayedFace = Define.DisplayedFace.Tail;
     }
 
+    public void InitCardStory(int goal, int runningTime)
+    {
+        cardData.goal = goal;
+        cardData.runningTime = runningTime;
+        cardData.storyLine = Fairytale_StorylineFactory.GetStoryLine(goal, runningTime);
+    }
+
     public abstract void StoryUnfoldsByTimeStep(int timeStep);
 }

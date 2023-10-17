@@ -18,73 +18,46 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
     public Fairytale_Card OwnCard => Fairytale_Scene.Instance.card;
     public Fairytale_GameState GameState => GameManager.Instance.GameState as Fairytale_GameState;
     public GameFlow GameFlow => GameManager.Instance.GameFlow;
-    
-    private Dictionary<byte, Function[]> _classDict;
-    
+
     private delegate void Function(byte[] bytes);
-    private Function[] _sceneFunctions;
-    private Function[] _cardContainerFunctions;
-    private Function[] _cardFunctions;
-    private Function[] _utilFunctions;
+    private Dictionary<Tuple<byte,byte>, Function> _funcDict;
+
 
     protected override void Awake()
     {
         base.Awake();
-
-        _sceneFunctions = new Function[]
-        {
-            (bytes) => FairytaleScene.TheHareAndTheTortoise(),
-            (bytes) => FairytaleScene.ThereAreAlwaysMemos(),
-            (bytes) => FairytaleScene.Temp(),
-            (bytes) => FairytaleScene.SetSceneGrayScale(),
-            (bytes) => FairytaleScene.ShowSuccessSceneUI(),
-            (bytes) => FairytaleScene.ShowResultPopup(),
-            (bytes) => FairytaleScene.HideResultPopup(),
-            (bytes) => GameFlow.LoadConnectScene()
-        };
-
-        _cardContainerFunctions = new Function[]
-        {
-            (bytes) => CardContainer.SetCardHead((ColorPalette.ColorName)bytes[0]),
-            (bytes) => CardContainer.SetCardTail((ColorPalette.ColorName)bytes[0])
-        };
         
-        _cardFunctions = new Function[]
+        _funcDict = new Dictionary<Tuple<byte,byte>, Function>
         {
-            (bytes) => DeviceUtils.Vibrate(),
-            (bytes) => OwnCard.StoryUnfoldsByTimeStep(bytes[0]),
-            (bytes) =>
-            {
-                OwnCard.cardData.goal = 3;
-                OwnCard.cardData.runningTime = bytes[0];
-                OwnCard.cardData.storyLine = Fairytale_StorylineFactory.GetStoryLine(3, bytes[0]);
-            }
-        };
+            {Tuple.Create<byte, byte>(0, 0), (bytes) => FairytaleScene.TheHareAndTheTortoise()},
+            {Tuple.Create<byte, byte>(0, 1), (bytes) => FairytaleScene.ThereAreAlwaysMemos()},
+            {Tuple.Create<byte, byte>(0, 2), (bytes) => FairytaleScene.SetSceneGrayScale()},
+            {Tuple.Create<byte, byte>(0, 3), (bytes) => FairytaleScene.ShowSuccessSceneUI()},
+            {Tuple.Create<byte, byte>(0, 4), (bytes) => FairytaleScene.ShowResultPopup()},
+            {Tuple.Create<byte, byte>(0, 5), (bytes) => FairytaleScene.HideResultPopup()},
 
-        _utilFunctions = new Function[]
-        {
-            (bytes) => DeviceUtils.Vibrate(),
-            (bytes) => GameState.AddSuccessCard((Define.FairyTaleGameCardType)bytes[0]),
-            (bytes) => GameState.AddGiveUpCard((Define.FairyTaleGameCardType)bytes[0]),
-            (bytes) => GameState.SetGameState(bytes[0], bytes[1])
-        };
+            {Tuple.Create<byte, byte>(1, 0), (bytes) => CardContainer.SetCardHead((ColorPalette.ColorName)bytes[0])},
+            {Tuple.Create<byte, byte>(1, 1), (bytes) => CardContainer.SetCardTail((ColorPalette.ColorName)bytes[0])},
             
-        _classDict = new Dictionary<byte, Function[]>
-        {
-            {0, _sceneFunctions},
-            {1, _cardContainerFunctions},
-            {2, _cardFunctions},
-            {3, _utilFunctions}
+            {Tuple.Create<byte, byte>(2, 0), (bytes) => OwnCard.StoryUnfoldsByTimeStep(bytes[0])},
+            {Tuple.Create<byte, byte>(2, 1), (bytes) => OwnCard.InitCardStory(3, bytes[0])},
+
+            {Tuple.Create<byte, byte>(3, 0), (bytes) => DeviceUtils.Vibrate()},
+            
+            {Tuple.Create<byte, byte>(4, 0), (bytes) => GameState.SetGameState(bytes[0], bytes[1])},
+
+            {Tuple.Create<byte, byte>(5, 0), (bytes) => GameFlow.LoadConnectScene()}
         };
-        
+
+
         NetworkManager.Instance.OnReceiveDataFromServer = ExecuteActionByPacket;
         NetworkManager.Instance.OnReceiveDataFromClient = ExecuteActionByPacket;
     }
 
     public void ExecuteActionByPacket(string clientName, string characteristic, byte[] bytes)
     {
-        var targetClass = _classDict[bytes[(byte)Define.PacketIndex.Class]];
-        var targetFunction = targetClass[bytes[(byte)Define.PacketIndex.Function]];
+        var funcKey = Tuple.Create<byte, byte>(bytes[0], bytes[1]);
+        var targetFunction = _funcDict[funcKey];
 
         List<Byte> byteList = new List<byte>(bytes);
         targetFunction.Invoke(byteList.GetRange(2, byteList.Count - 2).ToArray());
@@ -92,8 +65,8 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
 
     public void ExecuteActionByPacket(Networking.NetworkDevice device, string characteristic, byte[] bytes)
     {
-        var targetClass = _classDict[bytes[(byte)Define.PacketIndex.Class]];
-        var targetFunction = targetClass[bytes[(byte)Define.PacketIndex.Function]];
+        var funcKey = Tuple.Create<byte, byte>(bytes[0], bytes[1]);
+        var targetFunction = _funcDict[funcKey];
 
         List<Byte> byteList = new List<byte>(bytes);
         targetFunction.Invoke(byteList.GetRange(2, byteList.Count - 2).ToArray());

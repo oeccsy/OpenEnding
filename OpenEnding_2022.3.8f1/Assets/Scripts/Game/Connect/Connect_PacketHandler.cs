@@ -14,34 +14,32 @@ public class Connect_PacketHandler : Singleton<Connect_PacketHandler>
     // index 2 : 실행할 로직의 param
     // . . .
 
-    private Dictionary<byte, Function[]> _classDict;
+    private Connect_Scene ConnectScene => Connect_Scene.Instance;
+    private GameFlow GameFlow => GameManager.Instance.GameFlow;
+    
     private delegate void Function(byte[] bytes);
-    private Function[] _sceneFunctions;
+    private Dictionary<Tuple<byte,byte>, Function> _funcDict;
 
     protected override void Awake()
     {
         base.Awake();
         
-        _sceneFunctions = new Function[]
+        _funcDict = new Dictionary<Tuple<byte,byte>, Function>
         {
-            Connect_Scene.Instance.SynchronizeDevicesWithAnimation,
-            (bytes) => GameManager.Instance.GameFlow.LoadFairytaleScene()
+            {Tuple.Create<byte, byte>(0, 0), (bytes) => ConnectScene.SynchronizeDevicesWithAnimation(bytes)},
+            
+            {Tuple.Create<byte, byte>(1, 0), (bytes) => GameFlow.LoadFairytaleScene()}
         };
-        
-        _classDict = new Dictionary<byte, Function[]>
-        {
-            {0, _sceneFunctions}
-        };
-        
+
         NetworkManager.Instance.OnReceiveDataFromServer = ExecuteActionByPacket;
     }
 
     public void ExecuteActionByPacket(string clientName, string characteristic, byte[] bytes)
     {
-        var targetClass = _classDict[bytes[(byte)Define.PacketIndex.Class]];
-        var targetFunction = targetClass[bytes[(byte)Define.PacketIndex.Function]];
+        var funcKey = Tuple.Create<byte, byte>(bytes[0], bytes[1]);
+        var targetFunction = _funcDict[funcKey];
 
-        List<Byte> byteList = new List<byte>(bytes);
+        List<byte> byteList = new List<byte>(bytes);
         targetFunction.Invoke(byteList.GetRange(2, byteList.Count - 2).ToArray());
     }
 }
