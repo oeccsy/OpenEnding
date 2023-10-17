@@ -28,34 +28,29 @@ public class Fairytale_GameMode : GameMode
     private IEnumerator GameRoutine()
     {
         SelectCardTypes();
-        yield return new WaitForSecondsRealtime(0.5f);
-        CreateStories();
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return CreateStories();
 
         while (_totalCardFlip < _maxCardFlip)
         {
             yield return new WaitUntil(() => cardContainer.IsAllCardTail);
-            TheCardStoriesUnfolds(_timeStep);
-            yield return new WaitForSecondsRealtime(0.5f);
-            NotifyCardFlipAvailable();
+            yield return TheCardStoriesUnfolds(_timeStep);
+            yield return NotifyCardFlipAvailable();
+            
             StartTimerForDecide(10f);
             yield return new WaitUntil(() => _isTimerExpired || cardContainer.IsAllCardHead);
             ResetTimer();
             UpdateGameData();
-            UpdateCardDataByFace();
-            yield return new WaitForSecondsRealtime(0.5f);
-            SynchronizeState();
+            
+            yield return UpdateCardDataByFace();
+            yield return SynchronizeState();
+            
             if (cardContainer.IsAllCardTail) break;
-            yield return new WaitForSecondsRealtime(0.5f);
-            NotifyCardFlipUnavailable();
+            yield return NotifyCardFlipUnavailable();
         }
-
-        yield return new WaitForSecondsRealtime(5f);
-        ShowResult();
-        yield return new WaitForSecondsRealtime(5f);
-        HideResult();
-        yield return new WaitForSecondsRealtime(2f);
-        LoadConnectScene();
+        
+        yield return ShowResult();
+        yield return HideResult();
+        yield return LoadConnectScene();
     }
 
     private void SelectCardTypes()
@@ -85,7 +80,7 @@ public class Fairytale_GameMode : GameMode
         $"maxCardFlip : {_maxCardFlip}".Log();
     }
 
-    private void CreateStories()
+    private IEnumerator CreateStories()
     {
         foreach (var cardData in cardContainer.cardList)
         {
@@ -97,6 +92,8 @@ public class Fairytale_GameMode : GameMode
             var randomCardIndex = Random.Range(0, cardContainer.cardList.Count);
             cardContainer.cardList[randomCardIndex].runningTime += 1;
         }
+
+        yield return new WaitForSecondsRealtime(0.5f);
         
         foreach (var cardData in cardContainer.cardList)
         {
@@ -104,8 +101,10 @@ public class Fairytale_GameMode : GameMode
         }
     }
 
-    private void TheCardStoriesUnfolds(int timeStep)
+    private IEnumerator TheCardStoriesUnfolds(int timeStep)
     {
+        yield return new WaitForSecondsRealtime(0.5f);
+        
         foreach (var card in cardContainer.cardList)
         {
             if (card.cardStatus == Define.FairyTaleGameCardStatus.Playing)
@@ -115,8 +114,9 @@ public class Fairytale_GameMode : GameMode
         }
     }
 
-    private void NotifyCardFlipAvailable()
+    private IEnumerator NotifyCardFlipAvailable()
     {
+        yield return new WaitForSecondsRealtime(0.5f);
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 0, 0 }));
     }
 
@@ -151,8 +151,10 @@ public class Fairytale_GameMode : GameMode
         $"total card flip : {_totalCardFlip}".Log();
     }
 
-    private void UpdateCardDataByFace()
+    private IEnumerator UpdateCardDataByFace()
     {
+        yield return new WaitForSecondsRealtime(0.5f);
+        
         foreach (var card in cardContainer.cardList)
         {
             if (card.displayedFace == Define.DisplayedFace.Tail && card.cardStatus == Define.FairyTaleGameCardStatus.Playing)
@@ -177,32 +179,38 @@ public class Fairytale_GameMode : GameMode
         $"tail : {cardContainer.tailCount}".Log();
     }
 
-    private void SynchronizeState()
+    private IEnumerator SynchronizeState()
     {
         var gameState = GameManager.Instance.GameState as Fairytale_GameState;
         int successCardCount = gameState.successCardCount;
         int giveUpCardCount = gameState.giveUpCardCount;
         
+        yield return new WaitForSecondsRealtime(0.5f);
+        
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 4, 0, (byte)successCardCount, (byte)giveUpCardCount }));
     }
 
-    private void NotifyCardFlipUnavailable()
+    private IEnumerator NotifyCardFlipUnavailable()
     {
+        yield return new WaitForSecondsRealtime(0.5f);
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 3, 0, 0 }));
     }
 
-    private void ShowResult()
+    private IEnumerator ShowResult()
     {
+        yield return new WaitForSecondsRealtime(10f);
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 4, 0 }));
     }
     
-    private void HideResult()
+    private IEnumerator HideResult()
     {
+        yield return new WaitForSecondsRealtime(5f);
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 0, 5, 0 }));
     }
 
-    private void LoadConnectScene()
+    private IEnumerator LoadConnectScene()
     {
+        yield return new WaitForSecondsRealtime(2f);
         StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 5, 0, 0 }));
     }
 }
