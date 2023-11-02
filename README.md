@@ -7,21 +7,44 @@ OpenEnding은 코로나 이후로 잃어버린 오프라인 모임의 즐거움�
 ```
 
 <div align="center">
-<table>
-  <tr>
-    <th><img src="https://github.com/oeccsy/OpenEnding/assets/77562357/c41d5f4e-7e1c-423c-acdc-8dff069df78e" width="360px" height="640px"/></th>
-    <th width="270px" height="600px"> => </th>
-    <th><img src="https://github.com/oeccsy/OpenEnding/assets/77562357/374852f5-ceb2-4307-8b2d-56f471aa5224" width="360px" height="640px"/></th>
-  </tr>
-  <tr>
-    <td align="center">▲ Open</td>
-    <td align="center" width="270px"> </td>
-    <td align="center">▲ Ending</td>
-  </tr>
-</table>
+  <table>
+    <tr>
+      <th><img src="https://github.com/oeccsy/OpenEnding/assets/77562357/c41d5f4e-7e1c-423c-acdc-8dff069df78e" width="360px" height="640px"/></th>
+      <th width="270px" height="600px"> => </th>
+      <th><img src="https://github.com/oeccsy/OpenEnding/assets/77562357/374852f5-ceb2-4307-8b2d-56f471aa5224" width="360px" height="640px"/></th>
+    </tr>
+    <tr>
+      <td align="center">▲ Open</td>
+      <td align="center" width="270px"> </td>
+      <td align="center">▲ Ending</td>
+    </tr>
+  </table>
 </div>
 
-- 게임 플레이 영상 : https://youtu.be/1owshpb0_mI
+<br>
+<br>
+
+<div align="center">
+  <table>
+    <tr>
+      <th> 플랫폼 </th>
+      <th> 장르 </th>
+      <th> 개발 환경 </th>
+      <th> 개발 인원 </th>
+      <th> 특징 </th>
+      <th> 시연 영상 </th>
+    </tr>  
+    <tr>
+      <td align="center"> <code> Android </code> </td>
+      <td align="center"> <code> 보드게임 </code> </td>
+      <td align="center"> <code> Unity3D </code> <code> C# </code> </td>
+      <td align="center"> <code> 본인 1명 </code> </td>
+      <td align="center"> <code> 멀티플레이 </code> </td>
+      <td align="center"> <a href="https://youtu.be/1owshpb0_mI"> <code> YouTube </code> </a> </td>
+    </tr>
+  </table>
+</div>
+
 
 <br>
 <br>
