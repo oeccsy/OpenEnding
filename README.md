@@ -46,12 +46,12 @@ OpenEnding은 코로나 이후로 잃어버린 오프라인 모임의 즐거움�
    <table>
      <tr>
        <th><img src="https://github.com/oeccsy/OpenEnding/assets/77562357/1c18b1e0-6225-4094-b92b-6cc606f8cbac" width="360px" height="270px"/></th>
-       <th width="270px" height="400px"> vs </th>
+       <th width="100px" height="400px"> vs </th>
        <th><img src="https://github.com/oeccsy/OpenEnding/assets/77562357/d9a63c5c-5309-45c0-a94b-d4aa9d282320" width="360px" height="316px"/></th>
      </tr>
      <tr>
        <td align="center">▲ OpenEnding </td>
-       <td align="center" width="270px"> </td>
+       <td align="center" width="100px"> </td>
        <td align="center">▲ 일반적인 모바일 파티게임</td>
      </tr>
    </table>
