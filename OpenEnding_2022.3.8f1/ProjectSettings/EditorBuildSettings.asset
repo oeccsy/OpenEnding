@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/DevOnly/Test/AARTest.unity
+    guid: 039c60948a2d1da4d8a6cb7164685dc9
+  - enabled: 1
     path: Assets/Scenes/ConnectScene.unity
     guid: b317236647b3be949b3f8e655a64ddad
   - enabled: 1
