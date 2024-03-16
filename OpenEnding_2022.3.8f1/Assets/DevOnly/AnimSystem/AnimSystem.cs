@@ -9,6 +9,7 @@ public class AnimSystem : MonoBehaviour
     {
         //GetCircumferencePoints(6, 3);
         SpawnRegularPolygon(6, 1f);
+        SpawnRegularMeshPolygon(6, 1f);
         //SpawnNoisedPolygon(100, 1);
     }
     
@@ -64,6 +65,16 @@ public class AnimSystem : MonoBehaviour
             polygon.LineRenderer.SetPosition(i, point);
         }
         
+        return polygon;
+    }
+
+    public MeshPolygon SpawnRegularMeshPolygon(int steps, float radius)
+    {
+        GameObject newObj = new GameObject("MeshPolygon", typeof(MeshPolygon));
+        MeshPolygon polygon = newObj.GetComponent<MeshPolygon>();
+
+        polygon.Sides = steps;
+        polygon.Radius = radius;
         return polygon;
     }
 }
