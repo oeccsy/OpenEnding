@@ -4,94 +4,58 @@ using UnityEngine;
 
 public class Utils
 {
-    // [0,maxValue]의 int 중 amount개를 뽑아서 return 합니다.
-    public static List<int> SelectRandomInt(int maxValue, int amount)
+    public static void ShuffleList<T>(List<T> list)
     {
-        List<int> availableIntList = new List<int>();
-
-        for (int i = 0; i <= maxValue; i++)
+        for (int i = list.Count - 1; i >= 0; i--)
         {
-            availableIntList.Add(i);
+            int randomIndex = Random.Range(0, i);
+            (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
+        }
+    }
+    
+    // [minValue,maxValue]의 int 중 중복하지 않게 amount개를 뽑아서 return 합니다.
+    public static List<int> GetCombinationInt(int minValue, int maxValue, int amount)
+    {
+        List<int> available = new List<int>();
+        List<int> selected = new List<int>();
+        
+        for (int i = minValue; i <= maxValue; i++)
+        {
+            available.Add(i);
         }
 
-        for (int i = 0; i < (maxValue+1) - amount; i++)
+        for (int i = available.Count - 1; i >= 0; i--)
         {
-            int randomIndex = Random.Range(0, availableIntList.Count);
-            availableIntList.RemoveAt(randomIndex);
+            int randomIndex = Random.Range(0, i);
+            (available[i], available[randomIndex]) = (available[randomIndex], available[i]);
         }
 
-        return availableIntList;
+        for (int i = 0; i < amount; i++)
+        {
+            selected.Add(available[i]);
+        }
+
+        return selected;
     }
     
     // inputList 중 amount 개의 데이터를 뽑고, Copy하여 return 합니다.
-    public static List<T> SelectRandom<T>(List<T> inputList, int amount)
+    public static List<T> GetCombination<T>(List<T> inputList, int amount)
     {
-        List<T> resultList = new List<T>(inputList);
+        List<T> available = new List<T>(inputList);
+        List<T> selected = new List<T>();
             
-        int inputListCount = inputList.Count;
-        
-        for (int i = 0; i < inputListCount - amount; i++)
+        for (int i = available.Count - 1; i >= 0; i--)
         {
-            int randomIndex = Random.Range(0, resultList.Count);
-            resultList.RemoveAt(randomIndex);
+            int randomIndex = Random.Range(0, i);
+            (available[i], available[randomIndex]) = (available[randomIndex], available[i]);
         }
         
-        return resultList;
-    }
-
-    // inputList 중 amount 개의 데이터만 남깁니다.
-    public static void RemainRandom<T>(List<T> inputList, int amount)
-    {
-        int inputListCount = inputList.Count;
+        for (int i = 0; i < amount; i++)
+        {
+            selected.Add(available[i]);
+        }
         
-        for (int i = 0; i < inputListCount - amount; i++)
-        {
-            int randomIndex = Random.Range(0, inputList.Count);
-            inputList.RemoveAt(randomIndex);
-        }
-    }
-    
-    // inputList를 무작위로 섞습니다.
-    public static void ListRandomShuffle<T>(List<T> inputList)
-    {
-        List<T> newList = new List<T>();
-        int inputListCount = inputList.Count;
-
-        for(int i=0; i<inputListCount; i++)
-        {
-            int randomIndex = Random.Range(0, inputList.Count);
-            newList.Add(inputList[randomIndex]);
-            inputList.RemoveAt(randomIndex);
-        }
-
-        inputList.Clear();
-        inputList.AddRange(newList);
-    }
-
-    public static List<T> Combination<T>(List<T> list, int count)
-    {
-        //중복하지 않게 count개 만큼 뽑아서 return
-
-        List<int> availableIndexList = new List<int>();
-        List<T> newList = new List<T>();
-
-        for(int i=0; i<list.Count; i++)
-        {
-            availableIndexList.Add(i);
-        }
-
-        for(int i=0; i<count; i++)
-        {
-            int randomNum = Random.Range(0, availableIndexList.Count);
-            int randomIndex = availableIndexList[randomNum];
-
-            T value = list[randomIndex];
-
-            newList.Add(value);
-            availableIndexList.RemoveAt(randomNum);
-        }
-
-        return newList;
+        return selected;
     }
 
     public static int ReturnMin(int a, int b)
