@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using Game.Manager.GameManage;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;

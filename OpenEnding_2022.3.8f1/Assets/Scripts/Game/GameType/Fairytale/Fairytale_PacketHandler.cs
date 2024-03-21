@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Manager.GameManage;
 using Shatalmic;
 using UnityEditor;
 using UnityEngine;

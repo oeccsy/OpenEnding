@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using DG.Tweening;
+using Game.Manager.GameManage;
 using UnityEngine;
 
 public abstract class Fairytale_Card : MonoBehaviour
