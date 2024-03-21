@@ -47,7 +47,7 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
             
             {Tuple.Create<byte, byte>(4, 0), (bytes) => GameState.SetGameState(bytes[0], bytes[1])},
 
-            {Tuple.Create<byte, byte>(5, 0), (bytes) => GameFlow.LoadConnectScene()}
+            {Tuple.Create<byte, byte>(5, 0), (bytes) => GameFlow.LoadScene(Define.SceneType.ConnectScene)}
         };
 
 

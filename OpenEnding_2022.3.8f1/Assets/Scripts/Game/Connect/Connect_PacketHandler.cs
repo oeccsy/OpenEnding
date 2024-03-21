@@ -28,7 +28,7 @@ public class Connect_PacketHandler : Singleton<Connect_PacketHandler>
         {
             {Tuple.Create<byte, byte>(0, 0), (bytes) => ConnectScene.SynchronizeDevicesWithAnimation(bytes)},
             
-            {Tuple.Create<byte, byte>(1, 0), (bytes) => GameFlow.LoadFairytaleScene()}
+            {Tuple.Create<byte, byte>(1, 0), (bytes) => GameFlow.LoadScene(Define.SceneType.RomanScene)}
         };
 
         NetworkManager.Instance.OnReceiveDataFromServer = ExecuteActionByPacket;

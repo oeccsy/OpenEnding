@@ -6,9 +6,9 @@ public class Define
 {
     public enum SceneType
     {
-        OnBoardingScene,
         ConnectScene,
-        SealGameScene
+        FairytaleScene,
+        RomanScene
     }
 
     public enum ConnectType

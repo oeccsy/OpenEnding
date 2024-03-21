@@ -5,10 +5,16 @@ using UnityEngine;
 
 public class TestManager : Singleton<TestManager>
 {
+    [MenuItem("FuncTest/A_LoadRomanScene")]
+    public static void LoadRomanScene()
+    {
+        GameManager.Instance.GameFlow.LoadScene(Define.SceneType.RomanScene);
+    }
+    
     [MenuItem("FuncTest/A_LoadFairytaleScene")]
     public static void LoadFairytaleScene()
     {
-        GameManager.Instance.GameFlow.LoadFairytaleScene();
+        GameManager.Instance.GameFlow.LoadScene(Define.SceneType.FairytaleScene);
     }
 
     [MenuItem("FuncTest/B_UnsetOverlay")]
@@ -88,7 +94,7 @@ public class TestManager : Singleton<TestManager>
     [MenuItem("FuncTest/M_GameExit")]
     public static void GameExit()
     {
-        GameManager.Instance.GameFlow.LoadConnectScene();
+        GameManager.Instance.GameFlow.LoadScene(Define.SceneType.ConnectScene);
     }
 }
 #endif
