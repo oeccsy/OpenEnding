@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Game.Manager.GameManage;
+using UnityEngine;
 
 namespace Game.GameType.Roman
 {
-    public class RomanGameMode : MonoBehaviour
+    public class RomanGameMode : GameMode
     {
         
     }
