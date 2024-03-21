@@ -147,6 +147,23 @@ public class Define
         Book,
         Drawing,
         Studying,
-        
+    }
+}
+
+namespace Game.GameType.Roman
+{
+    public enum CardType
+    {
+        None,
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        G,
+        H,
+        I,
+        J
     }
 }
