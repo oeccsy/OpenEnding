@@ -51,7 +51,7 @@ public class Fairytale_GameMode : GameMode
         cardTypes.Add(Define.FairyTaleGameCardType.TheHareAndTheTortoise);
         cardTypes.Add(Define.FairyTaleGameCardType.ThereAreAlwaysMemos);
         
-        Utils.ListRandomShuffle(cardTypes);
+        Utils.ShuffleList(cardTypes);
 
         foreach (var device in NetworkManager.Instance.connectedDeviceList)
         {
