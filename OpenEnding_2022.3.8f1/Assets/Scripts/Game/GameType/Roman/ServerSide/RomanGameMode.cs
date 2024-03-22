@@ -33,6 +33,6 @@ namespace Game.GameType.Roman
                 
                 _cardContainer.UseCard(cardType, device);
             }
-        }\
+        }
     }
 }
