@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using Game.Manager.GameManage;
-using Game.Manager.NetworkManage;
 using Shatalmic;
 
 namespace Game.GameType.Roman.ServerSide
 {
     public class RomanGameMode : GameMode
     {
-        private RomanCardContainer _cardContainer = new RomanCardContainer();
+        public RomanCardContainer cardContainer = new RomanCardContainer();
 
         public delegate void CardEventHandler(CardType cardType);
         public event CardEventHandler OnCardFlipped;
@@ -45,34 +44,34 @@ namespace Game.GameType.Roman.ServerSide
                 CardType cardType = (CardType)randomNumbers[i];
                 Networking.NetworkDevice device = NetworkManager.Instance.connectedDeviceList[i];
                 
-                _cardContainer.UseCard(cardType, device);
+                cardContainer.UseCard(cardType, device);
             }
         }
 
         public void FlipCard(CardType cardType)
         {
-            var card = _cardContainer.GetCard(cardType);
+            var card = cardContainer.GetCard(cardType);
             card.FlipAbility();
             OnCardFlipped?.Invoke(cardType);
         }
         
         public void ShakeCard(CardType cardType)
         {
-            var card = _cardContainer.GetCard(cardType);
+            var card = cardContainer.GetCard(cardType);
             card.ShakeAbility();
             OnCardShaken?.Invoke(cardType);
         }
 
         public void DiscoverCard(CardType cardType)
         {
-            var card = _cardContainer.GetCard(cardType);
+            var card = cardContainer.GetCard(cardType);
             card.DiscoveredAbility();
             OnCardDiscovered?.Invoke(cardType);
         }
         
         public void SetCardFace(CardType cardType, Define.DisplayedFace face)
         {
-            _cardContainer.SetCardFace(cardType, face);
+            cardContainer.SetCardFace(cardType, face);
         }
 
         public void Victory()

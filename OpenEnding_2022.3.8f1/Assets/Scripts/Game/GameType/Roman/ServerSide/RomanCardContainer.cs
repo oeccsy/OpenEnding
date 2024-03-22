@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Game.GameType.Roman.ServerSide.Card;
 using Shatalmic;
-using Unity.VisualScripting;
 
-namespace Game.GameType.Roman
+namespace Game.GameType.Roman.ServerSide
 {
     [Serializable]
     public class RomanCardContainer
@@ -49,11 +48,26 @@ namespace Game.GameType.Roman
             
             return usedCards[cardType];
         }
+        
+        public List<IGrowable> GetGrowableCards()
+        {
+            List<IGrowable> cards = new List<IGrowable>();
+
+            foreach (var cardData in usedCards)
+            {
+                if (cardData.Value is IGrowable card)
+                {
+                    cards.Add(card);   
+                }
+            }
+
+            return cards;
+        }
 
         public void SetCardFace(CardType cardType, Define.DisplayedFace face)
         {
             if (!usedCards.ContainsKey(cardType)) return;
-            
+
             var cardData = usedCards[cardType];
             cardData.displayedFace = face;
         }
