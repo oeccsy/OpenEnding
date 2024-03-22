@@ -8,7 +8,10 @@ namespace Game.GameType.Roman.Card
     {
         protected RomanCardData _cardData = new RomanCardData();
 
-        protected abstract void OwnAbility();
+        protected abstract void FlipAbility();
+        protected abstract void ShakeAbility();
+        protected abstract void DiscoveredAbility();
+        
 
         protected virtual void ChangeCard()
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Game.GameType.Roman.Card;
 using Game.Manager.GameManage;
+using Shatalmic;
 using UnityEngine;
 
 namespace Game.GameType.Roman
@@ -27,13 +28,11 @@ namespace Game.GameType.Roman
 
             for (int i = 0; i < NetworkManager.Instance.connectedDeviceList.Count; i++)
             {
-                var newCardData = new RomanCardData();
-                newCardData.cardType = (CardType)randomNumbers[i];
-                newCardData.networkDevice = NetworkManager.Instance.connectedDeviceList[i];
+                CardType cardType = (CardType)randomNumbers[i];
+                Networking.NetworkDevice device = NetworkManager.Instance.connectedDeviceList[i];
                 
-                _cardContainer.cardList.Add(newCardData);
-                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(newCardData.networkDevice, new byte[] {0, (byte)newCardData.cardType}));
+                _cardContainer.UseCard(cardType, device);
             }
-        }
+        }\
     }
 }
