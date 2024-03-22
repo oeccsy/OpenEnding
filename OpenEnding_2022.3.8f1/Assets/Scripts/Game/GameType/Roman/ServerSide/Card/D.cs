@@ -1,22 +1,16 @@
-﻿using UnityEngine;
-
-namespace Game.GameType.Roman.Card
+﻿namespace Game.GameType.Roman.ServerSide.Card
 {
     public class D : RomanCard
     {
-        protected override void FlipAbility()
+        public override void FlipAbility()
         {
-            throw new System.NotImplementedException();
+            
         }
 
-        protected override void ShakeAbility()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override void ShakeAbility() {}
 
-        protected override void DiscoveredAbility()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override void DiscoveredAbility() {}
+
+        public override void SetActive(bool active) {}
     }
 }

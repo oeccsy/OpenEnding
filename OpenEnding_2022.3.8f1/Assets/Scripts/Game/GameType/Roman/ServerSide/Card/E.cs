@@ -1,22 +1,48 @@
-﻿using UnityEngine;
+﻿using Game.Manager.GameManage;
 
-namespace Game.GameType.Roman.Card
+namespace Game.GameType.Roman.ServerSide.Card
 {
-    public class E : RomanCard
+    public class E : RomanCard, IGrowable
     {
-        protected override void FlipAbility()
+        private int _growthCount = 0;
+        private int _victoryThreshold = 3;
+        
+        public override void FlipAbility()
         {
-            throw new System.NotImplementedException();
+            if(_growthCount >= _victoryThreshold) (GameManager.Instance.GameMode as RomanGameMode)?.Victory();
         }
 
-        protected override void ShakeAbility()
+        public override void ShakeAbility() {}
+
+        public override void DiscoveredAbility() {}
+
+        public override void SetActive(bool active)
         {
-            throw new System.NotImplementedException();
+            if (active)
+            {
+                var gameMode = (GameManager.Instance.GameMode as RomanGameMode);
+                if(gameMode != null) gameMode.OnCardFlipped += CheckGrow;
+            }
+            else
+            {
+                var gameMode = (GameManager.Instance.GameMode as RomanGameMode);
+                if(gameMode != null) gameMode.OnCardFlipped -= CheckGrow;
+            }
+        }
+        
+        public void CheckGrow(CardType flippedCardType)
+        {
+            if (flippedCardType != CardType.E) Grow();
         }
 
-        protected override void DiscoveredAbility()
+        public void Grow()
         {
-            throw new System.NotImplementedException();
+            _growthCount++;
+        }
+
+        public void Regress()
+        {
+            _growthCount--;
         }
     }
 }

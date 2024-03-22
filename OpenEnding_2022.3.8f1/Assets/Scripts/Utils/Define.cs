@@ -27,6 +27,7 @@ public class Define
 
     public enum DisplayedFace
     {
+        None,
         Head,
         Tail
     }

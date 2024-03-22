@@ -1,14 +1,21 @@
-﻿using UnityEngine;
+﻿using Game.Manager.GameManage;
 
-namespace Game.GameType.Roman.Card
+namespace Game.GameType.Roman.ServerSide.Card
 {
     public class A : RomanCard
     {
-        protected override void FlipAbility() {}
-        protected override void ShakeAbility() {}
-        protected override void DiscoveredAbility()
+        public A()
         {
-            // B로 이 카드를 발견하면 승리합니다.
+            cardType = CardType.A;
         }
+        
+        public override void FlipAbility() {}
+        public override void ShakeAbility() {}
+        public override void DiscoveredAbility()
+        {
+            (GameManager.Instance.GameMode as RomanGameMode)?.Victory();
+        }
+
+        public override void SetActive(bool active) {}
     }
 }

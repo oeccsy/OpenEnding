@@ -1,29 +1,21 @@
-﻿using Game.Manager.GameManage;
-using UnityEngine;
-
-namespace Game.GameType.Roman.Card
+﻿namespace Game.GameType.Roman.ServerSide.Card
 {
     public class B : RomanCard
     {
-        private void Awake()
+        public B()
         {
-            GameManager.Instance.PlayerController.flip.OnFlipToHead += FlipAbility;
+            cardType = CardType.B;
         }
-        // 이 카드를 뒤집으면
-        // 다른 카드를 선택하여 확인할 수 있습니다.
-        protected override void FlipAbility()
+        
+        public override void FlipAbility()
         {
-         
-        }
-
-        protected override void ShakeAbility()
-        {
-            throw new System.NotImplementedException();
+            // 이 카드를 뒤집으면
+            // 다른 카드를 선택하여 확인할 수 있습니다.
         }
 
-        protected override void DiscoveredAbility()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override void ShakeAbility() {}
+        public override void DiscoveredAbility() {}
+        
+        public override void SetActive(bool active) {}
     }
 }

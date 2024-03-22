@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Game.GameType.Roman.Card;
+using Game.GameType.Roman.ServerSide.Card;
 using Shatalmic;
 using Unity.VisualScripting;
 
@@ -9,20 +9,16 @@ namespace Game.GameType.Roman
     [Serializable]
     public class RomanCardContainer
     {
-        public Dictionary<CardType, RomanCardData> availableCards = new Dictionary<CardType, RomanCardData>();
-        public Dictionary<CardType, RomanCardData> usedCards = new Dictionary<CardType, RomanCardData>();
+        private Dictionary<CardType, RomanCard> availableCards = new Dictionary<CardType, RomanCard>();
+        private Dictionary<CardType, RomanCard> usedCards = new Dictionary<CardType, RomanCard>();
 
         public RomanCardContainer()
         {
-            for (int i = 0; i < 5; i++)
-            {
-                var romanCardData = new RomanCardData
-                {
-                    cardType = (CardType)i
-                };
-                
-                availableCards.Add(romanCardData.cardType, romanCardData);
-            }
+            availableCards.Add(CardType.A, new A());
+            availableCards.Add(CardType.B, new B());
+            availableCards.Add(CardType.C, new C());
+            availableCards.Add(CardType.D, new D());
+            availableCards.Add(CardType.E, new E());
         }
 
         public void UseCard(CardType cardType, Networking.NetworkDevice device)
@@ -32,7 +28,7 @@ namespace Game.GameType.Roman
             var cardData = availableCards[cardType];
             availableCards.Remove(cardType);
 
-            cardData.networkDevice = device;
+            cardData.device = device;
             usedCards.Add(cardType, cardData);
         }
 
@@ -43,8 +39,23 @@ namespace Game.GameType.Roman
             var cardData = usedCards[cardType];
             usedCards.Remove(cardType);
 
-            cardData.networkDevice = null;
+            cardData.device = null;
             availableCards.Add(cardType, cardData);
+        }
+
+        public RomanCard GetCard(CardType cardType)
+        {
+            if (!usedCards.ContainsKey(cardType)) return null;
+            
+            return usedCards[cardType];
+        }
+
+        public void SetCardFace(CardType cardType, Define.DisplayedFace face)
+        {
+            if (!usedCards.ContainsKey(cardType)) return;
+            
+            var cardData = usedCards[cardType];
+            cardData.displayedFace = face;
         }
     }
 }

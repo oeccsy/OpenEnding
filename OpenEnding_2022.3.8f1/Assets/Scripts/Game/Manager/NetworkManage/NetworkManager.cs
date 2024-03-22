@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Game.Manager.NetworkManage;
 using Shatalmic;
 using UnityEngine;
 
@@ -18,7 +19,10 @@ public partial class NetworkManager : Singleton<NetworkManager>
     private Networking networking = null;                                           // Plugins
     [SerializeField]
     private bool isWritingData = false;                                             // true이면 현재 Writing(Sending) 중 임을 나타내는 변수
-
+    [SerializeField]
+    public ServerSidePacketHandler serverSidePacketHandler;                                    
+    [SerializeField]
+    public ClientSidePacketHandler clientSidePacketHandler;
     
     public Action<Networking.NetworkDevice> OnDeviceReady = null;
     public Action<Networking.NetworkDevice> OnDeviceDisconnected = null;
