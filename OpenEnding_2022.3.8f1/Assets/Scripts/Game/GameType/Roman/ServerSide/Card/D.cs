@@ -1,4 +1,6 @@
-﻿using Game.Manager.GameManage;
+﻿using System;
+using Game.Manager.GameManage;
+using Random = UnityEngine.Random;
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
@@ -11,9 +13,9 @@ namespace Game.GameType.Roman.ServerSide.Card
 
             var growableCards = gameMode.cardContainer.GetGrowableCards();
             if (growableCards.Count == 0) return;
-            
-            Utils.ShuffleList(growableCards);
-            growableCards[0].Regress();
+
+            int randomIndex = Random.Range(0, growableCards.Count);
+            growableCards[randomIndex].Regress();
         }
 
         public override void ShakeAbility() {}
