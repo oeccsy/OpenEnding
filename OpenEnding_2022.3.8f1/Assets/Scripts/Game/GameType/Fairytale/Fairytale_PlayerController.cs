@@ -8,7 +8,7 @@ namespace Game.GameType.Fairytale
         {
             base.Awake();
             flip.OnFlipToTail += NotifyFlipToTail;
-            flip.OnStartFlipToHead += NotifyStartFlipToHead;
+            flip.OnStand += NotifyStartFlipToHead;
         }
 
 #if !UNITY_EDITOR
