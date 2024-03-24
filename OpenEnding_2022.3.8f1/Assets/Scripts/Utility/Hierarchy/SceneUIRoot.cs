@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class SceneUIRoot : RootObject
 {
+    public static Transform Transform;
     protected override void Register()
     {
-        UIManager.Instance.SceneUIRoot = transform;
+        Transform = transform;
+        UIManager.Instance.SceneUIRoot = Transform;
     }
 }
