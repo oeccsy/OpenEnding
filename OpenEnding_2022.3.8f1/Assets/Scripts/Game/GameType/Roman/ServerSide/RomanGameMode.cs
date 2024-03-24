@@ -34,7 +34,7 @@ namespace Game.GameType.Roman.ServerSide
 
         private void InitDeviceOwnCard()
         {
-            var randomNumbers = Utils.GetCombinationInt(1, 10, 2);
+            var randomNumbers = Utils.GetCombinationInt(1, 5, 3);
             Utils.ShuffleList(randomNumbers);
 
             for (int i = 0; i < NetworkManager.Instance.connectedDeviceList.Count; i++)
@@ -43,6 +43,7 @@ namespace Game.GameType.Roman.ServerSide
                 Networking.NetworkDevice device = NetworkManager.Instance.connectedDeviceList[i];
                 
                 cardContainer.UseCard(cardType, device);
+                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] { 10, 0, (byte)cardType }));
             }
         }
 

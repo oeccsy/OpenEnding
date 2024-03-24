@@ -12,7 +12,7 @@ namespace Game.GameType.Roman.ClientSide
         {
             _funcDict = new Dictionary<Tuple<byte, byte>, Action<byte[]>>
             {
-                {Tuple.Create<byte, byte>(0, 0), (bytes) => (GameManager.Instance.GameMode as RomanGameMode)?.SetCardFace((CardType)bytes[0], (Define.DisplayedFace)bytes[1])}
+                {Tuple.Create<byte, byte>(10, 0), (bytes) => (GameManager.Instance.GameScene as RomanGameScene)?.CreateCard((CardType)bytes[0])}
             };
             
             NetworkManager.Instance.clientSidePacketHandler = this;

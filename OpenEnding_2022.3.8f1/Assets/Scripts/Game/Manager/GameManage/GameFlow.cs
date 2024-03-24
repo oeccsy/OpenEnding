@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using Game.Manager.GameManage;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,7 +20,7 @@ public class GameFlow : MonoBehaviour
 
         if (Connect_Scene.Instance.n != NetworkManager.Instance.connectedDeviceList.Count) yield break;
 
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] {1, 0, 0}));
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] {1, 0, 2}));
     }
     
     public void LoadScene(Define.SceneType targetScene)
