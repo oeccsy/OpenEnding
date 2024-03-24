@@ -1,7 +1,6 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Game.GameType.Roman
+namespace Utility
 {
     public class Shake : MonoBehaviour
     {

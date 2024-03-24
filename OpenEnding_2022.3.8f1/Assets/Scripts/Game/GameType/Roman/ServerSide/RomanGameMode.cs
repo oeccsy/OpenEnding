@@ -48,12 +48,17 @@ namespace Game.GameType.Roman.ServerSide
             }
         }
 
-        public void FlipCard(CardType cardType)
+        public void FlipCard(CardType cardType, Define.DisplayedFace face)
         {
-            var flippedCard = cardContainer.GetCard(cardType);
+            cardContainer.SetCardFace(cardType, face);
+
+            if (face == Define.DisplayedFace.Head)
+            {
+                var flippedCard = cardContainer.GetCard(cardType);
             
-            if(flippedCard is IFlipAbility card) card.FlipAbility();
-            OnCardFlipped?.Invoke(cardType);
+                if(flippedCard is IFlipAbility card) card.FlipAbility();
+                OnCardFlipped?.Invoke(cardType);    
+            }
         }
         
         public void ShakeCard(CardType cardType)
@@ -70,11 +75,6 @@ namespace Game.GameType.Roman.ServerSide
             
             if(discoveredCard is IDiscoveredAbility card) card.DiscoveredAbility();
             OnCardDiscovered?.Invoke(cardType);
-        }
-        
-        public void SetCardFace(CardType cardType, Define.DisplayedFace face)
-        {
-            cardContainer.SetCardFace(cardType, face);
         }
 
         public void Victory()

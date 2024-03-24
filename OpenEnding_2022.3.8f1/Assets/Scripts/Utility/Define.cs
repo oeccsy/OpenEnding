@@ -29,7 +29,8 @@ public class Define
     {
         None,
         Head,
-        Tail
+        Tail,
+        Stand
     }
 
     public enum FairyTaleGameCardType
