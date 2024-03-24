@@ -2,6 +2,7 @@
 using Game.GameType.Roman.ServerSide.CardBase;
 using Game.Manager.GameManage;
 using Shatalmic;
+using UnityEngine;
 
 namespace Game.GameType.Roman.ServerSide
 {
@@ -27,12 +28,10 @@ namespace Game.GameType.Roman.ServerSide
         
         protected override IEnumerator GameRoutine()
         {
-            InitDeviceOwnCard();
-
-            yield return null;
+            yield return InitDeviceOwnCard();
         }
 
-        private void InitDeviceOwnCard()
+        private IEnumerator InitDeviceOwnCard()
         {
             var randomNumbers = Utils.GetCombinationInt(1, 5, 3);
             Utils.ShuffleList(randomNumbers);
@@ -43,7 +42,9 @@ namespace Game.GameType.Roman.ServerSide
                 Networking.NetworkDevice device = NetworkManager.Instance.connectedDeviceList[i];
                 
                 cardContainer.UseCard(cardType, device);
-                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] { 10, 0, (byte)cardType }));
+                DebugCanvas.Instance.AddText(device.Name + " Start");
+                yield return new WaitForSecondsRealtime(0.5f);
+                yield return NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] { 10, 0, (byte)cardType });
             }
         }
 
