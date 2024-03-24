@@ -1,4 +1,6 @@
 ﻿#if UNITY_EDITOR
+using Game.GameType.Roman;
+using Game.GameType.Roman.ClientSide;
 using Game.Manager.GameManage;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -96,6 +98,12 @@ public class TestManager : Singleton<TestManager>
     public static void GameExit()
     {
         GameManager.Instance.GameFlow.LoadScene(Define.SceneType.ConnectScene);
+    }
+    
+    [MenuItem("FuncTest/M_CreateCard")]
+    public static void CreateCard()
+    {
+        (GameManager.Instance.GameScene as RomanGameScene)?.CreateCard(CardType.A);
     }
 }
 #endif
