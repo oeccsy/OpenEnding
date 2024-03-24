@@ -5,8 +5,7 @@ namespace Game.GameType.Roman
 {
     public class Shake : MonoBehaviour
     {
-        public TextMeshProUGUI debugText;
-        public float threshold = 10f;
+        public float threshold = 2f;
         public delegate void ShakeHandler();
 
         public event ShakeHandler OnEveryShake;
@@ -16,15 +15,12 @@ namespace Game.GameType.Roman
         {
             var value = Input.acceleration.magnitude;
             
-            if (value > 10)
+            if (value > threshold)
             {
                 OnEveryShake?.Invoke();
                 OnNextShake?.Invoke();
                 OnNextShake = null;
-                DebugCanvas.Instance.AddText(value);
             }
-
-            debugText.text = value.ToString();
         }
     }
 }
