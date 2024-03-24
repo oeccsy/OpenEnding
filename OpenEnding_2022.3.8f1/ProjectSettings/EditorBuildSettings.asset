@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/DevOnly/Test/ShakeTest.unity
+    guid: b72d2fb267cdfd14d9f24defb2904a28
+  - enabled: 1
     path: Assets/Scenes/ConnectScene.unity
     guid: b317236647b3be949b3f8e655a64ddad
   - enabled: 1
