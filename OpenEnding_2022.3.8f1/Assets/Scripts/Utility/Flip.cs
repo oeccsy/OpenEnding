@@ -1,81 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class Flip : MonoBehaviour
+namespace Utility
 {
-    [SerializeField]
-    private Define.DisplayedFace curFace = Define.DisplayedFace.Head;
-    [SerializeField]
-    private bool isStartFlip = false;
-    public delegate void FlipHandler();
-    public event FlipHandler OnFlipToHead;
-    public event FlipHandler OnFlipToTail;
-    public event FlipHandler OnStartFlipToHead;
-    public event FlipHandler OnStartFlipToTail;
+    public class Flip : MonoBehaviour
+    {
+        [SerializeField]
+        private Define.DisplayedFace curFace = Define.DisplayedFace.None;
+        public delegate void FlipHandler();
+        public event FlipHandler OnFlipToHead;
+        public event FlipHandler OnFlipToTail;
+        public event FlipHandler OnStand;
 
-    public delegate void NextFlipHandler();
-    public event NextFlipHandler OnFlipToHeadOnlyNextTime;
-    public event NextFlipHandler OnFlipToTailOnlyNextTime;
-    public event NextFlipHandler OnStartFlipToHeadOnlyNextTime;
-    public event NextFlipHandler OnStartFlipToTailOnlyNextTime;
+        public delegate void NextFlipHandler();
+        public event NextFlipHandler OnNextHead;
+        public event NextFlipHandler OnNextTail;
+        public event NextFlipHandler OnNextStand;
 
-    private void Awake()
-    {
-        Input.gyro.enabled = false;
-    }
-    
-#if DEVELOPMENT_BUILD
-    private void Start()
-    {
-        // OnFlipToHead += () => $"OnFlipToHead".Log();
-        // OnFlipToTail += () => $"OnFlipToTail".Log();
-        // OnStartFlipToHead += () => $"OnStartFlipToHead".Log();
-        // OnStartFlipToTail += () => $"OnStartFlipToTail".Log();
-    }
-#endif
-
-    public void SetEnableGyroSensor(bool enable)
-    {
-        Input.gyro.enabled = enable;
-    }
-    
-    private void Update()
-    {
-        if (Input.gyro.enabled)
+        private void Awake()
         {
-            if (!isStartFlip && curFace == Define.DisplayedFace.Tail && Input.gyro.gravity.z < 0.7f)
-            {
-                isStartFlip = true;
-                OnStartFlipToHead?.Invoke();
-                OnStartFlipToHeadOnlyNextTime?.Invoke();
-                OnStartFlipToHeadOnlyNextTime = null;
-            }
+            Input.gyro.enabled = false;
+        }
+    
+        private void Update()
+        {
+            if (!Input.gyro.enabled) return;
             
-            if (curFace == Define.DisplayedFace.Tail && Input.gyro.gravity.z < -0.95f)
+            if (Input.gyro.gravity.z < -0.95f)
             {
                 curFace = Define.DisplayedFace.Head;
-                isStartFlip = false;
                 OnFlipToHead?.Invoke();
-                OnFlipToHeadOnlyNextTime?.Invoke();
-                OnFlipToHeadOnlyNextTime = null;
+                OnNextHead?.Invoke();
+                OnNextHead = null;
             }
 
-            if (!isStartFlip && curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0f)
+            if (-0.7f < Input.gyro.gravity.z && Input.gyro.gravity.z < 0.7f)
             {
-                isStartFlip = true;
-                OnStartFlipToTail?.Invoke();
-                OnStartFlipToTailOnlyNextTime?.Invoke();
-                OnStartFlipToTailOnlyNextTime = null;
+                curFace = Define.DisplayedFace.Stand;
+                OnStand?.Invoke();
+                OnNextStand?.Invoke();
+                OnNextStand = null;
             }
-
-            if (curFace == Define.DisplayedFace.Head && Input.gyro.gravity.z > 0.95f)
+            
+            if (Input.gyro.gravity.z > 0.95f)
             {
                 curFace = Define.DisplayedFace.Tail;
-                isStartFlip = false;
                 OnFlipToTail?.Invoke();
-                OnFlipToTailOnlyNextTime?.Invoke();
-                OnFlipToTailOnlyNextTime = null;
+                OnNextTail?.Invoke();
+                OnNextTail = null;
             }
         }
     }
