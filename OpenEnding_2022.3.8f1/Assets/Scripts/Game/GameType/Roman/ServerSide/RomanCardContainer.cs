@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Game.GameType.Roman.ServerSide.Card;
+using Game.GameType.Roman.ServerSide.CardBase;
 using Shatalmic;
 
 namespace Game.GameType.Roman.ServerSide

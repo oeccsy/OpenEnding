@@ -1,12 +1,13 @@
 ﻿using System;
+using Game.GameType.Roman.ServerSide.CardBase;
 using Game.Manager.GameManage;
 using Random = UnityEngine.Random;
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
-    public class D : RomanCard
+    public class D : RomanCard, IFlipAbility
     {
-        public override void FlipAbility()
+        public void FlipAbility()
         {
             var gameMode = GameManager.Instance.GameMode as RomanGameMode;
             if (gameMode == null) return;
@@ -17,11 +18,5 @@ namespace Game.GameType.Roman.ServerSide.Card
             int randomIndex = Random.Range(0, growableCards.Count);
             growableCards[randomIndex].Regress();
         }
-
-        public override void ShakeAbility() {}
-
-        public override void DiscoveredAbility() {}
-
-        public override void SetActive(bool active) {}
     }
 }

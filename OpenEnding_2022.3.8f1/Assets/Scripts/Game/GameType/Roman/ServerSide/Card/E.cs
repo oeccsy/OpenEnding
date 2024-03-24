@@ -1,22 +1,19 @@
-﻿using Game.Manager.GameManage;
+﻿using Game.GameType.Roman.ServerSide.CardBase;
+using Game.Manager.GameManage;
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
-    public class E : RomanCard, IGrowable
+    public class E : RomanCard, IFlipAbility, IGrowable
     {
         private int _growthCount = 0;
         private int _victoryThreshold = 3;
         
-        public override void FlipAbility()
+        public void FlipAbility()
         {
             if(_growthCount >= _victoryThreshold) (GameManager.Instance.GameMode as RomanGameMode)?.Victory();
         }
 
-        public override void ShakeAbility() {}
-
-        public override void DiscoveredAbility() {}
-
-        public override void SetActive(bool active)
+        public void SetActive(bool active)
         {
             if (active)
             {

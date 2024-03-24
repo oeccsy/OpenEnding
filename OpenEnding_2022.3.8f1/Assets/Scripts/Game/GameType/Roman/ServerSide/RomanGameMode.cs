@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Game.GameType.Roman.ServerSide.CardBase;
 using Game.Manager.GameManage;
 using Shatalmic;
 
@@ -27,11 +28,8 @@ namespace Game.GameType.Roman.ServerSide
         protected override IEnumerator GameRoutine()
         {
             InitDeviceOwnCard();
-            
-            while (true)
-            {
-                yield return null;    
-            }
+
+            yield return null;
         }
 
         private void InitDeviceOwnCard()
@@ -50,22 +48,25 @@ namespace Game.GameType.Roman.ServerSide
 
         public void FlipCard(CardType cardType)
         {
-            var card = cardContainer.GetCard(cardType);
-            card.FlipAbility();
+            var flippedCard = cardContainer.GetCard(cardType);
+            
+            if(flippedCard is IFlipAbility card) card.FlipAbility();
             OnCardFlipped?.Invoke(cardType);
         }
         
         public void ShakeCard(CardType cardType)
         {
-            var card = cardContainer.GetCard(cardType);
-            card.ShakeAbility();
+            var shakenCard = cardContainer.GetCard(cardType);
+            
+            if(shakenCard is IShakeAbility card) card.ShakeAbility();
             OnCardShaken?.Invoke(cardType);
         }
 
         public void DiscoverCard(CardType cardType)
         {
-            var card = cardContainer.GetCard(cardType);
-            card.DiscoveredAbility();
+            var discoveredCard = cardContainer.GetCard(cardType);
+            
+            if(discoveredCard is IDiscoveredAbility card) card.DiscoveredAbility();
             OnCardDiscovered?.Invoke(cardType);
         }
         

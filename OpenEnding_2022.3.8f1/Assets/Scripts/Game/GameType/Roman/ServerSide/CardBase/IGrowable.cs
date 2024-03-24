@@ -1,4 +1,4 @@
-﻿namespace Game.GameType.Roman.ServerSide.Card
+﻿namespace Game.GameType.Roman.ServerSide.CardBase
 {
     public interface IGrowable
     {
