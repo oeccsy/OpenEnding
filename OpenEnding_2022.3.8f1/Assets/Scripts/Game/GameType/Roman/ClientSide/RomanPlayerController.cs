@@ -9,6 +9,7 @@ namespace Game.GameType.Roman.ClientSide
             base.Awake();
             flip.OnFlipToHead += NotifyFlipToHead;
             flip.OnFlipToTail += NotifyFlipToTail;
+            flip.OnStand += NotifyStand;
             shake.OnEveryShake += NotifyShake;
         }
         

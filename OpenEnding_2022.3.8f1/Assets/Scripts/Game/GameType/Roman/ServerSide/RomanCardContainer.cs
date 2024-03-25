@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Game.GameType.Roman.ServerSide.Card;
 using Game.GameType.Roman.ServerSide.CardBase;
 using Shatalmic;
+using Random = UnityEngine.Random;
 
 namespace Game.GameType.Roman.ServerSide
 {
@@ -32,15 +34,22 @@ namespace Game.GameType.Roman.ServerSide
             usedCards.Add(cardType, cardData);
         }
 
-        public void RetrieveCard(CardType cardType)
+        public void ReplaceCard(CardType cardType)
         {
             if (!usedCards.ContainsKey(cardType)) return;
-            
-            var cardData = usedCards[cardType];
-            usedCards.Remove(cardType);
 
-            cardData.device = null;
-            availableCards.Add(cardType, cardData);
+            List<RomanCard> availableCardList = availableCards.Values.ToList();
+            var newCard = availableCardList[Random.Range(0, availableCardList.Count)];
+            availableCards.Remove(newCard.cardType);
+            
+            var prevCard = usedCards[cardType];
+            usedCards.Remove(cardType);
+            
+            newCard.device = prevCard.device;
+            prevCard.device = null;
+            
+            usedCards.Add(newCard.cardType, newCard);
+            availableCards.Add(cardType, prevCard);
         }
 
         public RomanCard GetCard(CardType cardType)
