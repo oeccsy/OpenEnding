@@ -31,6 +31,7 @@ public class ConnectManager : Singleton<ConnectManager>
 
         NetworkManager.Instance.clientName = selectedDevice.ownColor.ToString();
         NetworkManager.Instance.ownDeviceData.colorOrder = (int)selectedDevice.ownColor;
+        NetworkManager.Instance.NetworkingInit();
         
         switch (selectedDevice.ownColor)
         {

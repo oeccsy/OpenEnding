@@ -21,7 +21,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
 
 #if UNITY_ANDROID || UNITY_IOS 
 
-    private void NetworkingInit()
+    public void NetworkingInit()
     {
         if (networking != null) Destroy(networking);
         

@@ -10,13 +10,6 @@ namespace Game.GameType.Fairytale
             flip.OnFlipToTail += NotifyFlipToTail;
             flip.OnStand += NotifyStartFlipToHead;
         }
-
-#if !UNITY_EDITOR
-    private void Start()
-    {
-        flip.SetEnableGyroSensor(true);
-    }
-#endif
     
         public void NotifyFlipToTail()
         {

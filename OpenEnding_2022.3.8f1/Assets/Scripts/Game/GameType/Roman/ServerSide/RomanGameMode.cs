@@ -83,6 +83,7 @@ namespace Game.GameType.Roman.ServerSide
 
         public void Victory()
         {
+            DebugCanvas.Instance.AddText("게임 종료!");
             GameOver();
             OnGameOver?.Invoke();
         }
