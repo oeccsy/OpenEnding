@@ -5,17 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3048a559-5bb8-415e-8a94-3f6a262470ce" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/RomanGameState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/RomanGameState.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DevOnly/Debug/TestManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DevOnly/Debug/TestManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DevOnly/Test/ShakeTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DevOnly/Test/ShakeTest.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Font/NEXONLv1GothicRegular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Font/NEXONLv1GothicRegular SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/A.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/A.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/B.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/B.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/C.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/C.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/D.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/D.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/E.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/E.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ServerSide/RomanGameMode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ServerSide/RomanGameMode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utility/Flip.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utility/Flip.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/GameManage/GameState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/GameManage/GameState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utility/Define.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utility/Define.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
