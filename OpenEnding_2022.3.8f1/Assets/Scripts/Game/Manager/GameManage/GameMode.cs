@@ -5,11 +5,13 @@ namespace Game.Manager.GameManage
 {
     public abstract class GameMode : MonoBehaviour
     {
+        public int playerCount;
         protected Coroutine gameRoutine;
         
         protected virtual void Awake()
         {
             GameManager.Instance.GameMode = this;
+            playerCount = NetworkManager.Instance.connectedDeviceList.Count;
 
             if (NetworkManager.Instance.connectType == Define.ConnectType.Server)
             {

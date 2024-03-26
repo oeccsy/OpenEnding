@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3048a559-5bb8-415e-8a94-3f6a262470ce" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/RomanGameState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/RomanGameState.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ServerSide/RomanCardContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ServerSide/RomanCardContainer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ServerSide/RomanGameMode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ServerSide/RomanGameMode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/GameManage/GameState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/GameManage/GameState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utility/Define.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utility/Define.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/GameManage/GameMode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/GameManage/GameMode.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

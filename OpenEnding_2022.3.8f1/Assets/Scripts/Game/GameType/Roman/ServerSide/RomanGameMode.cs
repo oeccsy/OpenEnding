@@ -4,6 +4,7 @@ using Game.GameType.Roman.ServerSide.CardBase;
 using Game.Manager.GameManage;
 using Shatalmic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Game.GameType.Roman.ServerSide
 {
@@ -32,14 +33,18 @@ namespace Game.GameType.Roman.ServerSide
         {
             yield return new WaitUntil(() => curStep == GameStep.InitGame);
             yield return InitDeviceOwnCard();
-            curStep = GameStep.SelectCard;
+            yield return InitPlayerTurn();
+            yield return new WaitUntil(() => cardContainer.IsAllHide());
             
             while (curStep != GameStep.GameOver)
             {
+                yield return NotifyNewPlayerTurn();
                 yield return new WaitUntil(() => curStep == GameStep.SelectCard);
                 yield return new WaitUntil(() => curStep == GameStep.FlipOrShake);
                 yield return new WaitUntil(() => curStep == GameStep.ShowCard);
                 yield return new WaitUntil(() => curStep == GameStep.HideCard);
+                
+                curPlayer = (ColorPalette.ColorName)(((int)curPlayer + 1) % playerCount);
             }
         }
 
@@ -54,10 +59,21 @@ namespace Game.GameType.Roman.ServerSide
                 Networking.NetworkDevice device = NetworkManager.Instance.connectedDeviceList[i];
                 
                 cardContainer.UseCard(cardType, device);
-                DebugCanvas.Instance.AddText(device.Name + " Start");
+
                 yield return new WaitForSecondsRealtime(0.5f);
                 yield return NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] { 10, 0, (byte)cardType });
             }
+        }
+
+        private IEnumerator InitPlayerTurn()
+        {
+            curPlayer = (ColorPalette.ColorName)Random.Range(0, NetworkManager.Instance.connectedDeviceList.Count);
+            yield return null;
+        }
+
+        private IEnumerator NotifyNewPlayerTurn()
+        {
+            yield return null;
         }
         
         public void FlipCard(CardType cardType, Define.DisplayedFace face)

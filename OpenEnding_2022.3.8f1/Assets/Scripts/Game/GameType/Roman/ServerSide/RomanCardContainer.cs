@@ -83,5 +83,13 @@ namespace Game.GameType.Roman.ServerSide
             var cardData = usedCards[cardType];
             cardData.displayedFace = face;
         }
+
+        public bool IsAllHide()
+        {
+            int cardCount = usedCards.Count;
+            int hideCount = usedCards.Count(cardData => cardData.Value.displayedFace == Define.DisplayedFace.Tail);
+                
+            return hideCount == cardCount;
+        }
     }
 }
