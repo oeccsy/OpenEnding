@@ -7,6 +7,11 @@ namespace Game.GameType.Roman.ServerSide.Card
 {
     public class D : RomanCard, IFlipAbility
     {
+        public D()
+        {
+            cardType = CardType.D;
+        }
+        
         public void FlipAbility()
         {
             var gameMode = GameManager.Instance.GameMode as RomanGameMode;

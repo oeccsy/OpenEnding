@@ -9,6 +9,8 @@ namespace Game.GameType.Roman.ClientSide.Card
         protected override void Awake()
         {
             base.Awake();
+            cardType = CardType.D;
+            
             RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_D");
             cardInfoUI.RefreshUI(cardInfo);
         }

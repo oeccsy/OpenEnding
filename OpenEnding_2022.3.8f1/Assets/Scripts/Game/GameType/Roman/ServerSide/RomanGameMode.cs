@@ -50,7 +50,7 @@ namespace Game.GameType.Roman.ServerSide
 
         public void FlipCard(CardType cardType, Define.DisplayedFace face)
         {
-            $"Flip {cardType}".Log();
+            $"Flip {cardType} to {face}".Log();
             cardContainer.SetCardFace(cardType, face);
 
             if (face == Define.DisplayedFace.Head)
@@ -72,7 +72,7 @@ namespace Game.GameType.Roman.ServerSide
             
             var newCard = cardContainer.ReplaceCard(cardType);
 
-            StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(newCard.device, new byte[] { 10, 0, (byte)newCard.cardType }));
+            StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(newCard.device, new byte[] { 10, 1, (byte)newCard.cardType }));
         }
 
         public void DiscoverCard(CardType cardType)

@@ -5,6 +5,11 @@ namespace Game.GameType.Roman.ServerSide.Card
 {
     public class E : RomanCard, IFlipAbility, IGrowable
     {
+        public E()
+        {
+            cardType = CardType.E;
+        }
+        
         private int _growthCount = 0;
         private int _victoryThreshold = 3;
         
