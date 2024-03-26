@@ -42,6 +42,7 @@ namespace Game.GameType.Roman.ClientSide
 
         public void ReplaceCard(CardType cardType)
         {
+            $"Replace to {cardType}".Log();
             if(card != null) Destroy(card.gameObject);
 
             CreateCard(cardType);

@@ -50,6 +50,7 @@ namespace Game.GameType.Roman.ServerSide
 
         public void FlipCard(CardType cardType, Define.DisplayedFace face)
         {
+            $"Flip {cardType}".Log();
             cardContainer.SetCardFace(cardType, face);
 
             if (face == Define.DisplayedFace.Head)
@@ -63,6 +64,7 @@ namespace Game.GameType.Roman.ServerSide
         
         public void ShakeCard(CardType cardType)
         {
+            $"Shake {cardType}".Log();
             var shakenCard = cardContainer.GetCard(cardType);
             
             if(shakenCard is IShakeAbility card) card.ShakeAbility();
@@ -75,6 +77,7 @@ namespace Game.GameType.Roman.ServerSide
 
         public void DiscoverCard(CardType cardType)
         {
+            $"Discover {cardType}".Log();
             var discoveredCard = cardContainer.GetCard(cardType);
             
             if(discoveredCard is IDiscoveredAbility card) card.DiscoveredAbility();
