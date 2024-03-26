@@ -883,7 +883,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2124317172}
   - component: {fileID: 2124317173}
-  - component: {fileID: 2124317174}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -915,24 +914,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2124317170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27a1924a7291f334b9f1b045ceaeea19, type: 3}
+  m_Script: {fileID: 11500000, guid: bb7376630f86469cba58de77050bccbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   flip: {fileID: 0}
---- !u!114 &2124317174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2124317170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47a808651415aad40a4ce173b007e3e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  curFace: 1
-  isStartFlip: 0
+  shake: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

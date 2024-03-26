@@ -19,13 +19,18 @@ public partial class NetworkManager : Singleton<NetworkManager>
     private Networking networking = null;
     private bool isWritingData = false;
 
-#if UNITY_ANDROID || UNITY_IOS 
+#if UNITY_ANDROID || UNITY_IOS
 
+    protected override void Awake()
+    {
+        NetworkingInit();
+    }
+    
     public void NetworkingInit()
     {
         if (networking != null) Destroy(networking);
         
-        gameObject.AddComponent<Networking>();
+        networking = gameObject.AddComponent<Networking>();
         networking.Initialize(null, null);
     }
 
@@ -89,7 +94,8 @@ public partial class NetworkManager : Singleton<NetworkManager>
             }
             else
             {
-                networking.WriteDevice(targetDevice, bytes, () => isWritingData = false);     
+                networking.WriteDevice(targetDevice, bytes, () => isWritingData = false);    
+                $"Send [{bytes[0]},{bytes[1]}] to {targetDevice.Name}".Log();
             }
         }
     }
@@ -128,6 +134,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
         if (connectType == Define.ConnectType.Client)
         {
             networking.SendFromClient(bytes);
+            $"Send [{bytes[0]},{bytes[1]}] to Server".Log();
         }
         else if (connectType == Define.ConnectType.Server)
         {
