@@ -12,7 +12,7 @@ namespace Game.GameType.Roman.ServerSide.Card
             var gameMode = GameManager.Instance.GameMode as RomanGameMode;
             if (gameMode == null) return;
 
-            var growableCards = gameMode.cardContainer.GetGrowableCards();
+            var growableCards = gameMode.cardContainer.GetCards<IGrowable>();
             if (growableCards.Count == 0) return;
 
             int randomIndex = Random.Range(0, growableCards.Count);

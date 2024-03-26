@@ -34,9 +34,9 @@ namespace Game.GameType.Roman.ServerSide
             usedCards.Add(cardType, cardData);
         }
 
-        public void ReplaceCard(CardType cardType)
+        public RomanCard ReplaceCard(CardType cardType)
         {
-            if (!usedCards.ContainsKey(cardType)) return;
+            if (!usedCards.ContainsKey(cardType)) return null;
 
             List<RomanCard> availableCardList = availableCards.Values.ToList();
             var newCard = availableCardList[Random.Range(0, availableCardList.Count)];
@@ -50,6 +50,8 @@ namespace Game.GameType.Roman.ServerSide
             
             usedCards.Add(newCard.cardType, newCard);
             availableCards.Add(cardType, prevCard);
+
+            return newCard;
         }
 
         public RomanCard GetCard(CardType cardType)
@@ -59,13 +61,13 @@ namespace Game.GameType.Roman.ServerSide
             return usedCards[cardType];
         }
         
-        public List<IGrowable> GetGrowableCards()
+        public List<T> GetCards<T>()
         {
-            List<IGrowable> cards = new List<IGrowable>();
+            List<T> cards = new List<T>();
 
             foreach (var cardData in usedCards)
             {
-                if (cardData.Value is IGrowable card)
+                if (cardData.Value is T card)
                 {
                     cards.Add(card);   
                 }
