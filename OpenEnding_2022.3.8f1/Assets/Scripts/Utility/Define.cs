@@ -154,6 +154,17 @@ public class Define
 
 namespace Game.GameType.Roman
 {
+    public enum GameStep
+    {
+        InitGame,
+        SelectCard,
+        FlipOrShake,
+        ShowCard,
+        HideCard,
+        GameOver,
+        Pause
+    }
+    
     public enum CardType
     {
         None,

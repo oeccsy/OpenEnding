@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Game.GameType.Roman.ServerSide.CardBase;
 using Game.Manager.GameManage;
 using Shatalmic;
@@ -16,9 +17,10 @@ namespace Game.GameType.Roman.ServerSide
         public event CardEventHandler OnCardShaken;
         
         public delegate void GameEventHandler();
-
         public event GameEventHandler OnGameOver;
         
+        public ColorPalette.ColorName curPlayer;
+        public GameStep curStep = GameStep.InitGame;
         
         private void Start()
         {
@@ -28,7 +30,17 @@ namespace Game.GameType.Roman.ServerSide
         
         protected override IEnumerator GameRoutine()
         {
+            yield return new WaitUntil(() => curStep == GameStep.InitGame);
             yield return InitDeviceOwnCard();
+            curStep = GameStep.SelectCard;
+            
+            while (curStep != GameStep.GameOver)
+            {
+                yield return new WaitUntil(() => curStep == GameStep.SelectCard);
+                yield return new WaitUntil(() => curStep == GameStep.FlipOrShake);
+                yield return new WaitUntil(() => curStep == GameStep.ShowCard);
+                yield return new WaitUntil(() => curStep == GameStep.HideCard);
+            }
         }
 
         private IEnumerator InitDeviceOwnCard()
@@ -47,24 +59,40 @@ namespace Game.GameType.Roman.ServerSide
                 yield return NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] { 10, 0, (byte)cardType });
             }
         }
-
+        
         public void FlipCard(CardType cardType, Define.DisplayedFace face)
         {
             $"Flip {cardType} to {face}".Log();
             cardContainer.SetCardFace(cardType, face);
-
-            if (face == Define.DisplayedFace.Head)
+        
+            if (curStep == GameStep.SelectCard && face == Define.DisplayedFace.Stand)
+            {
+                curStep = GameStep.FlipOrShake;
+                return;
+            }
+        
+            if (curStep == GameStep.FlipOrShake && face == Define.DisplayedFace.Head)
             {
                 var flippedCard = cardContainer.GetCard(cardType);
-            
                 if(flippedCard is IFlipAbility card) card.FlipAbility();
-                OnCardFlipped?.Invoke(cardType);    
+                OnCardFlipped?.Invoke(cardType);
+
+                curStep = GameStep.ShowCard;
+                return;
+            }
+            
+            if (curStep == GameStep.HideCard && face == Define.DisplayedFace.Tail)
+            {
+                curStep = GameStep.SelectCard;
+                return;
             }
         }
-        
+
         public void ShakeCard(CardType cardType)
         {
             $"Shake {cardType}".Log();
+            if (curStep != GameStep.FlipOrShake) return;
+            
             var shakenCard = cardContainer.GetCard(cardType);
             
             if(shakenCard is IShakeAbility card) card.ShakeAbility();
@@ -74,7 +102,7 @@ namespace Game.GameType.Roman.ServerSide
 
             StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(newCard.device, new byte[] { 10, 1, (byte)newCard.cardType }));
         }
-
+        
         public void DiscoverCard(CardType cardType)
         {
             $"Discover {cardType}".Log();
