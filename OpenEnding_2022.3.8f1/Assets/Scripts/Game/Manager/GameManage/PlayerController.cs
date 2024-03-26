@@ -4,7 +4,7 @@ using Utility;
 
 namespace Game.Manager.GameManage
 {
-    public class PlayerController : MonoBehaviour
+    public abstract class PlayerController : MonoBehaviour
     {
         public Flip flip;
         public Shake shake;
