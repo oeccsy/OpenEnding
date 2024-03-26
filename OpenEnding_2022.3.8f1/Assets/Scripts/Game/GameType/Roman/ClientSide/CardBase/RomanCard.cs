@@ -22,5 +22,10 @@ namespace Game.GameType.Roman.ClientSide.CardBase
             var cardInfoUIPrefab = Resources.Load<GameObject>("Prefabs/Roman/CardInfoUI");
             cardInfoUI = Instantiate(cardInfoUIPrefab, SceneUIRoot.Transform).GetComponent<CardInfoUI>();
         }
+
+        private void OnDestroy()
+        {
+            Destroy(cardInfoUI.gameObject);
+        }
     }
 }

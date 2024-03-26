@@ -68,7 +68,9 @@ namespace Game.GameType.Roman.ServerSide
             if(shakenCard is IShakeAbility card) card.ShakeAbility();
             OnCardShaken?.Invoke(cardType);
             
-            cardContainer.ReplaceCard(cardType);
+            var newCard = cardContainer.ReplaceCard(cardType);
+
+            StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(newCard.device, new byte[] { 10, 0, (byte)newCard.cardType }));
         }
 
         public void DiscoverCard(CardType cardType)

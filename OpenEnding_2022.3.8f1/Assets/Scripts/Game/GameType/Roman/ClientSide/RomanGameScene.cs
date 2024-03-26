@@ -39,5 +39,12 @@ namespace Game.GameType.Roman.ClientSide
 
             card = Instantiate(prefab, GameObjectRoot.Transform).GetComponent<RomanCard>();
         }
+
+        public void ReplaceCard(CardType cardType)
+        {
+            if(card != null) Destroy(card.gameObject);
+
+            CreateCard(cardType);
+        } 
     }
 }
