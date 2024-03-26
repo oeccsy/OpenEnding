@@ -19,7 +19,7 @@ namespace Utility
 
         private void Awake()
         {
-            Input.gyro.enabled = false;
+            Input.gyro.enabled = true;
         }
     
         private void Update()
@@ -28,6 +28,8 @@ namespace Utility
             
             if (Input.gyro.gravity.z < -0.95f)
             {
+                if (curFace == Define.DisplayedFace.Head) return;
+                
                 curFace = Define.DisplayedFace.Head;
                 OnFlipToHead?.Invoke();
                 OnNextHead?.Invoke();
@@ -36,6 +38,8 @@ namespace Utility
 
             if (-0.7f < Input.gyro.gravity.z && Input.gyro.gravity.z < 0.7f)
             {
+                if (curFace == Define.DisplayedFace.Stand) return;
+                
                 curFace = Define.DisplayedFace.Stand;
                 OnStand?.Invoke();
                 OnNextStand?.Invoke();
@@ -44,6 +48,8 @@ namespace Utility
             
             if (Input.gyro.gravity.z > 0.95f)
             {
+                if (curFace == Define.DisplayedFace.Tail) return;
+                
                 curFace = Define.DisplayedFace.Tail;
                 OnFlipToTail?.Invoke();
                 OnNextTail?.Invoke();
