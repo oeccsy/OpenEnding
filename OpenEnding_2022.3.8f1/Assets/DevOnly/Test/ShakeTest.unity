@@ -382,8 +382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0176c45c614f0596c13411e0a1dc05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugText: {fileID: 701744821}
-  threshold: 10
+  threshold: 2
+  delay: 2
 --- !u!1 &1351791329
 GameObject:
   m_ObjectHideFlags: 0

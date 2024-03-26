@@ -19,7 +19,10 @@ namespace Utility
 
         private void Awake()
         {
+            Input.gyro.enabled = false;
+#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
             Input.gyro.enabled = true;
+#endif
         }
     
         private void Update()

@@ -6,12 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="3048a559-5bb8-415e-8a94-3f6a262470ce" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/ConnectScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/ConnectScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Connect/ConnectManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Connect/ConnectManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Fairytale/Fairytale_PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Fairytale/Fairytale_PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DevOnly/Debug/TestManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DevOnly/Debug/TestManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DevOnly/Test/ShakeTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DevOnly/Test/ShakeTest.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Font/NEXONLv1GothicRegular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Font/NEXONLv1GothicRegular SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/A.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/A.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/B.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/B.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/C.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/C.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/D.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/D.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/E.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/E.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ServerSide/RomanGameMode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ServerSide/RomanGameMode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/NetworkManage/NetworkManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/Manager/NetworkManage/NetworkManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utility/Flip.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utility/Flip.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,34 +26,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/10871f9e312b442cb78b9b97db88fdcb172a00/93/1ee3fc87/Object.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/10871f9e312b442cb78b9b97db88fdcb172a00/d7/810ae64e/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Common/Object/DeviceObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Common/UI/Overlay.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Game/Connect/Connect_Scene.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Game/Manager/GameManage/GameMode.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Game/Manager/InitManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utils/ColorPalette.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.8.8/Editor/BurstAotCompiler.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.8.8/Editor/BurstInspectorGUI.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.8.8/Runtime/Intrinsics/x86/Csr.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.8.8/Tests/Runtime/Shared/Helpers/DelegateHelper.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Runtime/Common/DynamicArray.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Runtime/Debugging/DebugManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Runtime/Debugging/DebugUpdater.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Runtime/Debugging/ProfilingScope.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Runtime/LookDev/IDataProvider.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Runtime/RenderGraph/RenderGraph.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Runtime/RenderGraph/RenderGraphBuilder.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Runtime/RenderGraph/RenderGraphResourceRegistry.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.8/Runtime/Textures/RTHandleSystem.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Editor/ShaderBuildPreprocessor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Runtime/2D/PixelPerfectCamera.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Runtime/Debug/DebugHandler.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Runtime/External/LibTessDotNet/Geom.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Runtime/Passes/AdditionalLightsShadowCasterPass.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Runtime/RenderingUtils.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Runtime/UniversalRenderPipeline.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.device-simulator.devices@1.0.0/Tests/Editor/Assembly-CSharp-Editor-firstpass-testable.asmdef" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/InputModules/BaseInput.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.visualscripting@1.9.0/Editor/VisualScripting.Core/Graph/GraphGUI.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../Unity Projects/Boids-master/Assets/Scripts/BoidManager.cs" root0="SKIP_HIGHLIGHTING" />
