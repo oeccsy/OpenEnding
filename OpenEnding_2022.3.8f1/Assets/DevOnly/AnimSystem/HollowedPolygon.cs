@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DevOnly.AnimSystem
@@ -48,10 +49,10 @@ namespace DevOnly.AnimSystem
             for (int i = 0; i < triangleAmount / 2; i++)
             {
                 int curOuterIndex = i;
-                int nextOuterIndex = (i + 1) % sides;
-            
                 int curInnerIndex = curOuterIndex + sides;
-                int nextInnerIndex = nextOuterIndex + sides;
+                
+                int nextOuterIndex = (i + 1) % sides;
+                int prevInnerIndex = ((sides + i - 1) % sides) + sides;
 
                 // Clockwise
                 triangles.Add(curOuterIndex);
@@ -60,7 +61,7 @@ namespace DevOnly.AnimSystem
 
                 // Clockwise
                 triangles.Add(curOuterIndex);
-                triangles.Add(nextInnerIndex);
+                triangles.Add(prevInnerIndex);
                 triangles.Add(curInnerIndex);
             }
 
