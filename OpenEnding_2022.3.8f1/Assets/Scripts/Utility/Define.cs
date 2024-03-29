@@ -6,9 +6,9 @@ public class Define
 {
     public enum SceneType
     {
-        OnBoardingScene,
         ConnectScene,
-        SealGameScene
+        FairytaleScene,
+        RomanScene
     }
 
     public enum ConnectType
@@ -27,8 +27,10 @@ public class Define
 
     public enum DisplayedFace
     {
+        None,
         Head,
-        Tail
+        Tail,
+        Stand
     }
 
     public enum FairyTaleGameCardType
@@ -147,6 +149,34 @@ public class Define
         Book,
         Drawing,
         Studying,
-        
+    }
+}
+
+namespace Game.GameType.Roman
+{
+    public enum GameStep
+    {
+        InitGame,
+        SelectCard,
+        FlipOrShake,
+        ShowCard,
+        HideCard,
+        GameOver,
+        Pause
+    }
+    
+    public enum CardType
+    {
+        None,
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        G,
+        H,
+        I,
+        J
     }
 }

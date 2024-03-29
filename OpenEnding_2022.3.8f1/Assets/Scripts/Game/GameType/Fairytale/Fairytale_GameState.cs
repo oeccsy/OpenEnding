@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Manager.GameManage;
 using UnityEngine;
 
 public class Fairytale_GameState : GameState

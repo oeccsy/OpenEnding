@@ -32,9 +32,9 @@ public class TortoiseCardStoryLineFactory : Fairytale_StorylineFactory
             availableStory.Add(Define.Story.LoseAll);
         }
 
-        Utils.ListRandomShuffle(availableStory);
-        Utils.ListRandomShuffle(availableStory);
-        Utils.ListRandomShuffle(availableStory);
+        Utils.ShuffleList(availableStory);
+        Utils.ShuffleList(availableStory);
+        Utils.ShuffleList(availableStory);
         
         return availableStory[Random.Range(0, availableStory.Count)];
     }
