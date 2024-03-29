@@ -12,8 +12,8 @@ namespace DevOnly.AnimSystem
         protected Vector3[] _polygonPoints;
         protected int[] _polygonTriangles;
 
-        private int _sides = 3;
-        private float _radius = 1f;
+        protected int _sides = 3;
+        protected float _radius = 1f;
 
         public int Sides
         {
@@ -37,10 +37,15 @@ namespace DevOnly.AnimSystem
 
         protected virtual void Awake()
         {
-            Radius = 0f;
             _meshRenderer = gameObject.AddComponent<MeshRenderer>();
+            _meshRenderer.material = Resources.Load<Material>("Materials/Polygon");
             _meshFilter = gameObject.AddComponent<MeshFilter>();
             _meshFilter.mesh = _mesh = new Mesh();
+        }
+
+        protected virtual void Start()
+        {
+            DrawPolygon(Sides, Radius);
         }
 
         public abstract void DrawPolygon(int sides, float radius);
@@ -54,10 +59,23 @@ namespace DevOnly.AnimSystem
             for (int i = 0; i < sides; i++)
             {
                 Vector3 point = Vector3.zero;
-                point.x = Mathf.Cos((1f / sides) * (2 * Mathf.PI) * i) * radius;
-                point.y = Mathf.Sin((1f / sides) * (2 * Mathf.PI) * i) * radius;
-                point.z = 0;
-            
+                float theta;
+                
+                if (sides % 2 == 1)
+                {
+                    theta = (1f / sides) * (2 * Mathf.PI);
+                    point.x = Mathf.Cos(theta * i + Mathf.PI/2) * radius;
+                    point.y = Mathf.Sin(theta * i + Mathf.PI/2) * radius;
+                    point.z = 0;
+                }
+                else
+                {
+                    theta = (1f / sides) * (2 * Mathf.PI);
+                    point.x = Mathf.Cos(theta * i + theta/2) * radius;
+                    point.y = Mathf.Sin(theta * i + theta/2) * radius;
+                    point.z = 0;
+                }
+                
                 points.Add(point);
             }
         

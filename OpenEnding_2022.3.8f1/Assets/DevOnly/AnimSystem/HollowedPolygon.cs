@@ -19,8 +19,8 @@ namespace DevOnly.AnimSystem
         
         public override void DrawPolygon(int sides, float radius)
         {
-            Sides = sides;
-            Radius = radius;
+            _sides = sides;
+            _radius = radius;
 
             List<Vector3> pointsList = new List<Vector3>();
             

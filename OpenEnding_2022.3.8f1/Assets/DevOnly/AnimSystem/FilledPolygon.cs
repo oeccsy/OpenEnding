@@ -7,8 +7,8 @@ namespace DevOnly.AnimSystem
     {
         public override void DrawPolygon(int sides, float radius)
         {
-            Sides = sides;
-            Radius = radius;
+            _sides = sides;
+            _radius = radius;
             
             _polygonPoints = GetCircumferencePoints(sides, radius).ToArray();
             _polygonTriangles = GetTriangles(_polygonPoints);
