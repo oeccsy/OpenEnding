@@ -1,35 +1,39 @@
 ﻿#if UNITY_EDITOR
+using Game.GameType.Roman;
+using Game.GameType.Roman.ClientSide;
+using Game.Manager.GameManage;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 public class TestManager : Singleton<TestManager>
 {
-    [MenuItem("FuncTest/A_LoadFairytaleScene")]
+    #region Fairytale
+    [MenuItem("FuncTest/Fairytale/A_LoadFairytaleScene")]
     public static void LoadFairytaleScene()
     {
-        GameManager.Instance.GameFlow.LoadFairytaleScene();
+        GameManager.Instance.GameFlow.LoadScene(Define.SceneType.FairytaleScene);
     }
 
-    [MenuItem("FuncTest/B_UnsetOverlay")]
+    [MenuItem("FuncTest/Fairytale/B_UnsetOverlay")]
     public static void UnsetOverlay()
     {
         Overlay.UnsetActiveOverlay();
     }
     
-    [MenuItem("FuncTest/C_SelectTortoiseCard")]
+    [MenuItem("FuncTest/Fairytale/C_SelectTortoiseCard")]
     public static void SelectTortoiseCard()
     {
         Fairytale_Scene.Instance.TheHareAndTheTortoise();
     }
     
-    [MenuItem("FuncTest/D_CreateStory")]
+    [MenuItem("FuncTest/Fairytale/D_CreateStory")]
     public static void CreateStory()
     {
         Fairytale_Scene.Instance.card.cardData.storyLine = Fairytale_StorylineFactory.GetStoryLine(3, 12);
     }
     
-    [MenuItem("FuncTest/E_ShowNextCard")]
+    [MenuItem("FuncTest/Fairytale/E_ShowNextCard")]
     public static void ShowNextCard()
     {
         var timeStep = Fairytale_Scene.Instance.card.cardData.timeStep;
@@ -37,19 +41,19 @@ public class TestManager : Singleton<TestManager>
         Fairytale_Scene.Instance.card.cardData.timeStep++;
     }
 
-    [MenuItem("FuncTest/F_GrayScale")]
+    [MenuItem("FuncTest/Fairytale/F_GrayScale")]
     public static void GrayScale()
     {
         PostProcess.SetPostProcess(Define.PostProcess.GrayScale);
     }
 
-    [MenuItem("FuncTest/H_SelectMemoCard")]
+    [MenuItem("FuncTest/Fairytale/H_SelectMemoCard")]
     public static void SelectMemoCard()
     {
         Fairytale_Scene.Instance.ThereAreAlwaysMemos();
     }
     
-    [MenuItem("FuncTest/I_CreateStory")]
+    [MenuItem("FuncTest/Fairytale/I_CreateStory")]
     public static void CreateStory_Memo()
     {
         Fairytale_Scene.Instance.card.InitCardStory(3, 12);
@@ -63,7 +67,7 @@ public class TestManager : Singleton<TestManager>
         
     }
     
-    [MenuItem("FuncTest/J_ShowNextCard")]
+    [MenuItem("FuncTest/Fairytale/J_ShowNextCard")]
     public static void ShowNextCard_Memo()
     {
         var timeStep = Fairytale_Scene.Instance.card.cardData.timeStep;
@@ -71,24 +75,46 @@ public class TestManager : Singleton<TestManager>
         Fairytale_Scene.Instance.card.cardData.timeStep++;
     }
     
-    [MenuItem("FuncTest/K_ShowSuccessSceneUI")]
+    [MenuItem("FuncTest/Fairytale/K_ShowSuccessSceneUI")]
     public static void ShowSuccessSceneUI()
     {
         UIManager.Instance.SceneUIRoot = GameObject.Find("SceneUIRoot").transform;
         UIManager.Instance.ShowSceneUI("Prefabs/SuccessUICanvas", 0);
     }
     
-    [MenuItem("FuncTest/L_ResultPopup")]
+    [MenuItem("FuncTest/Fairytale/L_ResultPopup")]
     public static void ShowResultPopup()
     {
         UIManager.Instance.PopupUIRoot = GameObject.Find("PopupUIRoot").transform;
         UIManager.Instance.ShowPopup("Prefabs/ResultPopupCanvas", 9);
     }
+    #endregion
     
-    [MenuItem("FuncTest/M_GameExit")]
+    #region Roman
+    
+    [MenuItem("FuncTest/Roman/A_LoadRomanScene")]
+    public static void LoadRomanScene()
+    {
+        GameManager.Instance.GameFlow.LoadScene(Define.SceneType.RomanScene);
+    }
+    
+    [MenuItem("FuncTest/Roman/B_CreateCard")]
+    public static void CreateCard()
+    {
+        (GameManager.Instance.GameScene as RomanGameScene)?.CreateCard(CardType.A);
+    }
+    
+    [MenuItem("FuncTest/Roman/C_ReplaceCard")]
+    public static void ReplaceCard()
+    {
+        (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.B);
+    }
+    #endregion
+    
+    [MenuItem("FuncTest/Roman/_GameExit")]
     public static void GameExit()
     {
-        GameManager.Instance.GameFlow.LoadConnectScene();
+        GameManager.Instance.GameFlow.LoadScene(Define.SceneType.ConnectScene);
     }
 }
 #endif

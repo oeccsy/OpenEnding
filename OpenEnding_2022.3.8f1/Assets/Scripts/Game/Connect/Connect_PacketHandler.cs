@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Manager.GameManage;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ public class Connect_PacketHandler : Singleton<Connect_PacketHandler>
         {
             {Tuple.Create<byte, byte>(0, 0), (bytes) => ConnectScene.SynchronizeDevicesWithAnimation(bytes)},
             
-            {Tuple.Create<byte, byte>(1, 0), (bytes) => GameFlow.LoadFairytaleScene()}
+            {Tuple.Create<byte, byte>(1, 0), (bytes) => GameFlow.LoadScene((Define.SceneType)bytes[0])}
         };
 
         NetworkManager.Instance.OnReceiveDataFromServer = ExecuteActionByPacket;

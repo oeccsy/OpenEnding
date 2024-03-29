@@ -1,3 +1,10 @@
+using Game.Manager.GameManage;
 using UnityEngine;
 
-public class GameState : MonoBehaviour {}
+public abstract class GameState
+{
+    public GameState()
+    {
+        GameManager.Instance.GameState = this;
+    }
+}

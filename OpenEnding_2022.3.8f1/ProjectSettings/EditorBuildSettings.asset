@@ -12,6 +12,12 @@ EditorBuildSettings:
     path: Assets/Scenes/FairytaleGameScene.unity
     guid: 93d73eec6d8b03c4fab99c9af3dd429f
   - enabled: 1
+    path: Assets/Scenes/RomanGameScene.unity
+    guid: 75abf33c22813b445a2884a0409939e1
+  - enabled: 1
+    path: Assets/DevOnly/Test/ShakeTest.unity
+    guid: b72d2fb267cdfd14d9f24defb2904a28
+  - enabled: 1
     path: Assets/DevOnly/Test/GyroTest.unity
     guid: 7eb97b9cee6a93e4c850592c578df1b4
   m_configObjects: {}
