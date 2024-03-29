@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace DevOnly.AnimSystem
@@ -83,5 +85,65 @@ namespace DevOnly.AnimSystem
         }
 
         protected abstract int[] GetTriangles(Vector3[] points);
+
+        public List<Vector3> GetVertexPositions()
+        {
+            return _polygonPoints.ToList();
+        }
+        
+        public IEnumerator MorphTo(Polygon targetPolygon, float time)
+        {
+            List<Vector3> startingPoints = GetVertexPositions();
+            List<Vector3> finishingPoints = targetPolygon.GetVertexPositions();
+                
+            int difference = finishingPoints.Count - startingPoints.Count;
+            if (difference > 0) AddFillerPoints(ref startingPoints, difference);
+            if (difference < 0) AddFillerPoints(ref finishingPoints, -difference);
+
+            _mesh.vertices = _polygonPoints = startingPoints.ToArray();
+            _mesh.triangles = _polygonTriangles = GetTriangles(_polygonPoints);
+            
+            float timer = 0f;
+            while (timer < time)
+            {
+                timer += Time.deltaTime;
+                
+                for (int i = 0; i < startingPoints.Count; i++)
+                {
+                    _polygonPoints[i] = Vector3.Lerp(startingPoints[i], finishingPoints[i], timer / time);
+                }
+
+                _mesh.vertices = _polygonPoints;
+                yield return null;
+            }
+            
+            _polygonPoints = finishingPoints.ToArray();
+        }
+
+        protected void AddFillerPoints(ref List<Vector3> points, int amount)
+        {
+            if (points.Count < 2) return;
+            
+            List<Vector3> newPoints = new List<Vector3>();
+            int totalSections = points.Count;
+            
+            for (int section = 0; section < totalSections; section++)
+            {
+                newPoints.Add(points[section]);
+                
+                int countToAdd = amount / totalSections;
+                if (section < amount % totalSections) countToAdd++;
+
+                float gap = (float)1 / (countToAdd+1);
+                
+                for (int i = 1; i <= countToAdd; i++)
+                {
+                    Vector3 pos = Vector3.Lerp(points[section], points[(section + 1) % totalSections], gap * i);
+                    newPoints.Add(pos);
+                }
+            }
+
+            points = newPoints;
+        }
     }
 }
