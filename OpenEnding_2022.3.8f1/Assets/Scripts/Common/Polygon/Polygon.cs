@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace DevOnly.AnimSystem
+namespace Common.Polygon
 {
     public abstract class Polygon : MonoBehaviour
     {

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace DevOnly.AnimSystem
+namespace Common.Polygon
 {
-    public class LinePolygon : Polygon
+    public class NoisePolygon : Polygon
     {
         private LineRenderer _lineRenderer;
         protected override void Awake()
@@ -20,7 +20,7 @@ namespace DevOnly.AnimSystem
                 Vector3 point = Vector3.zero;
                 point.x = Mathf.Cos((1f / sides) * (2 * Mathf.PI) * i) * radius;
                 point.y = Mathf.Sin((1f / sides) * (2 * Mathf.PI) * i) * radius;
-                point.z = 0;
+                point.z = Random.Range(0f, 1f) * radius;
             
                 _lineRenderer.SetPosition(i, point);
             }
