@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Common.Polygon
@@ -144,6 +145,11 @@ namespace Common.Polygon
             }
 
             points = newPoints;
+        }
+
+        public void SetColor(Color color, float duration = 1f)
+        {
+            _meshRenderer.material.DOColor(color, duration);
         }
     }
 }
