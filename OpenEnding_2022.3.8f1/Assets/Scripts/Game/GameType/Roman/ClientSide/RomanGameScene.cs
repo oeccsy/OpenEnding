@@ -1,4 +1,6 @@
-﻿using Game.GameType.Roman.ClientSide.CardBase;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Game.GameType.Roman.ClientSide.CardBase;
 using Game.Manager.GameManage;
 using UnityEngine;
 using Utility.Hierarchy;
@@ -43,9 +45,17 @@ namespace Game.GameType.Roman.ClientSide
         public void ReplaceCard(CardType cardType)
         {
             $"Replace to {cardType}".Log();
-            if(card != null) Destroy(card.gameObject);
+            if (card == null) return;
 
-            CreateCard(cardType);
+            IEnumerator ReplaceRoutine()
+            {
+                card.cardInfoUI.Hide();
+                yield return new WaitForSecondsRealtime(2f);
+                Destroy(card.gameObject);
+                CreateCard(cardType);
+            }
+
+            StartCoroutine(ReplaceRoutine());
         } 
     }
 }
