@@ -15,7 +15,9 @@ namespace Common.Polygon
         protected Vector3[] _polygonPoints;
         protected int[] _polygonTriangles;
 
+        [SerializeField]
         protected int _sides = 3;
+        [SerializeField]
         protected float _radius = 1f;
 
         public int Sides
@@ -63,7 +65,7 @@ namespace Common.Polygon
             {
                 Vector3 point = Vector3.zero;
                 float theta;
-                
+
                 if (sides % 2 == 1)
                 {
                     theta = (1f / sides) * (2 * Mathf.PI);
@@ -71,11 +73,18 @@ namespace Common.Polygon
                     point.y = Mathf.Sin(theta * i + Mathf.PI/2) * radius;
                     point.z = 0;
                 }
+                else if (sides == 4)
+                {
+                    theta = (1f / sides) * (2 * Mathf.PI);
+                    point.x = Mathf.Cos(theta * i + Mathf.PI/4) * radius;
+                    point.y = Mathf.Sin(theta * i + Mathf.PI/4) * radius;
+                    point.z = 0;
+                }
                 else
                 {
                     theta = (1f / sides) * (2 * Mathf.PI);
-                    point.x = Mathf.Cos(theta * i + theta/2) * radius;
-                    point.y = Mathf.Sin(theta * i + theta/2) * radius;
+                    point.x = Mathf.Cos(theta * i) * radius;
+                    point.y = Mathf.Sin(theta * i) * radius;
                     point.z = 0;
                 }
                 
