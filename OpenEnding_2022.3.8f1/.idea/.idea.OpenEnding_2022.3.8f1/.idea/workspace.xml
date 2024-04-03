@@ -6,13 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="a9a4be8d-1b43-4c7e-8c70-10083a5228b2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Font/NEXONLv1GothicRegular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Font/NEXONLv1GothicRegular SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Materials/Polygon.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Materials/Polygon.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/A.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/A.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/E.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/E.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/RomanGameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/RomanGameScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/Polygon/Polygon.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Polygon/Polygon.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/E.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/E.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/CardBase/RomanCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/CardBase/RomanCard.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +106,7 @@
       <option name="presentableId" value="Default" />
       <updated>1712107520891</updated>
       <workItem from="1712107524280" duration="3262000" />
-      <workItem from="1712113363644" duration="8079000" />
+      <workItem from="1712113363644" duration="9420000" />
     </task>
     <servers />
   </component>

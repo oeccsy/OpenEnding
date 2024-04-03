@@ -21,19 +21,21 @@ namespace Game.GameType.Roman.ClientSide.Card
             RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_E");
             cardInfoUI.RefreshUI(cardInfo);
 
-            _polygons = GetComponentsInChildren<Polygon>().Reverse().ToList();
+            _polygons = GetComponentsInChildren<Polygon>().ToList();
         }
 
         protected override IEnumerator Start()
         {
-            //Time.timeScale = 0.25f;
             yield return base.Start();
             yield return ShowPolygons();
         }
 
         private IEnumerator ShowPolygons()
         {
-            foreach (var polygon in _polygons)
+            var showOrder = new List<Polygon>(_polygons);
+            showOrder.Reverse();
+            
+            foreach (var polygon in showOrder)
             {
                 var polygonTransform = polygon.transform;
                 
