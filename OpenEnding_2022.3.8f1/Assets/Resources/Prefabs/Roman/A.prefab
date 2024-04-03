@@ -63,10 +63,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5167127080012712076}
     m_Modifications:
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _sides
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.b
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.r
+      value: 0.3962264
+      objectReference: {fileID: 0}
     - target: {fileID: 4459866589079877569, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
       propertyPath: m_Name
       value: FilledPolygon (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
@@ -118,6 +153,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -137,10 +177,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5167127080012712076}
     m_Modifications:
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _sides
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.b
+      value: 0.6415094
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.g
+      value: 0.6415094
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.r
+      value: 0.6415094
+      objectReference: {fileID: 0}
     - target: {fileID: 4459866589079877569, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
       propertyPath: m_Name
       value: FilledPolygon (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
@@ -192,6 +267,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -211,10 +291,40 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5167127080012712076}
     m_Modifications:
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.b
+      value: 0.8584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.g
+      value: 0.8584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.r
+      value: 0.8584906
+      objectReference: {fileID: 0}
     - target: {fileID: 4459866589079877569, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
       propertyPath: m_Name
       value: FilledPolygon (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
@@ -266,6 +376,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -285,10 +400,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5167127080012712076}
     m_Modifications:
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _sides
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.b
+      value: 0.6509434
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.g
+      value: 0.6509434
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.r
+      value: 0.6509434
+      objectReference: {fileID: 0}
     - target: {fileID: 4459866589079877569, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
       propertyPath: m_Name
       value: FilledPolygon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
@@ -340,6 +490,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -359,10 +514,40 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5167127080012712076}
     m_Modifications:
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.b
+      value: 0.735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.g
+      value: 0.735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.r
+      value: 0.735849
+      objectReference: {fileID: 0}
     - target: {fileID: 4459866589079877569, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
       propertyPath: m_Name
       value: FilledPolygon (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
@@ -414,6 +599,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -433,10 +623,35 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5167127080012712076}
     m_Modifications:
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.b
+      value: 0.4481132
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: _color.r
+      value: 0.9264151
+      objectReference: {fileID: 0}
     - target: {fileID: 4459866589079877569, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
       propertyPath: m_Name
       value: FilledPolygon (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
@@ -487,6 +702,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358775356585642563, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

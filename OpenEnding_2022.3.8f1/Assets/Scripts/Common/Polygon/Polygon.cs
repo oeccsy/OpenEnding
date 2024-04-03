@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Common.Polygon
 {
     public abstract class Polygon : MonoBehaviour
     {
-        protected MeshRenderer _meshRenderer;
+        public MeshRenderer meshRenderer;
         protected MeshFilter _meshFilter;
         
         protected Mesh _mesh;
@@ -48,15 +49,15 @@ namespace Common.Polygon
             set
             {
                 _color = value;
-                _meshRenderer.material.color = value;
+                meshRenderer.material.color = value;
             }
         }
 
         protected virtual void Awake()
         {
-            _meshRenderer = gameObject.AddComponent<MeshRenderer>();
-            _meshRenderer.material = Resources.Load<Material>("Materials/Polygon");
-            _meshRenderer.material.color = _color;
+            meshRenderer = gameObject.AddComponent<MeshRenderer>();
+            meshRenderer.material = Resources.Load<Material>("Materials/Polygon");
+            meshRenderer.material.color = _color;
             
             _meshFilter = gameObject.AddComponent<MeshFilter>();
             _meshFilter.mesh = _mesh = new Mesh();
@@ -172,7 +173,7 @@ namespace Common.Polygon
         
         public void StartColorAnim(Color color, float duration = 1f)
         {
-            _meshRenderer.material.DOColor(color, duration);
+            meshRenderer.material.DOColor(color, duration);
         }
     }
 }

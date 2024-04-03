@@ -26,8 +26,8 @@ namespace Game.GameType.Roman.ClientSide.CardBase
 
         protected virtual IEnumerator Start()
         {
-            yield return null;
             cardInfoUI.Show();
+            yield return new WaitForSecondsRealtime(3f);
         }
 
         private void OnDestroy()
