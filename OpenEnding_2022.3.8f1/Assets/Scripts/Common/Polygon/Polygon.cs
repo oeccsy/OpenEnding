@@ -10,7 +10,7 @@ namespace Common.Polygon
     {
         protected MeshRenderer _meshRenderer;
         protected MeshFilter _meshFilter;
-    
+        
         protected Mesh _mesh;
         protected Vector3[] _polygonPoints;
         protected int[] _polygonTriangles;
@@ -40,10 +40,24 @@ namespace Common.Polygon
             }
         }
 
+        [SerializeField]
+        protected Color _color = Color.white;
+        public Color Color
+        {
+            get => _color;
+            set
+            {
+                _color = value;
+                _meshRenderer.material.color = value;
+            }
+        }
+
         protected virtual void Awake()
         {
             _meshRenderer = gameObject.AddComponent<MeshRenderer>();
             _meshRenderer.material = Resources.Load<Material>("Materials/Polygon");
+            _meshRenderer.material.color = _color;
+            
             _meshFilter = gameObject.AddComponent<MeshFilter>();
             _meshFilter.mesh = _mesh = new Mesh();
         }
@@ -155,8 +169,8 @@ namespace Common.Polygon
 
             points = newPoints;
         }
-
-        public void SetColor(Color color, float duration = 1f)
+        
+        public void StartColorAnim(Color color, float duration = 1f)
         {
             _meshRenderer.material.DOColor(color, duration);
         }

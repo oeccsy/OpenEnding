@@ -24,23 +24,12 @@ namespace Game.GameType.Roman.ClientSide.Card
             _polygons = GetComponentsInChildren<Polygon>().ToList();
         }
 
-        private void Start()
+        protected override IEnumerator Start()
         {
+            yield return base.Start();
+            
             foreach (var polygon in _polygons)
             {
-                polygon.Sides = Random.Range(5, 7);
-
-                switch (polygon.Sides)
-                {
-                    case 5:
-                        polygon.SetColor(Color.yellow);
-                        break;
-                    case 6:
-                        polygon.SetColor(Color.green);
-                        break;
-                }
-                polygon.transform.localScale = Vector3.one * 0.3f;
-
                 StartCoroutine(PolygonAnimRoutine(polygon));
             }
         }

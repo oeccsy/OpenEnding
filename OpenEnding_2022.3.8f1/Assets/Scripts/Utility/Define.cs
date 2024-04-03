@@ -72,8 +72,8 @@ public class Define
 
     public enum CameraIndex
     {
-        Main,
-        UI
+        UI,
+        Main
     }
 
     public enum PostProcess

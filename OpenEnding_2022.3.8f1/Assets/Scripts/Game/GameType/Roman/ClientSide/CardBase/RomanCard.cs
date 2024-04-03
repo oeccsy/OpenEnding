@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Game.GameType.Roman.ClientSide.UI;
 using Shatalmic;
 using TMPro;
@@ -21,6 +22,12 @@ namespace Game.GameType.Roman.ClientSide.CardBase
         {
             var cardInfoUIPrefab = Resources.Load<GameObject>("Prefabs/Roman/CardInfoUI");
             cardInfoUI = Instantiate(cardInfoUIPrefab, SceneUIRoot.Transform).GetComponent<CardInfoUI>();
+        }
+
+        protected virtual IEnumerator Start()
+        {
+            yield return null;
+            cardInfoUI.Show();
         }
 
         private void OnDestroy()

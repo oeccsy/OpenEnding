@@ -16,7 +16,9 @@ public static class ColorPalette
         { ColorName.DeviceDefault, new Color(207/255f, 207/255f, 207/255f, 255/255f) },
         { ColorName.DisplayDefault, new Color(248/255f, 248/255f, 248/255f) },
         { ColorName.ProgressDotDefault, new Color(222/255f, 222/255f, 222/255f) },
-        { ColorName.ProgressDotActive, new Color(92/255f, 92/255f, 92/255f) }
+        { ColorName.ProgressDotActive, new Color(92/255f, 92/255f, 92/255f) },
+        
+        { ColorName.Night, new Color(36/255f, 26/255f, 53/255f) }
         
     };
 
@@ -35,6 +37,8 @@ public static class ColorPalette
         DeviceDefault,
         DisplayDefault,
         ProgressDotDefault,
-        ProgressDotActive
+        ProgressDotActive,
+        
+        Night
     }
 }

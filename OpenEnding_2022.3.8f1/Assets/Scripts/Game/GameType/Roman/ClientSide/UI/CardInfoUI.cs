@@ -13,19 +13,15 @@ namespace Game.GameType.Roman.ClientSide.UI
 
         [SerializeField]
         private Image _lineImage;
-        [SerializeField]
-        private Image _mask;
         
         private void Awake()
         {
+            Canvas canvas = GetComponentInChildren<Canvas>();
+            canvas.worldCamera = Camera.allCameras[(int)Define.CameraIndex.UI];
+            
             var texts = GetComponentsInChildren<TextMeshProUGUI>();
             _cardNameText = texts[0];
             _cardDescText = texts[1];
-        }
-
-        private void Start()
-        {
-            Show();
         }
         
         public void RefreshUI(RomanCardInfo cardInfo)
@@ -51,8 +47,7 @@ namespace Game.GameType.Roman.ClientSide.UI
                 .Append(_cardNameText.DOFade(1, 0.5f).From(0))
                 .Join(_cardNameText.transform.DOLocalMoveY(nameTextPosY, 0.5f).From(nameTextPosY + 10))
                 .Join(_cardDescText.DOFade(1, 0.5f).From(0))
-                .Join(_cardDescText.transform.DOLocalMoveY(descTextPosY, 0.5f).From(descTextPosY + 10))
-                .Join(_mask.DOFade(0, 0.5f).From(1));
+                .Join(_cardDescText.transform.DOLocalMoveY(descTextPosY, 0.5f).From(descTextPosY + 10));
         }
 
         public void Hide()
@@ -64,7 +59,6 @@ namespace Game.GameType.Roman.ClientSide.UI
             sequence
                 .Append(_cardNameText.DOFade(0, 0.5f).From(1))
                 .Join(_cardDescText.DOFade(0, 0.5f).From(1))
-                .Join(_mask.DOFade(1, 0.5f).From(0))
                 .Append(_lineImage.DOFillAmount(0f, 0.5f).SetEase(Ease.InOutCirc));
         }
     }
