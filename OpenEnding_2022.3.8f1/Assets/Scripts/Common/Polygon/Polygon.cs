@@ -197,10 +197,11 @@ namespace Common.Polygon
             if (meshRenderer == null || _meshFilter == null)
             {
                 meshRenderer = GetComponent<MeshRenderer>();
+                meshRenderer.sharedMaterial = Instantiate(Resources.Load<Material>("Materials/Polygon"));
+                
                 _meshFilter = GetComponent<MeshFilter>();
             }
             
-            meshRenderer.sharedMaterial = Instantiate(Resources.Load<Material>("Materials/Polygon"));
             meshRenderer.sharedMaterial.color = _color;
             _meshFilter.mesh = _mesh = new Mesh();
             
