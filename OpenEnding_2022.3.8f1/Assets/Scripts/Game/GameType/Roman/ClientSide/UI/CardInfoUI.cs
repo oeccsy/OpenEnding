@@ -50,7 +50,7 @@ namespace Game.GameType.Roman.ClientSide.UI
                 .Join(_cardDescText.DOFade(1, 0.5f).From(0))
                 .Join(_cardDescText.transform.DOLocalMoveY(descTextPosY, 0.5f).From(descTextPosY + 10));
 
-            yield return new WaitForSecondsRealtime(2.3f);
+            yield return new WaitForSeconds(2.3f);
         }
 
         public IEnumerator Hide()
@@ -64,7 +64,7 @@ namespace Game.GameType.Roman.ClientSide.UI
                 .Join(_cardDescText.DOFade(0, 0.5f).From(1))
                 .Append(_lineImage.DOFillAmount(0f, 0.5f).SetEase(Ease.InOutCirc));
 
-            yield return new WaitForSecondsRealtime(2f);
+            yield return new WaitForSeconds(2f);
         }
     }
 }

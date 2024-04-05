@@ -8,10 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OpenEnding_2022.3.8f1/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/DevOnly/Debug/TestManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DevOnly/Debug/TestManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/Font/NEXONLv1GothicRegular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Font/NEXONLv1GothicRegular SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/A.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/A.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/CardInfoUI.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/CardInfoUI.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/E.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/E.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_A.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_A.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/D.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Roman/D.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_B.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_B.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_C.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_C.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_D.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_D.asset" afterDir="false" />
@@ -20,14 +18,8 @@
       <change beforePath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_G.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_G.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_J.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/ScriptableObject/Roman/CardInfoSO_J.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/RomanGameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/RomanGameScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/Polygon/Polygon.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Polygon/Polygon.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/A.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/A.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/B.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/B.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/C.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/C.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/D.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/D.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/E.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/Card/E.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/CardBase/RomanCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/CardBase/RomanCard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/RomanGameScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/RomanGameScene.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/UI/CardInfoUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameType/Roman/ClientSide/UI/CardInfoUI.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -127,7 +119,7 @@
       <updated>1712107520891</updated>
       <workItem from="1712107524280" duration="3262000" />
       <workItem from="1712113363644" duration="13167000" />
-      <workItem from="1712239052870" duration="28777000" />
+      <workItem from="1712239052870" duration="34001000" />
     </task>
     <servers />
   </component>

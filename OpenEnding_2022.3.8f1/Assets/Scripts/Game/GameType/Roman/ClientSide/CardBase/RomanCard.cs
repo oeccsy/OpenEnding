@@ -33,6 +33,7 @@ namespace Game.GameType.Roman.ClientSide.CardBase
 
         protected virtual void OnDestroy()
         {
+            if (cardInfoUI == null) return;
             Destroy(cardInfoUI.gameObject);
         }
     }
