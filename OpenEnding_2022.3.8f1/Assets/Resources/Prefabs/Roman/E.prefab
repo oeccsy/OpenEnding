@@ -61,6 +61,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 435651983310387649}
     m_Modifications:
+    - target: {fileID: 1337291532506016732, guid: f94310d0c0d025a468cce9345b237fdb,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1692455928047572378, guid: f94310d0c0d025a468cce9345b237fdb,
         type: 3}
       propertyPath: _radius
@@ -100,6 +105,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _thickness
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090769920859581382, guid: f94310d0c0d025a468cce9345b237fdb,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3406484475397294391, guid: f94310d0c0d025a468cce9345b237fdb,
         type: 3}
@@ -180,6 +190,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 435651983310387649}
     m_Modifications:
+    - target: {fileID: 1898772256928997786, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
       propertyPath: _sides
@@ -209,6 +224,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _color.r
       value: 0.7075472
+      objectReference: {fileID: 0}
+    - target: {fileID: 3732234924333019726, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4459866589079877569, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
@@ -289,6 +309,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 435651983310387649}
     m_Modifications:
+    - target: {fileID: 1898772256928997786, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2769913643904328641, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
       propertyPath: _sides
@@ -318,6 +343,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _color.r
       value: 0.8867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 3732234924333019726, guid: 22aa83e2625883a448f268ec68d54694,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4459866589079877569, guid: 22aa83e2625883a448f268ec68d54694,
         type: 3}
@@ -393,6 +423,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 435651983310387649}
     m_Modifications:
+    - target: {fileID: 2620530743972221841, guid: 0b52da447aa08424d9274ad33654e947,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3884320766957680348, guid: 0b52da447aa08424d9274ad33654e947,
         type: 3}
       propertyPath: _radius
@@ -462,6 +497,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7169858486007072788, guid: 0b52da447aa08424d9274ad33654e947,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

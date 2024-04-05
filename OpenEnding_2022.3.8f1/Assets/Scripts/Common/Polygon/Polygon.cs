@@ -1,12 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Common.Polygon
 {
+    [RequireComponent(typeof(MeshRenderer), typeof(MeshFilter))]
     public abstract class Polygon : MonoBehaviour
     {
         public MeshRenderer meshRenderer;
@@ -55,11 +59,12 @@ namespace Common.Polygon
 
         protected virtual void Awake()
         {
-            meshRenderer = gameObject.AddComponent<MeshRenderer>();
-            meshRenderer.material = Resources.Load<Material>("Materials/Polygon");
+            meshRenderer = GetComponent<MeshRenderer>();
+
+            meshRenderer.sharedMaterial = Resources.Load<Material>("Materials/Polygon");
             meshRenderer.material.color = _color;
             
-            _meshFilter = gameObject.AddComponent<MeshFilter>();
+            _meshFilter = GetComponent<MeshFilter>();
             _meshFilter.mesh = _mesh = new Mesh();
         }
 
@@ -175,5 +180,32 @@ namespace Common.Polygon
         {
             meshRenderer.material.DOColor(color, duration);
         }
+        
+#if UNITY_EDITOR
+        [ContextMenu("SaveMesh")]
+        protected void SaveMesh()
+        {
+            string path = "Assets/Resources/Mesh/NewMesh.asset";
+            AssetDatabase.CreateAsset(_mesh, AssetDatabase.GenerateUniqueAssetPath(path));
+            AssetDatabase.SaveAssets();
+        }
+        
+        protected virtual void OnValidate()
+        {
+            Debug.Log("OnValidate");
+            
+            if (meshRenderer == null || _meshFilter == null)
+            {
+                meshRenderer = GetComponent<MeshRenderer>();
+                _meshFilter = GetComponent<MeshFilter>();
+            }
+            
+            meshRenderer.sharedMaterial = Instantiate(Resources.Load<Material>("Materials/Polygon"));
+            meshRenderer.sharedMaterial.color = _color;
+            _meshFilter.mesh = _mesh = new Mesh();
+            
+            DrawPolygon(Sides, Radius);
+        }
+#endif
     }
 }
