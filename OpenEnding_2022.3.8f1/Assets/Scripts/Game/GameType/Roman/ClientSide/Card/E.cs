@@ -50,5 +50,10 @@ namespace Game.GameType.Roman.ClientSide.Card
                 yield return new WaitForSeconds(0.2f);
             }
         }
+        
+        public override IEnumerator Hide()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

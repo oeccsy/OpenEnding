@@ -26,32 +26,65 @@ namespace Game.GameType.Roman.ClientSide.Card
 
         protected override IEnumerator Start()
         {
-            yield return base.Start();
+            foreach (var polygon in _polygons) polygon.meshRenderer.material.DOFade(0, 0);
             
-            foreach (var polygon in _polygons)
-            {
-                StartCoroutine(PolygonAnimRoutine(polygon));
-            }
+            yield return base.Start();
+            yield return ShowPolygons();
         }
 
-        private IEnumerator PolygonAnimRoutine(Polygon polygon)
+        private IEnumerator ShowPolygons()
         {
-            while (true)
+            foreach (var polygon in _polygons)
             {
-                switch (Random.Range(0, 2))
-                {
-                    case 0:
-                        polygon.transform.DORotate(Vector3.forward * 720, 2f, RotateMode.LocalAxisAdd).SetEase(Ease.InOutCirc);
-                        yield return new WaitForSecondsRealtime(Random.Range(2f, 3f));
-                        break;
-                    case 1:
-                        polygon.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.OutCirc);
-                        yield return new WaitForSecondsRealtime(Random.Range(1f, 2f));
-                        polygon.transform.DOScale(Vector3.one * 0.3f, 1f).SetEase(Ease.OutCirc);
-                        yield return new WaitForSecondsRealtime(Random.Range(1f, 2f));
-                        break;
-                }
+                Transform polygonTransform = polygon.transform;
+                Vector3 endPos = polygonTransform.localPosition;
+                Vector3 endRot = polygonTransform.localRotation.eulerAngles;
+                int endSides = polygon.Sides;
+                polygon.Sides = 100;
+                
+                Sequence sequence = DOTween.Sequence();
+                
+                sequence
+                    .Append(polygon.meshRenderer.material.DOFade(1, 0.2f))
+                    .Join(polygonTransform.DOScale(1f, 0.2f).From(0f).SetEase(Ease.InCirc))
+                    .Join(polygonTransform.DOLocalMoveY(2.5f, 0.3f).SetEase(Ease.OutCirc))
+                    
+                    .Append(polygonTransform.DOLocalMoveY(0.5f, 0.5f).SetEase(Ease.InCirc))
+                    .Join(polygonTransform.DOLocalRotate(Vector3.forward * 180, 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.InCirc))
+                    .AppendCallback(()=> polygon.Sides = 7 + Random.Range(0, 2))
+                    .Append(polygonTransform.DOLocalMoveY(2.4f, 0.5f).SetEase(Ease.OutCirc))
+                    .Join(polygonTransform.DOLocalRotate(Vector3.forward * 180, 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutCirc))
+                    
+                    .Append(polygonTransform.DOLocalMoveY(0.5f, 0.5f).SetEase(Ease.InCirc))
+                    .Join(polygonTransform.DOLocalRotate(Vector3.forward * 180, 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.InCirc))
+                    .AppendCallback(()=> polygon.Sides = 4 + Random.Range(0, 2))
+                    .Append(polygonTransform.DOLocalMoveY(2.3f, 0.5f).SetEase(Ease.OutCirc))
+                    .Join(polygonTransform.DOLocalRotate(Vector3.forward * 180, 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutCirc))
+                    
+                    .Append(polygonTransform.DOLocalMoveY(0.5f, 0.5f).SetEase(Ease.InCirc))
+                    .Join(polygonTransform.DOLocalRotate(Vector3.forward * 180, 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.InCirc))
+                    .AppendCallback(()=> polygon.Sides = endSides)
+                    .Append(polygonTransform.DOLocalMove(endPos, 0.5f).SetEase(Ease.OutCirc))
+                    .Join(polygonTransform.DORotate(endRot, 0.5f, RotateMode.FastBeyond360).SetEase(Ease.OutCirc));
             }
+
+            yield return null;
+        }
+
+        public override IEnumerator Hide()
+        {
+            foreach (var polygon in _polygons)
+            {
+                Transform polygonTransform = polygon.transform;
+                
+                Sequence sequence = DOTween.Sequence();
+
+                sequence
+                    .Append(polygon.meshRenderer.material.DOFade(0, 0.2f))
+                    .Join(polygonTransform.DOScale(0f, 0.2f).SetEase(Ease.InCirc));
+            }
+
+            yield return new WaitForSecondsRealtime(0.5f);
         }
     }
 }

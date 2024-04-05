@@ -26,11 +26,12 @@ namespace Game.GameType.Roman.ClientSide.CardBase
 
         protected virtual IEnumerator Start()
         {
-            cardInfoUI.Show();
-            yield return new WaitForSecondsRealtime(3f);
+            yield return cardInfoUI.Show();
         }
 
-        private void OnDestroy()
+        public abstract IEnumerator Hide();
+
+        protected virtual void OnDestroy()
         {
             Destroy(cardInfoUI.gameObject);
         }

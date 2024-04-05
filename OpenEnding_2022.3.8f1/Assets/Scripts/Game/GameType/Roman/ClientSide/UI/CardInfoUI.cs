@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System.Collections;
+using DG.Tweening;
 using Game.GameType.Roman.Data;
 using TMPro;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Game.GameType.Roman.ClientSide.UI
 {
-    public class CardInfoUI : MonoBehaviour, IUIElement
+    public class CardInfoUI : MonoBehaviour
     {
         private TextMeshProUGUI _cardNameText;
         private TextMeshProUGUI _cardDescText;
@@ -30,7 +31,7 @@ namespace Game.GameType.Roman.ClientSide.UI
             _cardDescText.text = cardInfo.cardDesc;
         }
 
-        public void Show()
+        public IEnumerator Show()
         {
             _lineImage.fillOrigin = 0;
             _lineImage.fillAmount = 0;
@@ -48,9 +49,11 @@ namespace Game.GameType.Roman.ClientSide.UI
                 .Join(_cardNameText.transform.DOLocalMoveY(nameTextPosY, 0.5f).From(nameTextPosY + 10))
                 .Join(_cardDescText.DOFade(1, 0.5f).From(0))
                 .Join(_cardDescText.transform.DOLocalMoveY(descTextPosY, 0.5f).From(descTextPosY + 10));
+
+            yield return new WaitForSecondsRealtime(2.3f);
         }
 
-        public void Hide()
+        public IEnumerator Hide()
         {
             _lineImage.fillOrigin = 1;
             
@@ -60,6 +63,8 @@ namespace Game.GameType.Roman.ClientSide.UI
                 .Append(_cardNameText.DOFade(0, 0.5f).From(1))
                 .Join(_cardDescText.DOFade(0, 0.5f).From(1))
                 .Append(_lineImage.DOFillAmount(0f, 0.5f).SetEase(Ease.InOutCirc));
+
+            yield return new WaitForSecondsRealtime(2f);
         }
     }
 }

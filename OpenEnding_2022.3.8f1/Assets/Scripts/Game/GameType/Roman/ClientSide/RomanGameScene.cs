@@ -49,8 +49,9 @@ namespace Game.GameType.Roman.ClientSide
 
             IEnumerator ReplaceRoutine()
             {
-                card.cardInfoUI.Hide();
-                yield return new WaitForSecondsRealtime(2f);
+                yield return card.Hide();
+                yield return card.cardInfoUI.Hide();
+                
                 Destroy(card.gameObject);
                 CreateCard(cardType);
             }
