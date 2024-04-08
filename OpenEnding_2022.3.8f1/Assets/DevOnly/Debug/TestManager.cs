@@ -1,10 +1,12 @@
 ﻿#if UNITY_EDITOR
+using System.Collections;
 using Game.GameType.Roman;
 using Game.GameType.Roman.ClientSide;
 using Game.Manager.GameManage;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TestManager : Singleton<TestManager>
 {
@@ -107,7 +109,33 @@ public class TestManager : Singleton<TestManager>
     [MenuItem("FuncTest/Roman/C_ReplaceCard")]
     public static void ReplaceCard()
     {
-        (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.B);
+        (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.E);
+    }
+    
+    [MenuItem("FuncTest/Roman/D_AnimTest")]
+    public static void AnimTest()
+    {
+        IEnumerator Routine()
+        {
+            (GameManager.Instance.GameScene as RomanGameScene)?.CreateCard(CardType.A);
+            yield return new WaitForSeconds(7f);
+            
+            for (int i = 0; i < 30; i++)
+            {
+                (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.B);
+                yield return new WaitForSeconds(10f);
+                (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.C);
+                yield return new WaitForSeconds(7f);
+                (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.D);
+                yield return new WaitForSeconds(10f);
+                (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.E);
+                yield return new WaitForSeconds(7f);
+                (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.A);
+                yield return new WaitForSeconds(10f);
+            }
+        }
+
+        GameManager.Instance.GameScene.StartCoroutine(Routine());
     }
     #endregion
     
