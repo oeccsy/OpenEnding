@@ -14,6 +14,7 @@ namespace Game.GameType.Roman.ClientSide.Card
         private List<Polygon> _polygons = new List<Polygon>();
         [SerializeField]
         private Transform _pivot;
+        
         protected override void Awake()
         {
             base.Awake();
@@ -35,11 +36,10 @@ namespace Game.GameType.Roman.ClientSide.Card
         
         private IEnumerator ShowPolygons()
         {
-            List<Polygon> targetPolygons = new List<Polygon>();
-            targetPolygons.Add(_polygons[0]);
-            targetPolygons.Add(_polygons[2]);
-
-            foreach (var polygon in targetPolygons)
+            var showOrder = new List<Polygon>(_polygons);
+            showOrder.Reverse();
+            
+            foreach (var polygon in showOrder)
             {
                 Transform polygonTransform = polygon.transform;
                 Vector3 endPos = polygonTransform.localPosition;
@@ -50,44 +50,34 @@ namespace Game.GameType.Roman.ClientSide.Card
                     .Append(polygon.meshRenderer.material.DOFade(1, 0.2f))
                     .Join(polygonTransform.DOScale(1f, 0.2f).From(0f).SetEase(Ease.InCirc))
                     .Join(polygonTransform.DOLocalMoveY(endPos.y, 0.5f).From(endPos.y - 0.5f).SetEase(Ease.OutCirc))
-                    .Append(polygonTransform.DOLocalMoveY(endPos.y - 0.5f, 0.5f).SetEase(Ease.InCirc))
+                    .Append(polygonTransform.DOLocalMoveY(0f, 0.5f).SetEase(Ease.InCirc))
                     .Append(polygonTransform.DOLocalMoveY(endPos.y, 0.5f).SetEase(Ease.OutCirc));
 
+                yield return new WaitForSeconds(0.5f);
             }
 
             yield return new WaitForSeconds(1f);
+
+            Sequence rotSequence = DOTween.Sequence();
+
+            rotSequence
+                .AppendCallback(() => _polygons[1].transform.SetParent(_polygons[0].transform))
+                .Append(_polygons[0].transform.DORotate(Vector3.forward * 45, 1f).SetEase(Ease.InOutCirc))
+                .Join(_polygons[0].transform.DOMoveX(_polygons[0].transform.position.x * -1, 1f).SetEase(Ease.InOutCirc))
+                .Append(_polygons[0].transform.DORotate(Vector3.zero, 1f).SetEase(Ease.InOutCirc))
+                .Join(_polygons[0].transform.DOMoveX(0, 1f).SetEase(Ease.InOutCirc));
+
+            yield return new WaitForSeconds(2f);
             
-            Sequence rotateSequence = DOTween.Sequence();
+            foreach (var polygon in _polygons)
+            {
+                Tween radiusTween = DOTween.To(() => polygon.Radius, r => polygon.Radius = r, 1, 1f);
                 
-            rotateSequence
-                .Append(_pivot.DOLocalRotate(Vector3.forward * 90, 1f, RotateMode.LocalAxisAdd).SetEase(Ease.InOutCirc))
-                .Append(_pivot.DOLocalRotate(Vector3.forward * -90, 1f, RotateMode.LocalAxisAdd).SetEase(Ease.InOutCirc));
-            
-            yield return new WaitForSeconds(1f);
-
-            foreach (var polygon in targetPolygons)
-            {
-                Transform polygonTransform = polygon.transform;
-
                 Sequence sequence = DOTween.Sequence();
-
+                
                 sequence
-                    .Append(polygonTransform.DOLocalRotate(Vector3.forward * 360, 1f, RotateMode.LocalAxisAdd).SetEase(Ease.InOutCirc));
-            }
-
-            targetPolygons.Clear();
-            targetPolygons.Add(_polygons[1]);
-            targetPolygons.Add(_polygons[3]);
-
-            foreach (var polygon in targetPolygons)
-            {
-                Transform polygonTransform = polygon.transform;
-
-                Sequence sequence = DOTween.Sequence();
-
-                sequence
-                    .Append(polygon.meshRenderer.material.DOFade(1, 0.5f))
-                    .Join(polygonTransform.DOScale(1f, 0.5f).From(0f).SetEase(Ease.InCirc));
+                    .Append(radiusTween.SetEase(Ease.InOutCirc))
+                    .Join(polygon.transform.DOMoveY(1.4f, 1f).SetEase(Ease.InOutCirc));
             }
         }
 
