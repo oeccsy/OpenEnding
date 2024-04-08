@@ -12,8 +12,6 @@ namespace Game.GameType.Roman.ClientSide.Card
     public class B : RomanCard
     {
         private List<Polygon> _polygons = new List<Polygon>();
-        [SerializeField]
-        private Transform _pivot;
         
         protected override void Awake()
         {
