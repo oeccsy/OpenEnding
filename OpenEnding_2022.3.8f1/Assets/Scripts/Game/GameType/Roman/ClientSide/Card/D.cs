@@ -16,6 +16,7 @@ namespace Game.GameType.Roman.ClientSide.Card
         private Polygon _circleA;
         private Polygon _circleB;
         private Polygon _land;
+        
         private Polygon _stem;
         private Polygon _leafA;
         private Polygon _leafB;
@@ -53,44 +54,60 @@ namespace Game.GameType.Roman.ClientSide.Card
         
         private IEnumerator ShowPolygons()
         {
-            for (int i = 0; i < 3; i++)
-            {
-                Polygon polygon = _polygons[i];
-                Transform polygonTransform = polygon.transform;
-                Vector3 endPos = polygonTransform.localPosition;
+            Transform circleATransform = _circleA.transform;
+            Vector3 circleAEndPos = circleATransform.localPosition;
                 
-                Sequence sequence = DOTween.Sequence();
+            Sequence sequence = DOTween.Sequence();
 
-                sequence
-                    .Append(polygon.meshRenderer.material.DOFade(1, 0.2f))
-                    .Join(polygonTransform.DOScale(1f, 0.2f).From(0f).SetEase(Ease.InCirc))
-                    .Join(polygonTransform.DOLocalMoveY(endPos.y, 0.3f).From(endPos.y - 0.5f).SetEase(Ease.OutCirc))
-                    .AppendCallback(() => _circleARigidBody.simulated = true)
-                    .AppendCallback(() => _circleBRigidBody.simulated = true);
-            }
-
-            yield return new WaitForSeconds(2.5f);
-
-            _circleARigidBody.simulated = false;
-            _circleBRigidBody.simulated = false;
+            sequence
+                .Append(_circleA.meshRenderer.material.DOFade(1, 0.2f))
+                .Join(circleATransform.DOScale(1f, 0.2f).From(0f).SetEase(Ease.InCirc))
+                .Join(circleATransform.DOLocalMoveY(circleAEndPos.y, 0.3f).From(circleAEndPos.y - 0.5f).SetEase(Ease.OutCirc))
+                .AppendCallback(() => _circleARigidBody.simulated = true)
+                .AppendInterval(2.5f)
+                .AppendCallback(() => _circleARigidBody.simulated = false);
             
+            Transform circleBTransform = _circleB.transform;
+            Vector3 circleBEndPos = circleBTransform.localPosition;
+                
+            sequence = DOTween.Sequence();
+
+            sequence
+                .Append(_circleB.meshRenderer.material.DOFade(1, 0.2f))
+                .Join(circleBTransform.DOScale(1f, 0.2f).From(0f).SetEase(Ease.InCirc))
+                .Join(circleBTransform.DOLocalMoveY(circleBEndPos.y, 0.3f).From(circleBEndPos.y - 0.5f).SetEase(Ease.OutCirc))
+                .AppendCallback(() => _circleBRigidBody.simulated = true)
+                .AppendInterval(2.5f)
+                .AppendCallback(() => _circleBRigidBody.simulated = false);
+            
+            Transform landTransform = _land.transform;
+            Vector3 landEndPos = landTransform.localPosition;
+            
+            sequence = DOTween.Sequence();
+            
+            sequence
+                .Append(_land.meshRenderer.material.DOFade(1, 0.2f))
+                .Join(landTransform.DOLocalMoveY(landTransform.position.y, 0.2f).From(landTransform.position.y + 1f).SetEase(Ease.InCirc))
+                .Append(landTransform.DOPunchPosition(Vector3.up * 0.2f, 0.2f, 1).SetEase(Ease.OutCirc))
+                .Join(landTransform.DOPunchRotation(Vector3.forward * 10f, 0.2f, 1).SetEase(Ease.OutCirc))
+                .AppendInterval(2f)
+                .Append(landTransform.DOPunchScale(Vector3.one * 0.1f, 0.5f));
+
+            yield return new WaitForSeconds(3f);
+
             for (int i = 3; i < 6; i++)
             {
-                Polygon polygon = _polygons[i];
-                Transform polygonTransform = polygon.transform;
-                Vector3 endPos = polygonTransform.localPosition;
+                Polygon targetPolygon = _polygons[i];
+                Transform targetPolygonTransform = targetPolygon.transform;
+                Vector3 endPos = targetPolygonTransform.position;
                 
-                Sequence sequence = DOTween.Sequence();
+                sequence = DOTween.Sequence();
 
                 sequence
-                    .Append(polygon.meshRenderer.material.DOFade(1, 1f))
-                    .Join(polygonTransform.DOScale(1f, 1f).From(0f).SetEase(Ease.OutCirc))
-                    .Join(polygonTransform.DOLocalMoveY(endPos.y, 1f).From(endPos.y - 0.5f).SetEase(Ease.OutCirc))
-                    .AppendInterval(0.5f)
-                    .Append(polygonTransform.DOPunchScale(Vector3.one * 0.1f, 0.25f).SetEase(Ease.InCirc));
+                    .Append(targetPolygon.meshRenderer.material.DOFade(1, 0.5f))
+                    .Join(targetPolygonTransform.DOScale(Vector3.one, 0.5f).From(0)).SetEase(Ease.InOutCirc)
+                    .Join(targetPolygonTransform.DOLocalMoveY(endPos.y, 0.5f).From(endPos.y - 0.5f).SetEase(Ease.InOutCirc));
             }
-            
-            yield return null;
         }
         
         public override IEnumerator Hide()
