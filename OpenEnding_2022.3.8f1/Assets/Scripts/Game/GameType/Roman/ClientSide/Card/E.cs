@@ -22,6 +22,8 @@ namespace Game.GameType.Roman.ClientSide.Card
             cardInfoUI.RefreshUI(cardInfo);
 
             _polygons = GetComponentsInChildren<Polygon>().ToList();
+            
+            foreach (var polygon in _polygons) polygon.SetAlpha(0f);
         }
 
         protected override IEnumerator Start()
@@ -53,7 +55,18 @@ namespace Game.GameType.Roman.ClientSide.Card
         
         public override IEnumerator Hide()
         {
-            throw new System.NotImplementedException();
+            foreach (var polygon in _polygons)
+            {
+                Transform polygonTransform = polygon.transform;
+                
+                Sequence sequence = DOTween.Sequence();
+
+                sequence
+                    .Append(polygon.meshRenderer.material.DOFade(0, 0.2f))
+                    .Join(polygonTransform.DOScale(0f, 0.2f).SetEase(Ease.InCirc));
+            }
+
+            yield return new WaitForSecondsRealtime(0.5f);
         }
     }
 }

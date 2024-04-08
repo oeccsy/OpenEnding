@@ -22,12 +22,12 @@ namespace Game.GameType.Roman.ClientSide.Card
             cardInfoUI.RefreshUI(cardInfo);
 
             _polygons = GetComponentsInChildren<Polygon>().ToList();
+            
+            foreach (var polygon in _polygons) polygon.SetAlpha(0f);
         }
 
         protected override IEnumerator Start()
         {
-            foreach (var polygon in _polygons) polygon.meshRenderer.material.DOFade(0, 0);
-            
             yield return base.Start();
             yield return ShowPolygons();
         }

@@ -180,6 +180,14 @@ namespace Common.Polygon
         {
             meshRenderer.material.DOColor(color, duration);
         }
+
+        public void SetAlpha(float alpha)
+        {
+            Color color = meshRenderer.material.color;
+            color.a = 0f;
+
+            Color = color;
+        }
         
 #if UNITY_EDITOR
         [ContextMenu("SaveMesh")]

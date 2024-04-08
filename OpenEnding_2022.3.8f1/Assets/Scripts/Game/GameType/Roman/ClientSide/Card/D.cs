@@ -43,11 +43,12 @@ namespace Game.GameType.Roman.ClientSide.Card
             
             _circleARigidBody = _circleA.gameObject.GetComponent<Rigidbody2D>();
             _circleBRigidBody = _circleB.gameObject.GetComponent<Rigidbody2D>();
+            
+            foreach (var polygon in _polygons) polygon.SetAlpha(0f);
         }
         
         protected override IEnumerator Start()
         {
-            foreach (var polygon in _polygons) polygon.meshRenderer.material.DOFade(0, 0);
             yield return base.Start();
             yield return ShowPolygons();
         }
@@ -112,7 +113,18 @@ namespace Game.GameType.Roman.ClientSide.Card
         
         public override IEnumerator Hide()
         {
-            throw new System.NotImplementedException();
+            foreach (var polygon in _polygons)
+            {
+                Transform polygonTransform = polygon.transform;
+                
+                Sequence sequence = DOTween.Sequence();
+
+                sequence
+                    .Append(polygon.meshRenderer.material.DOFade(0, 0.2f))
+                    .Join(polygonTransform.DOScale(0f, 0.2f).SetEase(Ease.InCirc));
+            }
+
+            yield return new WaitForSecondsRealtime(0.5f);
         }
     }
 }
