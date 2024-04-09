@@ -105,7 +105,7 @@ namespace Game.GameType.Roman.ServerSide
             int playerCount = NetworkManager.Instance.connectedDeviceList.Count;
             curPlayer = (ColorPalette.ColorName)(((int)startPlayer + turnCount) % playerCount);
             
-            yield return NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 11, 0 }); //TODO
+            yield return NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 11, 0 });
             
             curStep = GameStep.SelectCard;
             yield return null;
