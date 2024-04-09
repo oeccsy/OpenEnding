@@ -6,6 +6,7 @@ using DG.Tweening;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
 #endif
 
 namespace Common.Polygon
@@ -44,7 +45,7 @@ namespace Common.Polygon
                 DrawPolygon(_sides, _radius);
             }
         }
-
+        
         [SerializeField]
         protected Color _color;
         public Color Color
@@ -60,7 +61,6 @@ namespace Common.Polygon
         protected virtual void Awake()
         {
             meshRenderer = GetComponent<MeshRenderer>();
-
             meshRenderer.sharedMaterial = Resources.Load<Material>("Materials/Polygon");
             meshRenderer.material.color = _color;
             
@@ -183,10 +183,10 @@ namespace Common.Polygon
 
         public void SetAlpha(float alpha)
         {
-            Color color = meshRenderer.material.color;
-            color.a = 0f;
-
-            Color = color;
+            Color newColor = Color;
+            newColor.a = alpha;
+            
+            Color = newColor;
         }
         
 #if UNITY_EDITOR
@@ -200,16 +200,17 @@ namespace Common.Polygon
         
         protected virtual void OnValidate()
         {
-            Debug.Log("OnValidate");
-            
             if (meshRenderer == null || _meshFilter == null)
             {
                 meshRenderer = GetComponent<MeshRenderer>();
                 _meshFilter = GetComponent<MeshFilter>();
             }
             
-            if(meshRenderer.sharedMaterial == null) meshRenderer.sharedMaterial = Instantiate(Resources.Load<Material>("Materials/Polygon"));
-            Color = Color.white;
+            if (meshRenderer.sharedMaterial == null)
+            {
+                meshRenderer.sharedMaterial = Instantiate(Resources.Load<Material>("Materials/Polygon"));
+            }
+            meshRenderer.sharedMaterial.color = _color;
             _meshFilter.mesh = _mesh = new Mesh();
             
             DrawPolygon(Sides, Radius);
