@@ -41,7 +41,6 @@ public class UIManager : Singleton<UIManager>
 
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = Camera.allCameras[(int)Define.CameraIndex.UI];
-        canvas.overrideSorting = true;
     
         canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         canvasScaler.referenceResolution = new Vector2(1080, 2400);
