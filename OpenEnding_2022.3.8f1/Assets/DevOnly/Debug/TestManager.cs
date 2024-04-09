@@ -137,6 +137,12 @@ public class TestManager : Singleton<TestManager>
 
         GameManager.Instance.GameScene.StartCoroutine(Routine());
     }
+    
+    [MenuItem("FuncTest/Roman/E_ShowResultPopup")]
+    public static void ShowResultPopupRoman()
+    {
+        (GameManager.Instance.GameScene as RomanGameScene)?.ShowResultPopup();
+    }
     #endregion
     
     [MenuItem("FuncTest/Roman/_GameExit")]

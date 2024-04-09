@@ -36,8 +36,8 @@ public class UIManager : Singleton<UIManager>
 
     private void CanvasSettings(GameObject targetObj, string sortingLayerName, int order)
     {
-        Canvas canvas = targetObj.GetComponent<Canvas>();
-        CanvasScaler canvasScaler = targetObj.GetComponent<CanvasScaler>();
+        Canvas canvas = targetObj.GetComponentInChildren<Canvas>();
+        CanvasScaler canvasScaler = targetObj.GetComponentInChildren<CanvasScaler>();
 
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = Camera.allCameras[(int)Define.CameraIndex.UI];

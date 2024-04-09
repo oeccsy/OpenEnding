@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Game.GameType.Roman.ClientSide.CardBase;
+using Game.GameType.Roman.ClientSide.UI;
 using Game.Manager.GameManage;
 using UnityEngine;
 using Utility.Hierarchy;
@@ -57,6 +58,16 @@ namespace Game.GameType.Roman.ClientSide
             }
 
             StartCoroutine(ReplaceRoutine());
-        } 
+        }
+
+        public void ShowResultPopup()
+        {
+            var instance = UIManager.Instance.ShowPopup("Prefabs/Roman/ResultPopup", 9);
+            var resultPopup = instance.GetComponent<ResultPopup>();
+            var gameState = GameManager.Instance.GameState as RomanGameState;
+            
+            resultPopup.RefreshResultText(gameState.winner);
+            resultPopup.Show();
+        }
     }
 }

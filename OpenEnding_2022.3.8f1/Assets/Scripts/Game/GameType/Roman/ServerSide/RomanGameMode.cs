@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Game.GameType.Roman.ClientSide;
 using Game.GameType.Roman.ServerSide.CardBase;
 using Game.Manager.GameManage;
 using Shatalmic;
@@ -27,6 +28,8 @@ namespace Game.GameType.Roman.ServerSide
         {
             NetworkManager.Instance.clientSidePacketHandler = new ClientSide.RomanPacketHandler();
             NetworkManager.Instance.serverSidePacketHandler = new RomanPacketHandler();
+
+            GameManager.Instance.GameState = new RomanGameState();
         }
         
         protected override IEnumerator GameRoutine()
@@ -133,6 +136,8 @@ namespace Game.GameType.Roman.ServerSide
             DebugCanvas.Instance.AddText("게임 종료!");
             GameOver();
             OnGameOver?.Invoke();
+
+            StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 11, 0 }));
         }
     }
 }

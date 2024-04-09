@@ -3,6 +3,7 @@ using DG.Tweening;
 using Game.GameType.Roman.Data;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Game.GameType.Roman.ClientSide.UI
@@ -13,7 +14,7 @@ namespace Game.GameType.Roman.ClientSide.UI
         private TextMeshProUGUI _cardDescText;
 
         [SerializeField]
-        private Image _lineImage;
+        private Image lineImage;
         
         private void Awake()
         {
@@ -33,8 +34,8 @@ namespace Game.GameType.Roman.ClientSide.UI
 
         public IEnumerator Show()
         {
-            _lineImage.fillOrigin = 0;
-            _lineImage.fillAmount = 0;
+            lineImage.fillOrigin = 0;
+            lineImage.fillAmount = 0;
             _cardNameText.color = Color.clear;
             _cardDescText.color = Color.clear;
             float nameTextPosY = _cardNameText.transform.localPosition.y;
@@ -43,7 +44,7 @@ namespace Game.GameType.Roman.ClientSide.UI
             Sequence sequence = DOTween.Sequence();
 
             sequence
-                .Append(_lineImage.DOFillAmount(1f, 1f).From(0).SetEase(Ease.InOutCirc))
+                .Append(lineImage.DOFillAmount(1f, 1f).From(0).SetEase(Ease.InOutCirc))
                 .AppendInterval(0.5f)
                 .Append(_cardNameText.DOFade(1, 0.5f).From(0))
                 .Join(_cardNameText.transform.DOLocalMoveY(nameTextPosY, 0.5f).From(nameTextPosY + 10))
@@ -55,14 +56,14 @@ namespace Game.GameType.Roman.ClientSide.UI
 
         public IEnumerator Hide()
         {
-            _lineImage.fillOrigin = 1;
+            lineImage.fillOrigin = 1;
             
             Sequence sequence = DOTween.Sequence();
 
             sequence
                 .Append(_cardNameText.DOFade(0, 0.5f).From(1))
                 .Join(_cardDescText.DOFade(0, 0.5f).From(1))
-                .Append(_lineImage.DOFillAmount(0f, 0.5f).SetEase(Ease.InOutCirc));
+                .Append(lineImage.DOFillAmount(0f, 0.5f).SetEase(Ease.InOutCirc));
 
             yield return new WaitForSeconds(2f);
         }
