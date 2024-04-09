@@ -76,6 +76,7 @@ namespace Game.GameType.Roman.ServerSide
 
         private IEnumerator NotifyNewPlayerTurn()
         {
+            curStep = GameStep.SelectCard;
             yield return null;
         }
         
