@@ -25,11 +25,6 @@ namespace Game.GameType.Roman.ServerSide
         public ColorPalette.ColorName curPlayer;
         public int turnCount = 0;
         public GameStep curStep = GameStep.InitGame;
-
-        protected override void Awake()
-        {
-            base.Awake();
-        }
         
         private void Start()
         {
@@ -61,8 +56,7 @@ namespace Game.GameType.Roman.ServerSide
 
         private IEnumerator SelectStartPlayer()
         {
-            int playerCount = NetworkManager.Instance.connectedDeviceList.Count;
-            int startPlayerNumber = Random.Range(0, playerCount);
+            int startPlayerNumber = Random.Range(0, base.playerCount);
             
             startPlayer = (ColorPalette.ColorName)startPlayerNumber;
             Networking.NetworkDevice targetDevice = null;
@@ -102,8 +96,7 @@ namespace Game.GameType.Roman.ServerSide
 
         private IEnumerator NotifyNewPlayerTurn()
         {
-            int playerCount = NetworkManager.Instance.connectedDeviceList.Count;
-            curPlayer = (ColorPalette.ColorName)(((int)startPlayer + turnCount) % playerCount);
+            curPlayer = (ColorPalette.ColorName)(((int)startPlayer + turnCount) % base.playerCount);
             
             yield return NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 11, 0 });
             
