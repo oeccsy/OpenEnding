@@ -46,7 +46,7 @@ namespace Common.Polygon
         }
 
         [SerializeField]
-        protected Color _color = Color.white;
+        protected Color _color;
         public Color Color
         {
             get => _color;
@@ -209,7 +209,7 @@ namespace Common.Polygon
             }
             
             if(meshRenderer.sharedMaterial == null) meshRenderer.sharedMaterial = Instantiate(Resources.Load<Material>("Materials/Polygon"));
-            meshRenderer.sharedMaterial.color = _color;
+            Color = Color.white;
             _meshFilter.mesh = _mesh = new Mesh();
             
             DrawPolygon(Sides, Radius);
