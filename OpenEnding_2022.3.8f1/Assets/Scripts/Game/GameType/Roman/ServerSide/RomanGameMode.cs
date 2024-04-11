@@ -51,6 +51,7 @@ namespace Game.GameType.Roman.ServerSide
                 yield return new WaitUntil(() => curStep == GameStep.ShowCard);
                 yield return WaitForCardCheck();
                 yield return new WaitUntil(() => curStep == GameStep.HideCard);
+                yield return new WaitUntil(() => cardContainer.IsAllHide());
 
                 turnCount++;
             }
