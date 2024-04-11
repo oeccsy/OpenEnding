@@ -72,10 +72,11 @@ namespace Game.GameType.Roman.ClientSide
             {
                 yield return card.Hide();
                 yield return card.cardInfoUI.Hide();
-                
                 Destroy(card.gameObject);
-                CreateCard(cardType);
                 
+                yield return new WaitForSeconds(0.5f);
+                
+                CreateCard(cardType);
                 yield return card.Show();
             }
 

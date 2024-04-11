@@ -49,6 +49,7 @@ namespace Game.GameType.Roman.ServerSide
                 yield return new WaitUntil(() => curStep == GameStep.SelectCard);
                 yield return new WaitUntil(() => curStep == GameStep.FlipOrShake);
                 yield return new WaitUntil(() => curStep == GameStep.ShowCard);
+                yield return WaitForCardCheck();
                 yield return new WaitUntil(() => curStep == GameStep.HideCard);
 
                 turnCount++;
@@ -97,12 +98,19 @@ namespace Game.GameType.Roman.ServerSide
 
         private IEnumerator NotifyNewPlayerTurn()
         {
+            yield return new WaitForSeconds(1f);
+            
             curPlayer = (ColorPalette.ColorName)(((int)startPlayer + turnCount) % base.playerCount);
             
             yield return NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 11, 0 });
             
             curStep = GameStep.SelectCard;
-            yield return null;
+        }
+        
+        private IEnumerator WaitForCardCheck()
+        {
+            yield return new WaitForSecondsRealtime(3f);
+            curStep = GameStep.HideCard;
         }
         
         public void FlipCard(CardType cardType, Define.DisplayedFace face)
