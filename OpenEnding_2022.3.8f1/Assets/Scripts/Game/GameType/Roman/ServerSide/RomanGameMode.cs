@@ -106,12 +106,14 @@ namespace Game.GameType.Roman.ServerSide
             yield return NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 11, 0 });
             
             curStep = GameStep.SelectCard;
+            $"{curStep.ToString()}".Log();
         }
         
         private IEnumerator WaitForCardCheck()
         {
             yield return new WaitForSecondsRealtime(3f);
             curStep = GameStep.HideCard;
+            $"{curStep.ToString()}".Log();
         }
         
         public void FlipCard(CardType cardType, Define.DisplayedFace face)
@@ -125,6 +127,7 @@ namespace Game.GameType.Roman.ServerSide
                 StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(targetDevice, new byte[] {11, 1}));
                 
                 curStep = GameStep.FlipOrShake;
+                $"{curStep.ToString()}".Log();
                 return;
             }
         
@@ -135,12 +138,14 @@ namespace Game.GameType.Roman.ServerSide
                 OnCardFlipped?.Invoke(cardType);
 
                 curStep = GameStep.ShowCard;
+                $"{curStep.ToString()}".Log();
                 return;
             }
             
             if (curStep == GameStep.HideCard && face == Define.DisplayedFace.Tail)
             {
                 curStep = GameStep.SelectCard;
+                $"{curStep.ToString()}".Log();
                 return;
             }
         }
