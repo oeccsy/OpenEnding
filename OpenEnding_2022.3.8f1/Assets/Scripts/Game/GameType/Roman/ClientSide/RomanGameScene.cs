@@ -82,6 +82,12 @@ namespace Game.GameType.Roman.ClientSide
             StartCoroutine(ReplaceRoutine());
         }
 
+        public void ShowCard()
+        {
+            StartCoroutine(card.Show());
+            GameManager.Instance.PlayerController.flip.OnNextTail += ()=> StartCoroutine(card.Hide());
+        }
+
         public void ShowResultPopup()
         {
             var instance = UIManager.Instance.ShowPopup("Prefabs/Roman/ResultPopup", 9);

@@ -46,14 +46,8 @@ namespace Game.GameType.Roman.ClientSide.Card
             
             foreach (var polygon in _polygons) polygon.SetAlpha(0f);
         }
-        
-        protected override IEnumerator Start()
-        {
-            yield return base.Start();
-            yield return ShowPolygons();
-        }
-        
-        private IEnumerator ShowPolygons()
+
+        protected override IEnumerator ShowPolygons()
         {
             Transform circleATransform = _circleA.transform;
             Vector3 circleAEndPos = circleATransform.localPosition;

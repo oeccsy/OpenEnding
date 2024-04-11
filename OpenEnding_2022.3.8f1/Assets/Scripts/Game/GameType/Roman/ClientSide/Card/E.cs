@@ -26,13 +26,7 @@ namespace Game.GameType.Roman.ClientSide.Card
             foreach (var polygon in _polygons) polygon.SetAlpha(0f);
         }
 
-        protected override IEnumerator Start()
-        {
-            yield return base.Start();
-            yield return ShowPolygons();
-        }
-
-        private IEnumerator ShowPolygons()
+        protected override IEnumerator ShowPolygons()
         {
             var showOrder = new List<Polygon>(_polygons);
             showOrder.Reverse();

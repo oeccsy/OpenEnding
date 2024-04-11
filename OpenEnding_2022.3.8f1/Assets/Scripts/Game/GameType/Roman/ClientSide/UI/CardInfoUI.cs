@@ -24,6 +24,10 @@ namespace Game.GameType.Roman.ClientSide.UI
             var texts = GetComponentsInChildren<TextMeshProUGUI>();
             _cardNameText = texts[0];
             _cardDescText = texts[1];
+
+            _cardNameText.alpha = 0f;
+            _cardDescText.alpha = 0f;
+            lineImage.fillAmount = 0f;
         }
         
         public void RefreshUI(RomanCardInfo cardInfo)
@@ -50,10 +54,10 @@ namespace Game.GameType.Roman.ClientSide.UI
                 .Join(_cardNameText.transform.DOLocalMoveY(nameTextPosY, 0.5f).From(nameTextPosY + 10))
                 .Join(_cardDescText.DOFade(1, 0.5f).From(0))
                 .Join(_cardDescText.transform.DOLocalMoveY(descTextPosY, 0.5f).From(descTextPosY + 10));
-
-            yield return new WaitForSeconds(2.3f);
+            
+            yield return sequence.WaitForCompletion();
         }
-
+        
         public IEnumerator Hide()
         {
             lineImage.fillOrigin = 1;
@@ -65,7 +69,7 @@ namespace Game.GameType.Roman.ClientSide.UI
                 .Join(_cardDescText.DOFade(0, 0.5f).From(1))
                 .Append(lineImage.DOFillAmount(0f, 0.5f).SetEase(Ease.InOutCirc));
 
-            yield return new WaitForSeconds(2f);
+            yield return sequence.WaitForCompletion();
         }
     }
 }

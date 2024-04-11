@@ -28,7 +28,7 @@ public class Overlay : MonoBehaviour
         isOverlayActive = true;
         
         overlaySequence = DOTween.Sequence()
-            .Append(image.DOFade(1f, 2f));
+            .Append(image.DOFade(1f, 1f));
     }
 
     public static void UnsetActiveOverlay()
@@ -36,7 +36,7 @@ public class Overlay : MonoBehaviour
         if (overlaySequence.IsActive()) return;
 
         overlaySequence = DOTween.Sequence()
-            .Append(image.DOFade(0f, 2f))
+            .Append(image.DOFade(0f, 1f))
             .AppendCallback( ()=> isOverlayActive = false );
     }
 

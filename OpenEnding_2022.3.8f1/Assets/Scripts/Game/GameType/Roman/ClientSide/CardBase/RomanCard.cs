@@ -24,11 +24,13 @@ namespace Game.GameType.Roman.ClientSide.CardBase
             cardInfoUI = Instantiate(cardInfoUIPrefab, SceneUIRoot.Transform).GetComponent<CardInfoUI>();
         }
 
-        protected virtual IEnumerator Start()
+        public virtual IEnumerator Show()
         {
             yield return cardInfoUI.Show();
+            yield return ShowPolygons();
         }
-
+        
+        protected abstract IEnumerator ShowPolygons();
         public abstract IEnumerator Hide();
 
         protected virtual void OnDestroy()

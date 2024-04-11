@@ -915,7 +915,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCount: 0
+  startPlayer: 0
   curPlayer: 0
+  turnCount: 0
   curStep: 0
 --- !u!4 &2036174620
 Transform:
