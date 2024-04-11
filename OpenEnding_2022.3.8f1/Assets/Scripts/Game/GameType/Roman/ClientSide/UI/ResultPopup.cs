@@ -39,6 +39,7 @@ namespace Game.GameType.Roman.ClientSide.UI
             Sequence sequence = DOTween.Sequence();
 
             sequence
+                .Append(backgroundImage.DOColor(new Color(253/255f, 253/255f, 253/255f), 1f))
                 .Append(lineImage.DOFillAmount(1f, 1f).From(0).SetEase(Ease.InOutCirc))
                 .AppendInterval(0.5f)
                 .Append(titleText.DOFade(1, 0.5f).From(0))
