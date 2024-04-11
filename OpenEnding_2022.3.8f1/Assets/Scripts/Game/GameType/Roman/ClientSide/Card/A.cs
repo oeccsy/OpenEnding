@@ -28,6 +28,8 @@ namespace Game.GameType.Roman.ClientSide.Card
 
         protected override IEnumerator ShowPolygons()
         {
+            Sequence sequence = null;
+            
             foreach (var polygon in _polygons)
             {
                 Transform polygonTransform = polygon.transform;
@@ -36,7 +38,7 @@ namespace Game.GameType.Roman.ClientSide.Card
                 int endSides = polygon.Sides;
                 polygon.Sides = 100;
                 
-                Sequence sequence = DOTween.Sequence();
+                sequence = DOTween.Sequence();
                 
                 sequence
                     .Append(polygon.meshRenderer.material.DOFade(1, 0.2f))
@@ -62,23 +64,25 @@ namespace Game.GameType.Roman.ClientSide.Card
                     .Join(polygonTransform.DORotate(endRot, 0.5f, RotateMode.FastBeyond360).SetEase(Ease.OutCirc));
             }
 
-            yield return null;
+            yield return sequence.WaitForCompletion();
         }
 
         public override IEnumerator Hide()
         {
+            Sequence sequence = null;
+            
             foreach (var polygon in _polygons)
             {
                 Transform polygonTransform = polygon.transform;
                 
-                Sequence sequence = DOTween.Sequence();
+                sequence = DOTween.Sequence();
 
                 sequence
                     .Append(polygon.meshRenderer.material.DOFade(0, 0.2f))
                     .Join(polygonTransform.DOScale(0f, 0.2f).SetEase(Ease.InCirc));
             }
 
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return sequence.WaitForCompletion();
         }
     }
 }
