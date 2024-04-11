@@ -143,6 +143,13 @@ public class TestManager : Singleton<TestManager>
     {
         (GameManager.Instance.GameScene as RomanGameScene)?.ShowResultPopup();
     }
+    
+    [MenuItem("FuncTest/Roman/F_ShowRequestFlipToTail")]
+    public static void ShowStartPlayer()
+    {
+        (GameManager.Instance.GameScene as RomanGameScene)?.ShowRequestFlipToTailPopup();
+    }
+    
     #endregion
     
     [MenuItem("FuncTest/Roman/_GameExit")]

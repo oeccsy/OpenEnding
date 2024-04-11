@@ -36,11 +36,12 @@ namespace Game.GameType.Roman.ServerSide
         
         protected override IEnumerator GameRoutine()
         {
+            yield return new WaitForSeconds(3f);
             yield return new WaitUntil(() => curStep == GameStep.InitGame);
+            yield return InitDeviceOwnCard();
             yield return SelectStartPlayer();
             yield return RequestFlipToTail();
             yield return new WaitUntil(() => cardContainer.IsAllHide());
-            yield return InitDeviceOwnCard();
             
             while (curStep != GameStep.GameOver)
             {
@@ -54,6 +55,23 @@ namespace Game.GameType.Roman.ServerSide
             }
         }
 
+        private IEnumerator InitDeviceOwnCard()
+        {
+            var randomNumbers = Utils.GetCombinationInt(1, 5, 3);
+            Utils.ShuffleList(randomNumbers);
+
+            for (int i = 0; i < NetworkManager.Instance.connectedDeviceList.Count; i++)
+            {
+                CardType cardType = (CardType)randomNumbers[i];
+                Networking.NetworkDevice device = NetworkManager.Instance.connectedDeviceList[i];
+                
+                cardContainer.UseCard(cardType, device);
+
+                yield return new WaitForSecondsRealtime(0.5f);
+                yield return NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] { 10, 2, (byte)cardType });
+            }
+        }
+        
         private IEnumerator SelectStartPlayer()
         {
             int startPlayerNumber = Random.Range(0, base.playerCount);
@@ -75,23 +93,6 @@ namespace Game.GameType.Roman.ServerSide
         private IEnumerator RequestFlipToTail()
         {
             yield return NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 10, 1 });
-        }
-
-        private IEnumerator InitDeviceOwnCard()
-        {
-            var randomNumbers = Utils.GetCombinationInt(1, 5, 3);
-            Utils.ShuffleList(randomNumbers);
-
-            for (int i = 0; i < NetworkManager.Instance.connectedDeviceList.Count; i++)
-            {
-                CardType cardType = (CardType)randomNumbers[i];
-                Networking.NetworkDevice device = NetworkManager.Instance.connectedDeviceList[i];
-                
-                cardContainer.UseCard(cardType, device);
-
-                yield return new WaitForSecondsRealtime(0.5f);
-                yield return NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] { 10, 2, (byte)cardType });
-            }
         }
 
         private IEnumerator NotifyNewPlayerTurn()

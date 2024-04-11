@@ -4,6 +4,7 @@ using Game.GameType.Roman.ClientSide.CardBase;
 using Game.GameType.Roman.ClientSide.UI;
 using Game.Manager.GameManage;
 using UnityEngine;
+using Utility;
 using Utility.Hierarchy;
 
 namespace Game.GameType.Roman.ClientSide
@@ -15,6 +16,25 @@ namespace Game.GameType.Roman.ClientSide
         protected override void Awake()
         {
             base.Awake();
+        }
+        
+        public void ShowStartPlayerPopup()
+        {
+            IEnumerator ShowRoutine()
+            {
+                StartPlayerPopup popup = UIManager.Instance.ShowPopup("Prefabs/Roman/StartPlayerPopup", 9).GetComponentInChildren<StartPlayerPopup>();
+                yield return new WaitForSeconds(4f);
+                popup.Hide();    
+            }
+
+            StartCoroutine(ShowRoutine());
+        }
+
+        public void ShowRequestFlipToTailPopup()
+        {
+            RequestFlipToTailPopup popup = UIManager.Instance.ShowPopup("Prefabs/Roman/RequestFlipToTailPopup", 9).GetComponentInChildren<RequestFlipToTailPopup>();
+            
+            (GameManager.Instance.PlayerController as RomanPlayerController).flip.OnNextTail += popup.Hide;
         }
 
         public void CreateCard(CardType cardType)
@@ -42,7 +62,7 @@ namespace Game.GameType.Roman.ClientSide
 
             card = Instantiate(prefab, GameObjectRoot.Transform).GetComponent<RomanCard>();
         }
-
+        
         public void ReplaceCard(CardType cardType)
         {
             $"Replace to {cardType}".Log();
@@ -55,6 +75,8 @@ namespace Game.GameType.Roman.ClientSide
                 
                 Destroy(card.gameObject);
                 CreateCard(cardType);
+                
+                yield return card.Show();
             }
 
             StartCoroutine(ReplaceRoutine());
