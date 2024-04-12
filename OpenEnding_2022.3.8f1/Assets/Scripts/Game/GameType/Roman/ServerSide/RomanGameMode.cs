@@ -25,6 +25,9 @@ namespace Game.GameType.Roman.ServerSide
         public ColorPalette.ColorName curPlayer;
         public int turnCount = 0;
         public GameStep curStep = GameStep.InitGame;
+
+        private int _shakeLimit = 1;
+        private int _shakeCount = 0;
         
         private void Start()
         {
@@ -36,7 +39,6 @@ namespace Game.GameType.Roman.ServerSide
         
         protected override IEnumerator GameRoutine()
         {
-            yield return new WaitForSeconds(3f);
             yield return new WaitUntil(() => curStep == GameStep.InitGame);
             yield return InitDeviceOwnCard();
             yield return SelectStartPlayer();
@@ -48,6 +50,8 @@ namespace Game.GameType.Roman.ServerSide
                 yield return NotifyNewPlayerTurn();
                 yield return new WaitUntil(() => curStep == GameStep.SelectCard);
                 yield return new WaitUntil(() => curStep == GameStep.FlipOrShake);
+                _shakeCount = 0;
+                
                 yield return new WaitUntil(() => curStep == GameStep.ShowCard);
                 yield return WaitForCardCheck();
                 yield return new WaitUntil(() => curStep == GameStep.HideCard);
@@ -154,7 +158,9 @@ namespace Game.GameType.Roman.ServerSide
         {
             $"Shake {cardType}".Log();
             if (curStep != GameStep.FlipOrShake) return;
-            
+            if (_shakeCount >= _shakeLimit) return;
+
+            _shakeCount++;
             var shakenCard = cardContainer.GetCard(cardType);
             
             if(shakenCard is IShakeAbility card) card.ShakeAbility();
