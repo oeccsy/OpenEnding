@@ -12,6 +12,7 @@ namespace Game.GameType.Roman.ClientSide.Card
     public class B : RomanCard
     {
         private List<Polygon> _polygons = new List<Polygon>();
+        private Sequence _showPolygonSequence = null;
         
         protected override void Awake()
         {
@@ -28,27 +29,43 @@ namespace Game.GameType.Roman.ClientSide.Card
 
         protected override IEnumerator ShowPolygons()
         {
+            if (_showPolygonSequence == null)
+            {
+                _showPolygonSequence = CreateShowSequence();
+            }
+            else
+            {
+                _showPolygonSequence.Restart();
+            }
+            
+            yield return _showPolygonSequence.WaitForCompletion();
+        }
+        
+        private Sequence CreateShowSequence()
+        {
+            Sequence mainSequence = DOTween.Sequence().SetAutoKill(false);
+            
             var showOrder = new List<Polygon>(_polygons);
             showOrder.Reverse();
-            
-            foreach (var polygon in showOrder)
+
+            for (int i = 0; i < showOrder.Count; i++)
             {
+                Polygon polygon = showOrder[i];
                 Transform polygonTransform = polygon.transform;
                 Vector3 endPos = polygonTransform.localPosition;
 
-                Sequence sequence = DOTween.Sequence();
+                Sequence subSequence = DOTween.Sequence();
 
-                sequence
+                subSequence
                     .Append(polygon.meshRenderer.material.DOFade(1, 0.2f))
                     .Join(polygonTransform.DOScale(1f, 0.2f).From(0f).SetEase(Ease.InCirc))
-                    .Join(polygonTransform.DOLocalMoveY(endPos.y, 0.5f).From(endPos.y - 0.5f).SetEase(Ease.OutCirc))
+                    .Join(polygonTransform.DOLocalMove(endPos, 0.5f).From(endPos - Vector3.up * 0.5f).SetEase(Ease.OutCirc))
                     .Append(polygonTransform.DOLocalMoveY(0f, 0.5f).SetEase(Ease.InCirc))
                     .Append(polygonTransform.DOLocalMoveY(endPos.y, 0.5f).SetEase(Ease.OutCirc));
 
-                yield return new WaitForSeconds(0.5f);
+                mainSequence
+                    .Insert(i * 0.5f, subSequence);
             }
-
-            yield return new WaitForSeconds(1f);
 
             Sequence rotSequence = DOTween.Sequence();
 
@@ -57,20 +74,28 @@ namespace Game.GameType.Roman.ClientSide.Card
                 .Append(_polygons[0].transform.DORotate(Vector3.forward * 45, 1f).SetEase(Ease.InOutCirc))
                 .Join(_polygons[0].transform.DOMoveX(_polygons[0].transform.position.x * -1, 1f).SetEase(Ease.InOutCirc))
                 .Append(_polygons[0].transform.DORotate(Vector3.zero, 1f).SetEase(Ease.InOutCirc))
-                .Join(_polygons[0].transform.DOMoveX(0, 1f).SetEase(Ease.InOutCirc));
+                .Join(_polygons[0].transform.DOMoveX(0, 1f).SetEase(Ease.InOutCirc))
+                .AppendCallback(() => _polygons[1].transform.SetParent(_polygons[0].transform.parent));
 
-            yield return new WaitForSeconds(2f);
+            mainSequence
+                .Append(rotSequence)
+                .AppendInterval(0f);
             
             foreach (var polygon in _polygons)
             {
                 Tween radiusTween = DOTween.To(() => polygon.Radius, r => polygon.Radius = r, 1, 1f);
                 
-                Sequence sequence = DOTween.Sequence();
+                Sequence subSequence = DOTween.Sequence();
                 
-                sequence
+                subSequence
                     .Append(radiusTween.SetEase(Ease.InOutCirc))
                     .Join(polygon.transform.DOMoveY(1.4f, 1f).SetEase(Ease.InOutCirc));
+
+                mainSequence
+                    .Join(subSequence);
             }
+
+            return mainSequence;
         }
 
         public override IEnumerator Hide()

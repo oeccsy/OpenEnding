@@ -87,6 +87,7 @@ namespace Game.GameType.Roman.ClientSide
         {
             StartCoroutine(card.Show());
             GameManager.Instance.PlayerController.flip.OnNextTail += ()=> StartCoroutine(card.Hide());
+            GameManager.Instance.PlayerController.flip.OnNextTail += ()=> StartCoroutine(card.cardInfoUI.Hide());
         }
 
         public void ShowResultPopup()

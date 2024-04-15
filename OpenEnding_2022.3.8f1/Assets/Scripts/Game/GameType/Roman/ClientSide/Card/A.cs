@@ -12,6 +12,7 @@ namespace Game.GameType.Roman.ClientSide.Card
     public class A : RomanCard
     {
         private List<Polygon> _polygons = new List<Polygon>();
+        private Sequence _showPolygonSequence = null;
         
         protected override void Awake()
         {
@@ -28,7 +29,21 @@ namespace Game.GameType.Roman.ClientSide.Card
 
         protected override IEnumerator ShowPolygons()
         {
-            Sequence sequence = null;
+            if (_showPolygonSequence == null)
+            {
+                _showPolygonSequence = CreateShowSequence();
+            }
+            else
+            {
+                _showPolygonSequence.Restart();
+            }
+            
+            yield return _showPolygonSequence.WaitForCompletion();
+        }
+
+        private Sequence CreateShowSequence()
+        {
+            Sequence mainSequence = DOTween.Sequence().SetAutoKill(false);
             
             foreach (var polygon in _polygons)
             {
@@ -36,11 +51,11 @@ namespace Game.GameType.Roman.ClientSide.Card
                 Vector3 endPos = polygonTransform.localPosition;
                 Vector3 endRot = polygonTransform.localRotation.eulerAngles;
                 int endSides = polygon.Sides;
-                polygon.Sides = 100;
                 
-                sequence = DOTween.Sequence();
+                Sequence subSequence = DOTween.Sequence();
                 
-                sequence
+                subSequence
+                    .AppendCallback(()=> polygon.Sides = 100)
                     .Append(polygon.meshRenderer.material.DOFade(1, 0.2f))
                     .Join(polygonTransform.DOScale(1f, 0.2f).From(0f).SetEase(Ease.InCirc))
                     .Join(polygonTransform.DOLocalMoveY(2.5f, 0.3f).SetEase(Ease.OutCirc))
@@ -62,9 +77,11 @@ namespace Game.GameType.Roman.ClientSide.Card
                     .AppendCallback(()=> polygon.Sides = endSides)
                     .Append(polygonTransform.DOLocalMove(endPos, 0.5f).SetEase(Ease.OutCirc))
                     .Join(polygonTransform.DORotate(endRot, 0.5f, RotateMode.FastBeyond360).SetEase(Ease.OutCirc));
+
+                mainSequence.Join(subSequence);
             }
 
-            yield return sequence.WaitForCompletion();
+            return mainSequence;
         }
 
         public override IEnumerator Hide()
