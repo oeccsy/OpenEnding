@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using Common.Polygon;
+using Common.UI;
 using DG.Tweening;
 using Game.GameType.Roman.ClientSide.CardBase;
 using Game.GameType.Roman.Data;
+using Game.Manager.GameManage;
 using UnityEngine;
+using Utility.Hierarchy;
 
 namespace Game.GameType.Roman.ClientSide.Card
 {
+    [RequireComponent(typeof(DiscoveryMode))]
     public class B : RomanCard
     {
         private List<Polygon> _polygons = new List<Polygon>();
         private Sequence _showPolygonSequence = null;
+
+        private DiscoveryMode _discoveryMode;
         
         protected override void Awake()
         {
@@ -23,8 +29,9 @@ namespace Game.GameType.Roman.ClientSide.Card
             cardInfoUI.RefreshUI(cardInfo);
             
             _polygons = GetComponentsInChildren<Polygon>().ToList();
-            
             foreach (var polygon in _polygons) polygon.SetAlpha(0f);
+
+            _discoveryMode = GetComponent<DiscoveryMode>();
         }
 
         protected override IEnumerator ShowPolygons()
@@ -39,6 +46,8 @@ namespace Game.GameType.Roman.ClientSide.Card
             }
             
             yield return _showPolygonSequence.WaitForCompletion();
+
+            yield return EnterDiscoveryMode();
         }
         
         private Sequence CreateShowSequence()
@@ -114,6 +123,29 @@ namespace Game.GameType.Roman.ClientSide.Card
             }
 
             yield return sequence.WaitForCompletion();
+        }
+        
+        public IEnumerator EnterDiscoveryMode()
+        {
+            Sequence sequence = DOTween.Sequence();
+
+            sequence
+                .Append(_polygons[0].transform.DOScale(Vector3.one * 10, 0.5f).SetEase(Ease.InCirc))
+                .AppendCallback(() => StartCoroutine(cardInfoUI.Hide()))
+                .AppendCallback(() => BackgroundUI.SetBackgroundColor(_polygons[0].meshRenderer.material.color, 0f))
+                .AppendInterval(1f)
+                .Append(_polygons[0].meshRenderer.material.DOFade(0f, 0f))
+                .Join(_polygons[1].meshRenderer.material.DOFade(0f, 0f));
+
+            yield return sequence.WaitForCompletion();
+            
+            _discoveryMode.EnterDiscoveryMode();
+        }
+
+        public IEnumerator ExitDiscoveryMode()
+        {
+            _discoveryMode.ExitDiscoveryMode();
+            yield return null;
         }
     }
 }
