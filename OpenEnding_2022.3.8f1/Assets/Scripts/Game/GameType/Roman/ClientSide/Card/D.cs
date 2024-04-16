@@ -12,6 +12,7 @@ namespace Game.GameType.Roman.ClientSide.Card
     public class D : RomanCard
     {
         private List<Polygon> _polygons = new List<Polygon>();
+        private Sequence _showPolygonSequence = null;
         
         private Polygon _circleA;
         private Polygon _circleB;
@@ -49,38 +50,60 @@ namespace Game.GameType.Roman.ClientSide.Card
 
         protected override IEnumerator ShowPolygons()
         {
+            if (_showPolygonSequence == null)
+            {
+                _showPolygonSequence = CreateShowSequence();
+            }
+            else
+            {
+                _showPolygonSequence.Restart();
+            }
+            
+            yield return _showPolygonSequence.WaitForCompletion();
+        }
+        
+        private Sequence CreateShowSequence()
+        {
+            Sequence mainSequence = DOTween.Sequence().SetAutoKill(false);
+            
             Transform circleATransform = _circleA.transform;
-            Vector3 circleAEndPos = circleATransform.localPosition;
+            Vector3 circleAEndPos = circleATransform.position;
                 
-            Sequence sequence = DOTween.Sequence();
+            Sequence subSequence = DOTween.Sequence();
 
-            sequence
+            subSequence
                 .Append(_circleA.meshRenderer.material.DOFade(1, 0.2f))
                 .Join(circleATransform.DOScale(1f, 0.2f).From(0f).SetEase(Ease.InCirc))
-                .Join(circleATransform.DOLocalMoveY(circleAEndPos.y, 0.3f).From(circleAEndPos.y - 0.5f).SetEase(Ease.OutCirc))
+                .Join(circleATransform.DOMove(circleAEndPos, 0.3f).From(circleAEndPos - Vector3.up * 0.5f).SetEase(Ease.OutCirc))
                 .AppendCallback(() => _circleARigidBody.simulated = true)
                 .AppendInterval(2.5f)
-                .AppendCallback(() => _circleARigidBody.simulated = false);
+                .AppendCallback(() => _circleARigidBody.simulated = false)
+                .AppendCallback(() => _circleARigidBody.velocity = Vector2.zero);
+
+            mainSequence.Append(subSequence);
             
             Transform circleBTransform = _circleB.transform;
-            Vector3 circleBEndPos = circleBTransform.localPosition;
+            Vector3 circleBEndPos = circleBTransform.position;
                 
-            sequence = DOTween.Sequence();
+            subSequence = DOTween.Sequence();
 
-            sequence
+            subSequence
                 .Append(_circleB.meshRenderer.material.DOFade(1, 0.2f))
                 .Join(circleBTransform.DOScale(1f, 0.2f).From(0f).SetEase(Ease.InCirc))
-                .Join(circleBTransform.DOLocalMoveY(circleBEndPos.y, 0.3f).From(circleBEndPos.y - 0.5f).SetEase(Ease.OutCirc))
+                .Join(circleBTransform.DOMove(circleBEndPos, 0.3f).From(circleBEndPos - Vector3.up * 0.5f).SetEase(Ease.OutCirc))
                 .AppendCallback(() => _circleBRigidBody.simulated = true)
                 .AppendInterval(2.5f)
-                .AppendCallback(() => _circleBRigidBody.simulated = false);
+                .AppendCallback(() => _circleBRigidBody.simulated = false)
+                .AppendCallback(() => _circleBRigidBody.velocity = Vector2.zero);
+            
+            mainSequence.Join(subSequence);
             
             Transform landTransform = _land.transform;
             Vector3 landEndPos = landTransform.localPosition;
             
-            sequence = DOTween.Sequence();
+            subSequence = DOTween.Sequence();
             
-            sequence
+            subSequence
                 .Append(_land.meshRenderer.material.DOFade(1, 0.2f))
                 .Join(landTransform.DOLocalMoveY(landTransform.position.y, 0.2f).From(landTransform.position.y + 1f).SetEase(Ease.InCirc))
                 .Append(landTransform.DOPunchPosition(Vector3.up * 0.2f, 0.2f, 1).SetEase(Ease.OutCirc))
@@ -88,7 +111,8 @@ namespace Game.GameType.Roman.ClientSide.Card
                 .AppendInterval(2f)
                 .Append(landTransform.DOPunchScale(Vector3.one * 0.1f, 0.5f));
 
-            yield return new WaitForSeconds(3f);
+            mainSequence.Join(subSequence);
+            mainSequence.AppendInterval(0f);
 
             for (int i = 3; i < 6; i++)
             {
@@ -96,13 +120,17 @@ namespace Game.GameType.Roman.ClientSide.Card
                 Transform targetPolygonTransform = targetPolygon.transform;
                 Vector3 endPos = targetPolygonTransform.position;
                 
-                sequence = DOTween.Sequence();
+                subSequence = DOTween.Sequence();
 
-                sequence
+                subSequence
                     .Append(targetPolygon.meshRenderer.material.DOFade(1, 0.5f))
                     .Join(targetPolygonTransform.DOScale(Vector3.one, 0.5f).From(0)).SetEase(Ease.InOutCirc)
                     .Join(targetPolygonTransform.DOLocalMoveY(endPos.y, 0.5f).From(endPos.y - 0.5f).SetEase(Ease.InOutCirc));
+
+                mainSequence.Join(subSequence);
             }
+
+            return mainSequence;
         }
         
         public override IEnumerator Hide()

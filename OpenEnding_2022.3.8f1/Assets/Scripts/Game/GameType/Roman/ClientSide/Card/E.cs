@@ -12,6 +12,7 @@ namespace Game.GameType.Roman.ClientSide.Card
     public class E : RomanCard
     {
         private List<Polygon> _polygons = new List<Polygon>();
+        private Sequence _showPolygonSequence = null;
 
         protected override void Awake()
         {
@@ -28,23 +29,45 @@ namespace Game.GameType.Roman.ClientSide.Card
 
         protected override IEnumerator ShowPolygons()
         {
+            if (_showPolygonSequence == null)
+            {
+                _showPolygonSequence = CreateShowSequence();
+            }
+            else
+            {
+                _showPolygonSequence.Restart();
+            }
+            
+            yield return _showPolygonSequence.WaitForCompletion();
+        }
+        
+        private Sequence CreateShowSequence()
+        {
+            Sequence mainSequence = DOTween.Sequence().SetAutoKill(false);
+            
             var showOrder = new List<Polygon>(_polygons);
             showOrder.Reverse();
             
-            foreach (var polygon in showOrder)
+            for (int i = 0; i<showOrder.Count; i++)
             {
-                var polygonTransform = polygon.transform;
+                Polygon polygon = showOrder[i];
+                Transform polygonTransform = polygon.transform;
+                Vector3 endPos = polygonTransform.localPosition;
                 
-                Sequence sequence = DOTween.Sequence();
+                Sequence subSequence = DOTween.Sequence();
 
-                sequence
+                subSequence
+                    .AppendCallback(()=> polygonTransform.localScale = Vector3.one)
                     .Append(polygon.meshRenderer.material.DOFade(1, 0.2f))
                     .Join(polygonTransform.DOLocalMoveY(polygonTransform.position.y, 0.2f).From(polygonTransform.position.y + 1f).SetEase(Ease.InCirc))
                     .Append(polygonTransform.DOPunchPosition(Vector3.up * 0.2f, 0.2f, 1).SetEase(Ease.OutCirc))
                     .Join(polygonTransform.DOPunchRotation(Vector3.forward * 10f, 0.2f, 1).SetEase(Ease.OutCirc));
 
-                yield return new WaitForSeconds(0.2f);
+                mainSequence
+                    .Insert(i * 0.2f, subSequence);
             }
+
+            return mainSequence;
         }
         
         public override IEnumerator Hide()
