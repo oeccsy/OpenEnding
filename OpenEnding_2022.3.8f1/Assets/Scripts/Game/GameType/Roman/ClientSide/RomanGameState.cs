@@ -7,7 +7,7 @@
         public ColorPalette.ColorName curPlayer = ColorPalette.ColorName.DeviceDefault;
         public ColorPalette.ColorName winner = ColorPalette.ColorName.DeviceDefault;
 
-        public void SynchronizeStep(GameStep step)
+        public void SynchronizeGameStep(GameStep step)
         {
             curStep = step;
         }

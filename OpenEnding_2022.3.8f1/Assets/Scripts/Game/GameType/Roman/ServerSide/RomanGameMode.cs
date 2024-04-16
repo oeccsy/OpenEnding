@@ -106,11 +106,14 @@ namespace Game.GameType.Roman.ServerSide
             yield return new WaitForSeconds(1f);
             
             curPlayer = (ColorPalette.ColorName)(((int)startPlayer + turnCount) % base.playerCount);
+            SynchronizeCurPlayer();
             
             yield return NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 11, 0 });
             
+            
             curStep = GameStep.SelectCard;
             $"{curStep.ToString()}".Log();
+            SynchronizeGameStep();
         }
         
         private IEnumerator WaitForCardCheck()
@@ -118,6 +121,7 @@ namespace Game.GameType.Roman.ServerSide
             yield return new WaitForSecondsRealtime(3f);
             curStep = GameStep.HideCard;
             $"{curStep.ToString()}".Log();
+            SynchronizeGameStep();
         }
         
         public void FlipCard(CardType cardType, Define.DisplayedFace face)
@@ -132,6 +136,7 @@ namespace Game.GameType.Roman.ServerSide
                 
                 curStep = GameStep.FlipOrShake;
                 $"{curStep.ToString()}".Log();
+                SynchronizeGameStep();
                 return;
             }
         
@@ -143,6 +148,7 @@ namespace Game.GameType.Roman.ServerSide
 
                 curStep = GameStep.ShowCard;
                 $"{curStep.ToString()}".Log();
+                SynchronizeGameStep();
                 return;
             }
             
@@ -150,6 +156,7 @@ namespace Game.GameType.Roman.ServerSide
             {
                 curStep = GameStep.SelectCard;
                 $"{curStep.ToString()}".Log();
+                SynchronizeGameStep();
                 return;
             }
         }
@@ -185,7 +192,19 @@ namespace Game.GameType.Roman.ServerSide
             GameOver();
             OnGameOver?.Invoke();
             
-            StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 12, 0, (byte)curPlayer })); 
+            StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 12, 0 })); 
+        }
+
+        public void SynchronizeGameStep()
+        {
+            byte curGameStepToByte = (byte)curStep;
+            StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 13, 0, curGameStepToByte }));
+        }
+        
+        public void SynchronizeCurPlayer()
+        {
+            byte curPlayerToByte = (byte)curPlayer;
+            StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 13, 1, curPlayerToByte }));
         }
     }
 }
