@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System.Collections;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,10 @@ namespace Game.GameType.Roman.ClientSide.UI
         private TextMeshProUGUI titleText;
         [SerializeField]
         private TextMeshProUGUI resultText;
+        [SerializeField]
+        private TextMeshProUGUI pressText;
+        
+        public Button button;
 
         private void Awake()
         {
@@ -22,6 +27,20 @@ namespace Game.GameType.Roman.ClientSide.UI
             lineImage.fillAmount = 0;
             titleText.alpha = 0;
             resultText.alpha = 0;
+            pressText.alpha = 0;
+        }
+
+        private void Start()
+        {
+            StartCoroutine(Routine());
+        }
+
+        private IEnumerator Routine()
+        {
+            yield return new WaitForSecondsRealtime(5f);
+
+            pressText.DOFade(1, 0.5f).From(0);
+            button.interactable = true;
         }
         
         public void RefreshResultText(ColorPalette.ColorName winPlayer)

@@ -4,6 +4,8 @@ using Game.GameType.Roman.ClientSide.CardBase;
 using Game.GameType.Roman.ClientSide.UI;
 using Game.Manager.GameManage;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Utility;
 using Utility.Hierarchy;
 
@@ -107,6 +109,9 @@ namespace Game.GameType.Roman.ClientSide
             
             resultPopup.RefreshResultText(gameState.curPlayer);
             resultPopup.Show();
+            
+            resultPopup.button.onClick.AddListener(()=> SceneManager.LoadScene(Define.SceneType.ConnectScene.ToString()));
+            resultPopup.button.onClick.AddListener(()=> resultPopup.button.onClick.RemoveAllListeners());
         }
     }
 }
