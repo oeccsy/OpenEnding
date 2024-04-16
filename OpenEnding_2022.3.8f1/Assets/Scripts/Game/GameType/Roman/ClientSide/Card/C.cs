@@ -52,16 +52,17 @@ namespace Game.GameType.Roman.ClientSide.Card
             {
                 Polygon polygon = showOrder[i];
                 Transform polygonTransform = polygon.transform;
-                Vector3 endPos = polygonTransform.position;
+                Vector3 endPos = polygonTransform.localPosition;
                 
                 Sequence subSequence = DOTween.Sequence();
-
+            
                 subSequence
+                    .AppendCallback(()=> polygonTransform.localScale = Vector3.one)
                     .Append(polygon.meshRenderer.material.DOFade(1, 0.2f))
                     .Join(polygonTransform.DOLocalMove(endPos, 0.2f).From(endPos + Vector3.up).SetEase(Ease.InCirc))
                     .Append(polygonTransform.DOPunchPosition(Vector3.up * 0.2f, 0.2f, 1).SetEase(Ease.OutCirc))
                     .Join(polygonTransform.DOPunchRotation(Vector3.forward * 10f, 0.2f, 1).SetEase(Ease.OutCirc));
-
+                    
                 mainSequence
                     .Insert(i * 0.2f, subSequence);
             }
