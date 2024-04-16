@@ -211,7 +211,11 @@ namespace Common.Polygon
                 meshRenderer.sharedMaterial = Instantiate(Resources.Load<Material>("Materials/Polygon"));
             }
             meshRenderer.sharedMaterial.color = _color;
-            _meshFilter.mesh = _mesh = new Mesh();
+
+            if (_mesh == null)
+            {
+                _meshFilter.mesh = _mesh = new Mesh();
+            }
             
             DrawPolygon(Sides, Radius);
         }
