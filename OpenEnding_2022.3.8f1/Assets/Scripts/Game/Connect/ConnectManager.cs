@@ -14,7 +14,7 @@ public class ConnectManager : Singleton<ConnectManager>
     
     private void Start()
     {
-        NetworkManager.Instance.NetworkingInit();
+        InitConnect();
         
         NetworkManager.Instance.OnDeviceReady += RegisterDevice;
         NetworkManager.Instance.OnDeviceReady += RequestSynchronizeDevices;
@@ -25,6 +25,25 @@ public class ConnectManager : Singleton<ConnectManager>
         {
             deviceObject.OnTouchDevice += StartConnect;
         }
+    }
+
+    private void InitConnect()
+    {
+        if (connectStatus == Define.ConnectStatus.LeaveParty) return;
+        
+        switch (NetworkManager.Instance.connectType)
+        {
+            case Define.ConnectType.Server:
+                NetworkManager.Instance.connectType = Define.ConnectType.None;
+                NetworkManager.Instance.StopServer();
+                break;
+            case Define.ConnectType.Client:
+                NetworkManager.Instance.connectType = Define.ConnectType.None;
+                NetworkManager.Instance.StopClient();
+                break;
+        }
+        
+        connectStatus = Define.ConnectStatus.LeaveParty;
     }
 
     private void StartConnect(DeviceObject selectedDevice)
