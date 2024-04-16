@@ -17,7 +17,7 @@ namespace Game.GameType.Roman.ClientSide
         {
             base.Awake();
         }
-        
+
         public void ShowStartPlayerPopup()
         {
             IEnumerator ShowRoutine()
@@ -85,9 +85,18 @@ namespace Game.GameType.Roman.ClientSide
 
         public void ShowCard()
         {
-            StartCoroutine(card.Show());
-            GameManager.Instance.PlayerController.flip.OnNextTail += ()=> StartCoroutine(card.Hide());
-            GameManager.Instance.PlayerController.flip.OnNextTail += ()=> StartCoroutine(card.cardInfoUI.Hide());
+            IEnumerator ShowRoutine()
+            {
+                yield return card.Show();
+                
+                RomanGameState gameState = GameManager.Instance.GameState as RomanGameState;
+                yield return new WaitUntil(() => gameState?.curStep == GameStep.HideCard);
+                
+                GameManager.Instance.PlayerController.flip.OnNextTail += ()=> StartCoroutine(card.Hide());
+                GameManager.Instance.PlayerController.flip.OnNextTail += ()=> StartCoroutine(card.cardInfoUI.Hide());
+            }
+
+            StartCoroutine(ShowRoutine());
         }
 
         public void ShowResultPopup()
