@@ -14,6 +14,8 @@ public class ConnectManager : Singleton<ConnectManager>
     
     private void Start()
     {
+        NetworkManager.Instance.NetworkingInit();
+        
         NetworkManager.Instance.OnDeviceReady += RegisterDevice;
         NetworkManager.Instance.OnDeviceReady += RequestSynchronizeDevices;
         NetworkManager.Instance.OnDeviceDisconnected += UnRegisterDevice;

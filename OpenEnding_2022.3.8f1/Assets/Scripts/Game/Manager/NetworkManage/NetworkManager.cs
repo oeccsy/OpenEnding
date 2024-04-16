@@ -28,6 +28,9 @@ public partial class NetworkManager : Singleton<NetworkManager>
     
     public void NetworkingInit()
     {
+        if(connectType == Define.ConnectType.Client) StopClient();
+        if(connectType == Define.ConnectType.Server) StopServer();
+        
         if (networking != null) Destroy(networking);
         
         networking = gameObject.AddComponent<Networking>();
@@ -105,6 +108,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     
     public void StopServer()
     {
+        connectedDeviceList.Clear();
         networking.StopServer(null);
     }
 
