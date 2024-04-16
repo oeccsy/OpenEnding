@@ -19,7 +19,7 @@ namespace Common.UI
         {
             if (backgroundImage == null) return;
         
-            backgroundImage.DOColor(color, 2f);
+            backgroundImage.DOColor(color, duration);
         }
     }
 }
