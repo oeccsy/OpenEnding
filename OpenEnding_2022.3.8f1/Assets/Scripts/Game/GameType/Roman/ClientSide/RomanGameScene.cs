@@ -105,7 +105,7 @@ namespace Game.GameType.Roman.ClientSide
             var resultPopup = instance.GetComponent<ResultPopup>();
             var gameState = GameManager.Instance.GameState as RomanGameState;
             
-            resultPopup.RefreshResultText(gameState.winner);
+            resultPopup.RefreshResultText(gameState.curPlayer);
             resultPopup.Show();
         }
     }
