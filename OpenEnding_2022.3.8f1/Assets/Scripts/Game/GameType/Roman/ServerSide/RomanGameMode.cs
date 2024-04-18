@@ -63,7 +63,7 @@ namespace Game.GameType.Roman.ServerSide
 
         private IEnumerator InitDeviceOwnCard()
         {
-            var randomNumbers = Utils.GetCombinationInt(1, 5, 3);
+            var randomNumbers = Utils.GetCombinationInt(1, 5, 5); // TODO
             Utils.ShuffleList(randomNumbers);
 
             for (int i = 0; i < NetworkManager.Instance.connectedDeviceList.Count; i++)
