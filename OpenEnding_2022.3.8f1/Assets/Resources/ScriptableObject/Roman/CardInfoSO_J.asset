@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CardInfoSO_J
   m_EditorClassIdentifier: 
   cardType: 10
-  cardName: J
+  cardName: "\uBC29\uD669"
   cardDesc: "\uC774 \uCE74\uB4DC\uB97C \uD754\uB4E4\uBA74\n\uB2E4\uC74C \uCE74\uB4DC\uC758
     \uC815\uCCB4\uAC00 \uACF5\uAC1C\uB418\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. (??? \uD45C\uC2DC)"
