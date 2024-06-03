@@ -32,7 +32,7 @@ namespace Game.GameType.Roman.ServerSide
         private void Start()
         {
             NetworkManager.Instance.clientSidePacketHandler = new ClientSide.RomanPacketHandler();
-            NetworkManager.Instance.serverSidePacketHandler = new RomanPacketHandler();
+            NetworkManager.Instance.serverSidePacketHandler = new ServerSide.RomanPacketHandler();
         
             GameManager.Instance.GameState = new RomanGameState();
         }
