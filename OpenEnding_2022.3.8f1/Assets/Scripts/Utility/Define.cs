@@ -168,11 +168,11 @@ namespace Game.GameType.Roman
     public enum CardType
     {
         None,
-        A,
-        B,
-        C,
-        D,
-        E,
+        Star,
+        Telescope,
+        Artwork,
+        Sprout,
+        RoleModel,
         F,
         G,
         H,

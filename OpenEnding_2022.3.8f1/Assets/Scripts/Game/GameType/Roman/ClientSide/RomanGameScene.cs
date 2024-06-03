@@ -45,19 +45,19 @@ namespace Game.GameType.Roman.ClientSide
             
             switch (cardType)
             {
-                case CardType.A :
+                case CardType.Star :
                     prefab = Resources.Load<GameObject>("Prefabs/Roman/A");
                     break;
-                case CardType.B :
+                case CardType.Telescope :
                     prefab = Resources.Load<GameObject>("Prefabs/Roman/B");
                     break;
-                case CardType.C :
+                case CardType.Artwork :
                     prefab = Resources.Load<GameObject>("Prefabs/Roman/C");
                     break;
-                case CardType.D :
+                case CardType.Sprout :
                     prefab = Resources.Load<GameObject>("Prefabs/Roman/D");
                     break;
-                case CardType.E :
+                case CardType.RoleModel :
                     prefab = Resources.Load<GameObject>("Prefabs/Roman/E");
                     break;
             }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e679b70680b49029e1409f0e031e178, type: 3}
-  m_Name: CardInfoSO_D
+  m_Name: CardInfoSO_Star
   m_EditorClassIdentifier: 
-  cardType: 4
-  cardName: "\uC0C8\uC2F9"
-  cardDesc: "\uC774 \uCE74\uB4DC\uAC00 10\uBC88 \uB4A4\uC9D1\uD788\uBA74\n\uAC00\uC7A5
-    \uBA3C\uC800 \uB4A4\uC9D1\uC740\n\uD50C\uB808\uC774\uC5B4\uAC00 \uC2B9\uB9AC\uD569\uB2C8\uB2E4."
+  cardType: 1
+  cardName: "\uBCC4"
+  cardDesc: "\uB2E4\uB978 \uCE74\uB4DC\uB85C \uC774 \uCE74\uB4DC\uB97C\n\uBC1C\uACAC\uD558\uBA74
+    \uC2B9\uB9AC\uD569\uB2C8\uB2E4."

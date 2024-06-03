@@ -13,7 +13,7 @@ using Utility.Hierarchy;
 namespace Game.GameType.Roman.ClientSide.Card
 {
     [RequireComponent(typeof(DiscoveryMode))]
-    public class B : RomanCard
+    public class Telescope : RomanCard
     {
         private List<Polygon> _polygons = new List<Polygon>();
         private Sequence _showPolygonSequence = null;
@@ -23,7 +23,7 @@ namespace Game.GameType.Roman.ClientSide.Card
         protected override void Awake()
         {
             base.Awake();
-            cardType = CardType.B;
+            cardType = CardType.Telescope;
             
             RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_B");
             cardInfoUI.RefreshUI(cardInfo);
@@ -46,8 +46,6 @@ namespace Game.GameType.Roman.ClientSide.Card
             }
             
             yield return _showPolygonSequence.WaitForCompletion();
-
-            yield return EnterDiscoveryMode();
         }
         
         private Sequence CreateShowSequence()

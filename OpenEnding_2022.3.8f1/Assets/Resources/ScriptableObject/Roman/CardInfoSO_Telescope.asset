@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e679b70680b49029e1409f0e031e178, type: 3}
-  m_Name: CardInfoSO_A
+  m_Name: CardInfoSO_Telescope
   m_EditorClassIdentifier: 
-  cardType: 1
-  cardName: "\uBCC4"
-  cardDesc: "\uB2E4\uB978 \uCE74\uB4DC\uB85C \uC774 \uCE74\uB4DC\uB97C\n\uBC1C\uACAC\uD558\uBA74
-    \uC2B9\uB9AC\uD569\uB2C8\uB2E4."
+  cardType: 2
+  cardName: "\uB9DD\uC6D0\uACBD"
+  cardDesc: "\uC774 \uCE74\uB4DC\uB97C \uB4A4\uC9D1\uC73C\uBA74\n\uB2E4\uB978 \uCE74\uB4DC\uB97C
+    \uC120\uD0DD\uD558\uC5EC \uD655\uC778\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."

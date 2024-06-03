@@ -3,11 +3,11 @@ using Game.Manager.GameManage;
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
-    public class E : RomanCard, IFlipAbility, IGrowable
+    public class RoleModel : RomanCard, IFlipAbility, IGrowable
     {
-        public E()
+        public RoleModel()
         {
-            cardType = CardType.E;
+            cardType = CardType.RoleModel;
         }
         
         private int _growthCount = 0;
@@ -34,7 +34,7 @@ namespace Game.GameType.Roman.ServerSide.Card
         
         public void CheckGrow(CardType flippedCardType)
         {
-            if (flippedCardType != CardType.E) Grow();
+            if (flippedCardType != CardType.RoleModel) Grow();
         }
 
         public void Grow()

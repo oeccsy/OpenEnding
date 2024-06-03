@@ -16,11 +16,11 @@ namespace Game.GameType.Roman.ServerSide
 
         public RomanCardContainer()
         {
-            availableCards.Add(CardType.A, new A());
-            availableCards.Add(CardType.B, new B());
-            availableCards.Add(CardType.C, new C());
-            availableCards.Add(CardType.D, new D());
-            availableCards.Add(CardType.E, new E());
+            availableCards.Add(CardType.Star, new Star());
+            availableCards.Add(CardType.Telescope, new Telescope());
+            availableCards.Add(CardType.Artwork, new Artwork());
+            availableCards.Add(CardType.Sprout, new Sprout());
+            availableCards.Add(CardType.RoleModel, new RoleModel());
         }
 
         public void UseCard(CardType cardType, Networking.NetworkDevice device)

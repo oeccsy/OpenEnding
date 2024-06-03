@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
-    public class C : RomanCard, IFlipAbility, IGrowable
+    public class Artwork : RomanCard, IFlipAbility, IGrowable
     {
-        public C()
+        public Artwork()
         {
-            cardType = CardType.C;
+            cardType = CardType.Artwork;
         }
         
         private int _growthCount = 0;

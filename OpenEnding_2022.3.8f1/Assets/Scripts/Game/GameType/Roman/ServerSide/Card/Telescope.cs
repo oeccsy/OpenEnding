@@ -2,11 +2,11 @@
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
-    public class B : RomanCard, IFlipAbility
+    public class Telescope : RomanCard, IFlipAbility
     {
-        public B()
+        public Telescope()
         {
-            cardType = CardType.B;
+            cardType = CardType.Telescope;
         }
         
         public void FlipAbility()

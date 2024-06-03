@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Game.GameType.Roman.ClientSide.Card
 {
-    public class A : RomanCard
+    public class Star : RomanCard
     {
         private List<Polygon> _polygons = new List<Polygon>();
         private Sequence _showPolygonSequence = null;
@@ -17,7 +17,7 @@ namespace Game.GameType.Roman.ClientSide.Card
         protected override void Awake()
         {
             base.Awake();
-            cardType = CardType.A;
+            cardType = CardType.Star;
             
             RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_A");
             cardInfoUI.RefreshUI(cardInfo);

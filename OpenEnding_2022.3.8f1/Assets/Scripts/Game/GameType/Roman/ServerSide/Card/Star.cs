@@ -3,11 +3,11 @@ using Game.Manager.GameManage;
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
-    public class A : RomanCard, IDiscoveredAbility
+    public class Star : RomanCard, IDiscoveredAbility
     {
-        public A()
+        public Star()
         {
-            cardType = CardType.A;
+            cardType = CardType.Star;
         }
         
         public void DiscoveredAbility()

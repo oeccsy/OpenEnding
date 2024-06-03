@@ -5,11 +5,11 @@ using Random = UnityEngine.Random;
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
-    public class D : RomanCard, IFlipAbility
+    public class Sprout : RomanCard, IFlipAbility
     {
-        public D()
+        public Sprout()
         {
-            cardType = CardType.D;
+            cardType = CardType.Sprout;
         }
         
         public void FlipAbility()
