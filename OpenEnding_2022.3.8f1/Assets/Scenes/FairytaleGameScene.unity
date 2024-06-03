@@ -571,6 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 0}
+  resultPopup: {fileID: 0}
 --- !u!1 &1216578286
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,10 +613,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1654405866}
   - component: {fileID: 1654405868}
-  - component: {fileID: 1654405871}
   - component: {fileID: 1654405867}
-  - component: {fileID: 1654405869}
   - component: {fileID: 1654405870}
+  - component: {fileID: 1654405871}
   m_Layer: 0
   m_Name: FairytaleManager
   m_TagString: Untagged
@@ -662,24 +662,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da0a04129bc64342908d03ccf3314d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCount: 0
   cardContainer:
     cardList: []
     playingCardCount: 0
     headCount: 0
     tailCount: 0
---- !u!114 &1654405869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1654405863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27a1924a7291f334b9f1b045ceaeea19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flip: {fileID: 0}
 --- !u!114 &1654405870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,7 +681,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curFace: 0
-  isStartFlip: 0
 --- !u!114 &1654405871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -703,13 +690,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1654405863}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b89a49ccd98754b8c620c265891c59, type: 3}
+  m_Script: {fileID: 11500000, guid: 3df1e577a6064a97bea60247eff8434d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  successCardCount: 0
-  giveUpCardCount: 0
-  successCardList: 
-  giveUpCardList: 
+  flip: {fileID: 0}
+  shake: {fileID: 0}
 --- !u!1 &1829183953
 GameObject:
   m_ObjectHideFlags: 0
