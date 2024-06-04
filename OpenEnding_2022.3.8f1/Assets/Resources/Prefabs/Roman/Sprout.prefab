@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 7883536790881505877}
   - component: {fileID: 4071853138874213327}
   m_Layer: 0
-  m_Name: D
+  m_Name: Sprout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
