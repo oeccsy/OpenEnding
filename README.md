@@ -32,7 +32,7 @@ OpenEnding은 코로나 이후로 잃어버린 오프라인 모임의 즐거움�
       <th> 개발 환경 </th>
       <th> 개발 인원 </th>
       <th> 특징 </th>
-      <th> 시연 영상 </th>
+      <th> 소개 영상 </th>
     </tr>  
     <tr>
       <td align="center"> <code> Android </code> </td>
@@ -40,7 +40,7 @@ OpenEnding은 코로나 이후로 잃어버린 오프라인 모임의 즐거움�
       <td align="center"> <code> Unity3D </code> <code> C# </code> </td>
       <td align="center"> <code> 본인 1명 </code> </td>
       <td align="center"> <code> 멀티플레이 </code> </td>
-      <td align="center"> <a href="https://youtu.be/1owshpb0_mI"> <code> YouTube </code> </a> </td>
+      <td align="center"> <a href="https://youtu.be/6OgCOe-3YM4"> <code> YouTube </code> </a> </td>
     </tr>
   </table>
 </div>
