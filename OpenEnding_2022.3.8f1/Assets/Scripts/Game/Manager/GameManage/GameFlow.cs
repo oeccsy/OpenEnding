@@ -16,7 +16,7 @@ public class GameFlow : MonoBehaviour
     {
         if (NetworkManager.Instance.connectType != Define.ConnectType.Server) yield break;
         
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitForSecondsRealtime(2f);
 
         if (Connect_Scene.Instance.n != NetworkManager.Instance.connectedDeviceList.Count) yield break;
 
@@ -28,7 +28,7 @@ public class GameFlow : MonoBehaviour
         IEnumerator LoadFairytaleSceneRoutine()
         {
             Overlay.SetActiveOverlay();
-            yield return new WaitForSecondsRealtime(3f);
+            yield return new WaitForSecondsRealtime(2f);
             SceneManager.LoadScene((int)targetScene);
             yield return new WaitForSecondsRealtime(1f);
             Overlay.UnsetActiveOverlay();

@@ -1,10 +1,14 @@
 ﻿#if UNITY_EDITOR
+using System.Collections;
+using Base;
 using Game.GameType.Roman;
 using Game.GameType.Roman.ClientSide;
+using Game.GameType.Roman.ClientSide.Card;
 using Game.Manager.GameManage;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TestManager : Singleton<TestManager>
 {
@@ -101,14 +105,84 @@ public class TestManager : Singleton<TestManager>
     [MenuItem("FuncTest/Roman/B_CreateCard")]
     public static void CreateCard()
     {
-        (GameManager.Instance.GameScene as RomanGameScene)?.CreateCard(CardType.A);
+        (GameManager.Instance.GameScene as RomanGameScene)?.CreateCard(CardType.RoleModel);
     }
     
     [MenuItem("FuncTest/Roman/C_ReplaceCard")]
     public static void ReplaceCard()
     {
-        (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.B);
+        (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.RoleModel);
     }
+    
+    [MenuItem("FuncTest/Roman/D_AnimTest")]
+    public static void AnimTest()
+    {
+        IEnumerator Routine()
+        {
+            (GameManager.Instance.GameScene as RomanGameScene)?.CreateCard(CardType.Star);
+            yield return (GameManager.Instance.GameScene as RomanGameScene)?.card.Show();
+            yield return new WaitForSeconds(7f);
+            
+            for (int i = 0; i < 30; i++)
+            {
+                (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.Telescope);
+                yield return new WaitForSeconds(10f);
+                (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.Artwork);
+                yield return new WaitForSeconds(7f);
+                (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.Sprout);
+                yield return new WaitForSeconds(10f);
+                (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.RoleModel);
+                yield return new WaitForSeconds(7f);
+                (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard(CardType.Star);
+                yield return new WaitForSeconds(10f);
+            }
+        }
+
+        GameManager.Instance.GameScene.StartCoroutine(Routine());
+    }
+    
+    [MenuItem("FuncTest/Roman/E_ShowResultPopup")]
+    public static void ShowResultPopupRoman()
+    {
+        (GameManager.Instance.GameScene as RomanGameScene)?.ShowResultPopup();
+    }
+    
+    [MenuItem("FuncTest/Roman/F_ShowRequestFlipToTail")]
+    public static void ShowStartPlayer()
+    {
+        (GameManager.Instance.GameScene as RomanGameScene)?.ShowRequestFlipToTailPopup();
+    }
+    
+    [MenuItem("FuncTest/Roman/G_ShowCard")]
+    public static void ShowCard()
+    {
+        (GameManager.Instance.GameScene as RomanGameScene)?.ShowCard();
+    }
+    
+    [MenuItem("FuncTest/Roman/H_HideCard")]
+    public static void HideCard()
+    {
+        IEnumerator Routine()
+        {
+            yield return (GameManager.Instance.GameScene as RomanGameScene)?.card.Hide();
+            yield return (GameManager.Instance.GameScene as RomanGameScene)?.card.cardInfoUI.Hide();
+        }
+        
+        GameManager.Instance.GameScene.StartCoroutine(Routine());
+    }
+    
+    [MenuItem("FuncTest/Roman/I_EndterDiscoveryMode")]
+    public static void EndterDiscoveryMode()
+    {
+        IEnumerator Routine()
+        {
+            (GameManager.Instance.GameScene as RomanGameScene)?.CreateCard(CardType.Telescope);
+            yield return (GameManager.Instance.GameScene as RomanGameScene)?.card.Show();
+        }
+        
+        GameManager.Instance.GameScene.StartCoroutine(Routine());
+    }
+    
     #endregion
     
     [MenuItem("FuncTest/Roman/_GameExit")]

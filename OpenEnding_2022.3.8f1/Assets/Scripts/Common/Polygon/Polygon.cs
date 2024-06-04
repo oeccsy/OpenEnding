@@ -1,20 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 
 namespace Common.Polygon
 {
+    [RequireComponent(typeof(MeshRenderer), typeof(MeshFilter))]
     public abstract class Polygon : MonoBehaviour
     {
-        protected MeshRenderer _meshRenderer;
+        public MeshRenderer meshRenderer;
         protected MeshFilter _meshFilter;
-    
+        
         protected Mesh _mesh;
         protected Vector3[] _polygonPoints;
         protected int[] _polygonTriangles;
 
+        [SerializeField]
         protected int _sides = 3;
+        [SerializeField]
         protected float _radius = 1f;
 
         public int Sides
@@ -36,12 +45,26 @@ namespace Common.Polygon
                 DrawPolygon(_sides, _radius);
             }
         }
+        
+        [SerializeField]
+        protected Color _color;
+        public Color Color
+        {
+            get => _color;
+            set
+            {
+                _color = value;
+                meshRenderer.material.color = value;
+            }
+        }
 
         protected virtual void Awake()
         {
-            _meshRenderer = gameObject.AddComponent<MeshRenderer>();
-            _meshRenderer.material = Resources.Load<Material>("Materials/Polygon");
-            _meshFilter = gameObject.AddComponent<MeshFilter>();
+            meshRenderer = GetComponent<MeshRenderer>();
+            meshRenderer.sharedMaterial = Resources.Load<Material>("Materials/Polygon");
+            meshRenderer.material.color = _color;
+            
+            _meshFilter = GetComponent<MeshFilter>();
             _meshFilter.mesh = _mesh = new Mesh();
         }
 
@@ -62,7 +85,7 @@ namespace Common.Polygon
             {
                 Vector3 point = Vector3.zero;
                 float theta;
-                
+
                 if (sides % 2 == 1)
                 {
                     theta = (1f / sides) * (2 * Mathf.PI);
@@ -70,11 +93,18 @@ namespace Common.Polygon
                     point.y = Mathf.Sin(theta * i + Mathf.PI/2) * radius;
                     point.z = 0;
                 }
+                else if (sides == 4)
+                {
+                    theta = (1f / sides) * (2 * Mathf.PI);
+                    point.x = Mathf.Cos(theta * i + Mathf.PI/4) * radius;
+                    point.y = Mathf.Sin(theta * i + Mathf.PI/4) * radius;
+                    point.z = 0;
+                }
                 else
                 {
                     theta = (1f / sides) * (2 * Mathf.PI);
-                    point.x = Mathf.Cos(theta * i + theta/2) * radius;
-                    point.y = Mathf.Sin(theta * i + theta/2) * radius;
+                    point.x = Mathf.Cos(theta * i) * radius;
+                    point.y = Mathf.Sin(theta * i) * radius;
                     point.z = 0;
                 }
                 
@@ -145,5 +175,50 @@ namespace Common.Polygon
 
             points = newPoints;
         }
+        
+        public void StartColorAnim(Color color, float duration = 1f)
+        {
+            meshRenderer.material.DOColor(color, duration);
+        }
+
+        public void SetAlpha(float alpha)
+        {
+            Color newColor = Color;
+            newColor.a = alpha;
+            
+            Color = newColor;
+        }
+        
+#if UNITY_EDITOR
+        [ContextMenu("SaveMesh")]
+        protected void SaveMesh()
+        {
+            string path = "Assets/Resources/Mesh/NewMesh.asset";
+            AssetDatabase.CreateAsset(_mesh, AssetDatabase.GenerateUniqueAssetPath(path));
+            AssetDatabase.SaveAssets();
+        }
+        
+        protected virtual void OnValidate()
+        {
+            if (meshRenderer == null || _meshFilter == null)
+            {
+                meshRenderer = GetComponent<MeshRenderer>();
+                _meshFilter = GetComponent<MeshFilter>();
+            }
+            
+            if (meshRenderer.sharedMaterial == null)
+            {
+                meshRenderer.sharedMaterial = Instantiate(Resources.Load<Material>("Materials/Polygon"));
+            }
+            meshRenderer.sharedMaterial.color = _color;
+
+            if (_mesh == null)
+            {
+                _meshFilter.mesh = _mesh = new Mesh();
+            }
+            
+            DrawPolygon(Sides, Radius);
+        }
+#endif
     }
 }

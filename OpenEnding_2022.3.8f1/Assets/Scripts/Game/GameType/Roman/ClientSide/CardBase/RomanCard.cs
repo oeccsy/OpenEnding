@@ -1,7 +1,6 @@
-﻿using System;
+﻿using System.Collections;
 using Game.GameType.Roman.ClientSide.UI;
 using Shatalmic;
-using TMPro;
 using UnityEngine;
 
 namespace Game.GameType.Roman.ClientSide.CardBase
@@ -23,8 +22,18 @@ namespace Game.GameType.Roman.ClientSide.CardBase
             cardInfoUI = Instantiate(cardInfoUIPrefab, SceneUIRoot.Transform).GetComponent<CardInfoUI>();
         }
 
-        private void OnDestroy()
+        public virtual IEnumerator Show()
         {
+            yield return cardInfoUI.Show();
+            yield return ShowPolygons();
+        }
+        
+        protected abstract IEnumerator ShowPolygons();
+        public abstract IEnumerator Hide();
+
+        protected virtual void OnDestroy()
+        {
+            if (cardInfoUI == null) return;
             Destroy(cardInfoUI.gameObject);
         }
     }

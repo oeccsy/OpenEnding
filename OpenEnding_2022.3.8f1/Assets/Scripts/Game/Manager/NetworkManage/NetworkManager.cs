@@ -82,6 +82,9 @@ public partial class NetworkManager : Singleton<NetworkManager>
     {
         if (connectType != Define.ConnectType.Server) yield break;
         
+        yield return new WaitWhile(() => isWritingData);
+        yield return new WaitForSecondsRealtime(0.3f);
+        
         foreach (var targetDevice in connectedDeviceList)
         {
             yield return new WaitWhile(() => isWritingData);
@@ -102,6 +105,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     
     public void StopServer()
     {
+        connectedDeviceList.Clear();
         networking.StopServer(null);
     }
 

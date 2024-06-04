@@ -5,7 +5,8 @@ namespace Common.Polygon
 {
     public class HollowedPolygon : Polygon
     {
-        private float _thickness = 1f;
+        [SerializeField]
+        protected float _thickness = 1f;
 
         public float Thickness
         {

@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class RootObject : MonoBehaviour
+namespace Utility.Hierarchy
 {
-    private void Awake()
+    public abstract class RootObject : MonoBehaviour
     {
-        Register();
-    }
+        private void Awake()
+        {
+            Register();
+        }
     
-    protected abstract void Register();
+        protected abstract void Register();
+    }
 }

@@ -12,5 +12,8 @@ namespace Game.GameType.Roman.ServerSide.CardBase
         
         public Define.DisplayedFace displayedFace = Define.DisplayedFace.None;
         public Networking.NetworkDevice device;
+
+        public abstract void OnEnterField();
+        public abstract void OnExitField();
     }
 }

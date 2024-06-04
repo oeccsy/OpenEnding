@@ -13,25 +13,27 @@ namespace Game.GameType.Roman.ServerSide
     {
         private Dictionary<CardType, RomanCard> availableCards = new Dictionary<CardType, RomanCard>();
         private Dictionary<CardType, RomanCard> usedCards = new Dictionary<CardType, RomanCard>();
-
+        
         public RomanCardContainer()
         {
-            availableCards.Add(CardType.A, new A());
-            availableCards.Add(CardType.B, new B());
-            availableCards.Add(CardType.C, new C());
-            availableCards.Add(CardType.D, new D());
-            availableCards.Add(CardType.E, new E());
+            availableCards.Add(CardType.Star, new Star());
+            availableCards.Add(CardType.Telescope, new Telescope());
+            availableCards.Add(CardType.Artwork, new Artwork());
+            availableCards.Add(CardType.Sprout, new Sprout());
+            availableCards.Add(CardType.RoleModel, new RoleModel());
         }
 
         public void UseCard(CardType cardType, Networking.NetworkDevice device)
         {
             if (!availableCards.ContainsKey(cardType)) return;
             
-            var cardData = availableCards[cardType];
+            RomanCard cardData = availableCards[cardType];
             availableCards.Remove(cardType);
 
             cardData.device = device;
             usedCards.Add(cardType, cardData);
+            
+            cardData.OnEnterField();
         }
 
         public RomanCard ReplaceCard(CardType cardType)
@@ -39,10 +41,10 @@ namespace Game.GameType.Roman.ServerSide
             if (!usedCards.ContainsKey(cardType)) return null;
 
             List<RomanCard> availableCardList = availableCards.Values.ToList();
-            var newCard = availableCardList[Random.Range(0, availableCardList.Count)];
+            RomanCard newCard = availableCardList[Random.Range(0, availableCardList.Count)];
             availableCards.Remove(newCard.cardType);
             
-            var prevCard = usedCards[cardType];
+            RomanCard prevCard = usedCards[cardType];
             usedCards.Remove(cardType);
             
             newCard.device = prevCard.device;
@@ -50,6 +52,9 @@ namespace Game.GameType.Roman.ServerSide
             
             usedCards.Add(newCard.cardType, newCard);
             availableCards.Add(cardType, prevCard);
+            
+            prevCard.OnExitField();
+            newCard.OnEnterField();
 
             return newCard;
         }

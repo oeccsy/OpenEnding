@@ -11,7 +11,7 @@ using UnityEditor;
 public class Connect_Scene : Singleton<Connect_Scene>
 {
     public int n;
-    public int r;
+    public float r;
     
     public DeviceObject userOwnDeviceObject;
     
