@@ -20,17 +20,19 @@ namespace Game.GameType.Roman.ServerSide.Card
         
         public override void OnEnterField()
         {
-            OnCardFlipped += CheckGrow;
+            var gameMode = GameManager.Instance.GameMode as RomanGameMode;
+            gameMode.OnCardFlipped += CheckGrow;
         }
 
         public override void OnExitField()
         {
-            OnCardFlipped -= CheckGrow;
+            var gameMode = GameManager.Instance.GameMode as RomanGameMode;
+            gameMode.OnCardFlipped -= CheckGrow;
         }
         
-        public void CheckGrow(RomanCard flippedCard)
+        public void CheckGrow(CardType cardType)
         {
-            if (flippedCard.cardType != CardType.RoleModel) Grow();
+            if (cardType != CardType.RoleModel) Grow();
         }
 
         public void Grow()

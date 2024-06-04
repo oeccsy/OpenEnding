@@ -13,11 +13,6 @@ namespace Game.GameType.Roman.ServerSide.CardBase
         public Define.DisplayedFace displayedFace = Define.DisplayedFace.None;
         public Networking.NetworkDevice device;
 
-        public delegate void CardEventHandler(RomanCard card);
-        public static event CardEventHandler OnCardFlipped;
-        public static event CardEventHandler OnCardDiscovered;
-        public static event CardEventHandler OnCardShaken;
-
         public abstract void OnEnterField();
         public abstract void OnExitField();
     }
