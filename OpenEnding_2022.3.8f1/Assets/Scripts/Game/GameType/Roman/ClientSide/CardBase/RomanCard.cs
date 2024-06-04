@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Game.GameType.Roman.ClientSide.UI;
 using Shatalmic;
-using TMPro;
 using UnityEngine;
 
 namespace Game.GameType.Roman.ClientSide.CardBase

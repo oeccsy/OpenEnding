@@ -19,6 +19,7 @@ namespace Game.GameType.Roman.ClientSide
                 {Tuple.Create<byte, byte>(11, 0), (bytes) => DeviceUtils.Vibrate()},
                 {Tuple.Create<byte, byte>(11, 1), (bytes) => (GameManager.Instance.GameScene as RomanGameScene)?.ShowCard()},
                 {Tuple.Create<byte, byte>(11, 2), (bytes) => (GameManager.Instance.GameScene as RomanGameScene)?.ReplaceCard((CardType)bytes[0])},
+                {Tuple.Create<byte, byte>(11, 3), (bytes) => (GameManager.Instance.GameScene as RomanGameScene)?.DiscoverCard((CardType)bytes[0])},
                 
                 {Tuple.Create<byte, byte>(12, 0), (bytes) => (GameManager.Instance.GameScene as RomanGameScene)?.ShowResultPopup()},
                 

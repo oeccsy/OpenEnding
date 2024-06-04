@@ -14,6 +14,7 @@ namespace Game.GameType.Roman.ClientSide
     public class RomanGameScene : GameScene
     {
         public RomanCard card;
+        public RomanCard discoveryCard;
         
         protected override void Awake()
         {
@@ -41,27 +42,7 @@ namespace Game.GameType.Roman.ClientSide
 
         public void CreateCard(CardType cardType)
         {
-            GameObject prefab = null;
-            
-            switch (cardType)
-            {
-                case CardType.Star :
-                    prefab = Resources.Load<GameObject>("Prefabs/Roman/A");
-                    break;
-                case CardType.Telescope :
-                    prefab = Resources.Load<GameObject>("Prefabs/Roman/B");
-                    break;
-                case CardType.Artwork :
-                    prefab = Resources.Load<GameObject>("Prefabs/Roman/C");
-                    break;
-                case CardType.Sprout :
-                    prefab = Resources.Load<GameObject>("Prefabs/Roman/D");
-                    break;
-                case CardType.RoleModel :
-                    prefab = Resources.Load<GameObject>("Prefabs/Roman/E");
-                    break;
-            }
-
+            GameObject prefab = Resources.Load<GameObject>($"Prefabs/Roman/{cardType.ToString()}");
             card = Instantiate(prefab, GameObjectRoot.Transform).GetComponent<RomanCard>();
         }
         
@@ -83,6 +64,32 @@ namespace Game.GameType.Roman.ClientSide
             }
 
             StartCoroutine(ReplaceRoutine());
+        }
+
+        public void DiscoverCard(CardType cardType)
+        {
+            $"Discover {cardType}".Log();
+            if (card == null) return;
+            
+            IEnumerator DiscoverRoutine()
+            {
+                yield return card.Hide();
+                yield return card.cardInfoUI.Hide();
+                
+                yield return new WaitForSeconds(0.5f);
+                
+                var prefab = Resources.Load<GameObject>($"Prefabs/Roman/{cardType.ToString()}");
+                discoveryCard = Instantiate(prefab, GameObjectRoot.Transform).GetComponent<RomanCard>();
+                yield return discoveryCard.Show();
+                
+                RomanGameState gameState = GameManager.Instance.GameState as RomanGameState;
+                yield return new WaitUntil(() => gameState?.curStep == GameStep.HideCard);
+                
+                GameManager.Instance.PlayerController.flip.OnNextTail += ()=> StartCoroutine(discoveryCard.Hide());
+                GameManager.Instance.PlayerController.flip.OnNextTail += ()=> StartCoroutine(discoveryCard.cardInfoUI.Hide());
+            }
+            
+            StartCoroutine(DiscoverRoutine());
         }
 
         public void ShowCard()

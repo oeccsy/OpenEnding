@@ -12,7 +12,6 @@ using Utility.Hierarchy;
 
 namespace Game.GameType.Roman.ClientSide.Card
 {
-    [RequireComponent(typeof(DiscoveryMode))]
     public class Telescope : RomanCard
     {
         private List<Polygon> _polygons = new List<Polygon>();
