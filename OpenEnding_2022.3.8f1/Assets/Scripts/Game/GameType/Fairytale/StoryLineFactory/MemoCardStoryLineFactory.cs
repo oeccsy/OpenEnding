@@ -23,9 +23,9 @@ public class MemoCardStoryLineFactory : Fairytale_StorylineFactory
             availableStory.Add(Define.Story.TakeStepBack);
         }
 
-        Utils.ListRandomShuffle(availableStory);
-        Utils.ListRandomShuffle(availableStory);
-        Utils.ListRandomShuffle(availableStory);
+        Utils.ShuffleList(availableStory);
+        Utils.ShuffleList(availableStory);
+        Utils.ShuffleList(availableStory);
 
         return availableStory[Random.Range(0, availableStory.Count)];
     }

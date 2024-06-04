@@ -23,8 +23,8 @@ public class InitManager : MonoBehaviour
         
         yield return new WaitForSecondsRealtime(2f);
         
-        var bottomSheet = UIManager.Instance.ShowPopup("Prefabs/OnBoardingBottomSheet", 9);
-        bottomSheet.transform.SetParent(DontDestroyOnLoadContainer.Instance.transform);
+        // var bottomSheet = UIManager.Instance.ShowPopup("Prefabs/OnBoardingBottomSheet", 9);
+        // bottomSheet.transform.SetParent(DontDestroyOnLoadContainer.Instance.transform);
         
 #if DEVELOPMENT_BUILD || UNITY_EDITOR || UNITY_STANDALONE_WIN
         DebugCanvas.Instance.InitDebugCanvas();

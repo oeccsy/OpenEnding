@@ -1,6 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using Game.Manager.GameManage;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,38 +16,24 @@ public class GameFlow : MonoBehaviour
     {
         if (NetworkManager.Instance.connectType != Define.ConnectType.Server) yield break;
         
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitForSecondsRealtime(2f);
 
         if (Connect_Scene.Instance.n != NetworkManager.Instance.connectedDeviceList.Count) yield break;
 
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] {1, 0, 0}));
+        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] {1, 0, 2}));
     }
     
-    public void LoadFairytaleScene()
+    public void LoadScene(Define.SceneType targetScene)
     {
         IEnumerator LoadFairytaleSceneRoutine()
         {
             Overlay.SetActiveOverlay();
-            yield return new WaitForSecondsRealtime(3f);
-            SceneManager.LoadScene("FairytaleGameScene");
+            yield return new WaitForSecondsRealtime(2f);
+            SceneManager.LoadScene((int)targetScene);
             yield return new WaitForSecondsRealtime(1f);
             Overlay.UnsetActiveOverlay();
         }
 
         StartCoroutine(LoadFairytaleSceneRoutine());
-    }
-    
-    public void LoadConnectScene()
-    {
-        IEnumerator LoadConnectSceneRoutine()
-        {
-            Overlay.SetActiveOverlay();
-            yield return new WaitForSecondsRealtime(3f);
-            SceneManager.LoadScene("ConnectScene");
-            yield return new WaitForSecondsRealtime(1f);
-            Overlay.UnsetActiveOverlay();
-        }
-
-        StartCoroutine(LoadConnectSceneRoutine());
     }
 }

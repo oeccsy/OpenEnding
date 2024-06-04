@@ -52,9 +52,9 @@ namespace DevOnly.Test
                 availableStory.Add(Define.Story.LoseAll);
             }
 
-            Utils.ListRandomShuffle(availableStory);
-            Utils.ListRandomShuffle(availableStory);
-            Utils.ListRandomShuffle(availableStory);
+            Utils.ShuffleList(availableStory);
+            Utils.ShuffleList(availableStory);
+            Utils.ShuffleList(availableStory);
             
             switch (availableStory[Random.Range(0, availableStory.Count)])
             {

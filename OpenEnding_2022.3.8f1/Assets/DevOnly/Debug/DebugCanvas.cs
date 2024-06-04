@@ -14,7 +14,7 @@ public class DebugCanvas : Singleton<DebugCanvas>
     private CanvasScaler _canvasScaler;
     private GraphicRaycaster _graphicRaycaster;
     
-    private TMP_Text _tmp;
+    private TextMeshProUGUI _tmp;
     private RectTransform _tmpRectTransform;
 
     public void InitDebugCanvas()
@@ -59,6 +59,7 @@ public class DebugCanvas : Singleton<DebugCanvas>
             _tmp = textObj.AddComponent<TextMeshProUGUI>();
             _tmp.alignment = TextAlignmentOptions.Top;
             _tmp.fontSize = 70;
+            _tmp.color = Color.black;
         }
         _tmp.text = "";
         

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using DG.Tweening;
+using Game.Manager.GameManage;
 using UnityEngine;
 
 public abstract class Fairytale_Card : MonoBehaviour
@@ -16,7 +17,7 @@ public abstract class Fairytale_Card : MonoBehaviour
     {
         var flip = GameManager.Instance.PlayerController.flip;
         
-        flip.OnStartFlipToHead += () => cardData.displayedFace = Define.DisplayedFace.Head;
+        flip.OnFlipToHead += () => cardData.displayedFace = Define.DisplayedFace.Head;
         flip.OnFlipToTail += () => cardData.displayedFace = Define.DisplayedFace.Tail;
     }
 

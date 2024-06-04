@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Game.Manager.GameManage;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -11,21 +12,10 @@ public class Fairytale_GameMode : GameMode
     private int _totalCardFlip = 0;
     private int _maxCardFlip = 0;
 
-    private Coroutine _gameRoutine = null;
     private Coroutine _timer = null;
     private bool _isTimerExpired = false;
-
-    private void Awake()
-    {
-        GameManager.Instance.GameMode = this;
-
-        if (NetworkManager.Instance.connectType == Define.ConnectType.Server)
-        {
-            _gameRoutine = StartCoroutine(GameRoutine());    
-        }
-    }
     
-    private IEnumerator GameRoutine()
+    protected override IEnumerator GameRoutine()
     {
         SelectCardTypes();
         yield return CreateStories();
@@ -61,7 +51,7 @@ public class Fairytale_GameMode : GameMode
         cardTypes.Add(Define.FairyTaleGameCardType.TheHareAndTheTortoise);
         cardTypes.Add(Define.FairyTaleGameCardType.ThereAreAlwaysMemos);
         
-        Utils.ListRandomShuffle(cardTypes);
+        Utils.ShuffleList(cardTypes);
 
         foreach (var device in NetworkManager.Instance.connectedDeviceList)
         {
