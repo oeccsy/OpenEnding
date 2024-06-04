@@ -25,7 +25,7 @@ namespace Game.GameType.Roman.ClientSide.Card
             base.Awake();
             cardType = CardType.Telescope;
             
-            RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_B");
+            RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_Telescope");
             cardInfoUI.RefreshUI(cardInfo);
             
             _polygons = GetComponentsInChildren<Polygon>().ToList();

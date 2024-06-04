@@ -14,5 +14,8 @@ namespace Game.GameType.Roman.ServerSide.Card
         {
             (GameManager.Instance.GameMode as RomanGameMode)?.Victory();
         }
+
+        public override void OnEnterField() {}
+        public override void OnExitField() {}
     }
 }

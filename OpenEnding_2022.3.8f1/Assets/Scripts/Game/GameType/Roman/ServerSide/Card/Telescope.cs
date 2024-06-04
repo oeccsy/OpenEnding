@@ -1,4 +1,6 @@
-﻿using Game.GameType.Roman.ServerSide.CardBase;
+﻿using System;
+using Game.GameType.Roman.ServerSide.CardBase;
+using Game.Manager.GameManage;
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
@@ -11,10 +13,14 @@ namespace Game.GameType.Roman.ServerSide.Card
         
         public void FlipAbility()
         {
-            // 이 카드를 뒤집으면
-            // 다른 카드를 선택하여 확인할 수 있습니다.
-            
-            // Client에게 로직 노티
+            var gameMode = GameManager.Instance.GameMode as RomanGameMode;
+            var cards = gameMode.cardContainer.GetCards<RomanCard>();
+
+            var targetCard = cards[UnityEngine.Random.Range(0, cards.Count)];
+            gameMode.DiscoverCard(targetCard.cardType);
         }
+
+        public override void OnEnterField() {}
+        public override void OnExitField() {}
     }
 }

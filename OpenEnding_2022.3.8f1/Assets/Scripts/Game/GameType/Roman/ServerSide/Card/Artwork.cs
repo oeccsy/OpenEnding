@@ -1,6 +1,5 @@
 ﻿using Game.GameType.Roman.ServerSide.CardBase;
 using Game.Manager.GameManage;
-using UnityEngine;
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
@@ -16,12 +15,12 @@ namespace Game.GameType.Roman.ServerSide.Card
 
         public void FlipAbility()
         {
-            // 이 카드를 뒤집으면 성장합니다.
-            // 3번째 성장하면 승리합니다.
-            
             Grow();
             if(_growthCount >= _victoryThreshold) (GameManager.Instance.GameMode as RomanGameMode)?.Victory();
         }
+        
+        public override void OnEnterField() {}
+        public override void OnExitField() {}
         
         public void Grow()
         {

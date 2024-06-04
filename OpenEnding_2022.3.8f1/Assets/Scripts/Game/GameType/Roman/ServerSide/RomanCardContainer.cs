@@ -13,7 +13,7 @@ namespace Game.GameType.Roman.ServerSide
     {
         private Dictionary<CardType, RomanCard> availableCards = new Dictionary<CardType, RomanCard>();
         private Dictionary<CardType, RomanCard> usedCards = new Dictionary<CardType, RomanCard>();
-
+        
         public RomanCardContainer()
         {
             availableCards.Add(CardType.Star, new Star());
@@ -27,11 +27,13 @@ namespace Game.GameType.Roman.ServerSide
         {
             if (!availableCards.ContainsKey(cardType)) return;
             
-            var cardData = availableCards[cardType];
+            RomanCard cardData = availableCards[cardType];
             availableCards.Remove(cardType);
 
             cardData.device = device;
             usedCards.Add(cardType, cardData);
+            
+            cardData.OnEnterField();
         }
 
         public RomanCard ReplaceCard(CardType cardType)
@@ -39,10 +41,10 @@ namespace Game.GameType.Roman.ServerSide
             if (!usedCards.ContainsKey(cardType)) return null;
 
             List<RomanCard> availableCardList = availableCards.Values.ToList();
-            var newCard = availableCardList[Random.Range(0, availableCardList.Count)];
+            RomanCard newCard = availableCardList[Random.Range(0, availableCardList.Count)];
             availableCards.Remove(newCard.cardType);
             
-            var prevCard = usedCards[cardType];
+            RomanCard prevCard = usedCards[cardType];
             usedCards.Remove(cardType);
             
             newCard.device = prevCard.device;
@@ -50,6 +52,9 @@ namespace Game.GameType.Roman.ServerSide
             
             usedCards.Add(newCard.cardType, newCard);
             availableCards.Add(cardType, prevCard);
+            
+            prevCard.OnExitField();
+            newCard.OnEnterField();
 
             return newCard;
         }

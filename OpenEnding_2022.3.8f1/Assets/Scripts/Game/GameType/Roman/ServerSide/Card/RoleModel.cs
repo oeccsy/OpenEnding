@@ -17,24 +17,20 @@ namespace Game.GameType.Roman.ServerSide.Card
         {
             if(_growthCount >= _victoryThreshold) (GameManager.Instance.GameMode as RomanGameMode)?.Victory();
         }
-
-        public void SetActive(bool active)
+        
+        public override void OnEnterField()
         {
-            if (active)
-            {
-                var gameMode = (GameManager.Instance.GameMode as RomanGameMode);
-                if(gameMode != null) gameMode.OnCardFlipped += CheckGrow;
-            }
-            else
-            {
-                var gameMode = (GameManager.Instance.GameMode as RomanGameMode);
-                if(gameMode != null) gameMode.OnCardFlipped -= CheckGrow;
-            }
+            OnCardFlipped += CheckGrow;
+        }
+
+        public override void OnExitField()
+        {
+            OnCardFlipped -= CheckGrow;
         }
         
-        public void CheckGrow(CardType flippedCardType)
+        public void CheckGrow(RomanCard flippedCard)
         {
-            if (flippedCardType != CardType.RoleModel) Grow();
+            if (flippedCard.cardType != CardType.RoleModel) Grow();
         }
 
         public void Grow()

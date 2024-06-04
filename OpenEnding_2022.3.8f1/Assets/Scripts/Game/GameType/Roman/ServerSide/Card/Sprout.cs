@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Game.GameType.Roman.ClientSide;
 using Game.GameType.Roman.ServerSide.CardBase;
 using Game.Manager.GameManage;
-using Random = UnityEngine.Random;
+
 
 namespace Game.GameType.Roman.ServerSide.Card
 {
@@ -11,17 +11,28 @@ namespace Game.GameType.Roman.ServerSide.Card
         {
             cardType = CardType.Sprout;
         }
+
+        private ColorPalette.ColorName _firstPlayer = ColorPalette.ColorName.DeviceDefault;
+        private int _flipCount = 0;
         
         public void FlipAbility()
         {
-            var gameMode = GameManager.Instance.GameMode as RomanGameMode;
-            if (gameMode == null) return;
+            if (_firstPlayer == ColorPalette.ColorName.DeviceDefault)
+            {
+                var gameState = GameManager.Instance.GameState as RomanGameState;
+                _firstPlayer = gameState.curPlayer;
+            }
+            
+            _flipCount++;
 
-            var growableCards = gameMode.cardContainer.GetCards<IGrowable>();
-            if (growableCards.Count == 0) return;
-
-            int randomIndex = Random.Range(0, growableCards.Count);
-            growableCards[randomIndex].Regress();
+            if (_flipCount >= 10)
+            {
+                var gameMode = GameManager.Instance.GameMode as RomanGameMode;
+                gameMode.Victory(_firstPlayer);
+            }
         }
+
+        public override void OnEnterField() {}
+        public override void OnExitField() {}
     }
 }

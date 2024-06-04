@@ -30,7 +30,7 @@ namespace Game.GameType.Roman.ClientSide.Card
             base.Awake();
             cardType = CardType.Sprout;
             
-            RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_D");
+            RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_Sprout");
             cardInfoUI.RefreshUI(cardInfo);
             
             _polygons = GetComponentsInChildren<Polygon>().ToList();

@@ -19,7 +19,7 @@ namespace Game.GameType.Roman.ClientSide.Card
             base.Awake();
             cardType = CardType.RoleModel;
 
-            RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_E");
+            RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_RoleModel");
             cardInfoUI.RefreshUI(cardInfo);
 
             _polygons = GetComponentsInChildren<Polygon>().ToList();

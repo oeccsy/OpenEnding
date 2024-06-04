@@ -194,6 +194,14 @@ namespace Game.GameType.Roman.ServerSide
             
             StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 12, 0 })); 
         }
+        
+        public void Victory(ColorPalette.ColorName playerColor)
+        {
+            GameOver();
+            OnGameOver?.Invoke();
+            
+            StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 12, 0 })); 
+        }
 
         public void SynchronizeGameStep()
         {

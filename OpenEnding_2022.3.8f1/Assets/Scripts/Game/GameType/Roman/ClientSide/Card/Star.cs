@@ -19,7 +19,7 @@ namespace Game.GameType.Roman.ClientSide.Card
             base.Awake();
             cardType = CardType.Star;
             
-            RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_A");
+            RomanCardInfo cardInfo = Resources.Load<RomanCardInfo>("ScriptableObject/Roman/CardInfoSO_Star");
             cardInfoUI.RefreshUI(cardInfo);
 
             _polygons = GetComponentsInChildren<Polygon>().ToList();
