@@ -10,12 +10,12 @@ OpenEnding은 코로나 이후로 잃어버린 오프라인 모임의 즐거움�
   <table>
     <tr>
       <th><img src="https://github.com/oeccsy/OpenEnding/assets/77562357/c41d5f4e-7e1c-423c-acdc-8dff069df78e" width="360px" height="640px"/></th>
-      <th width="270px" height="600px"> => </th>
+      <th height="600px"> => </th>
       <th><img src="https://github.com/oeccsy/OpenEnding/assets/77562357/374852f5-ceb2-4307-8b2d-56f471aa5224" width="360px" height="640px"/></th>
     </tr>
     <tr>
       <td align="center">▲ Open</td>
-      <td align="center" width="270px"> </td>
+      <td align="center"> </td>
       <td align="center">▲ Ending</td>
     </tr>
   </table>
@@ -40,7 +40,7 @@ OpenEnding은 코로나 이후로 잃어버린 오프라인 모임의 즐거움�
       <td align="center"> <code> Unity3D </code> <code> C# </code> </td>
       <td align="center"> <code> 본인 1명 </code> </td>
       <td align="center"> <code> 멀티플레이 </code> </td>
-      <td align="center"> <a href="https://youtu.be/6OgCOe-3YM4"> <code> YouTube </code> </a> </td>
+      <td align="center"> <a href="https://youtu.be/vV15h0E8E0Y"> <code> YouTube </code> </a> </td>
     </tr>
   </table>
 </div>
