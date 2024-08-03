@@ -36,6 +36,8 @@ public class AARTest : MonoBehaviour
         Toast(_androidUtilsClass.CallStatic<int>("returnInt").ToString());
     }
 
+
+
     public void IsBluetoothLEFeatureExist()
     {
         Toast(_bluetoothLEUtilsInstance.Call<bool>("isBluetoothLEFeatureExist").ToString());
@@ -56,14 +58,11 @@ public class AARTest : MonoBehaviour
         _bluetoothLEUtilsInstance.Call("requestPermissions");
     }
 
+
+
     public void InitBluetoothSystem()
     {
         _networkingInstance.Call("initBluetoothSystem");
-    }
-    
-    public void InitAdvertiseOptions()
-    {
-        _networkingInstance.Call("initAdvertiseOptions");
     }
     
     public void StartAdvertising()
@@ -75,11 +74,18 @@ public class AARTest : MonoBehaviour
     {
         _networkingInstance.Call("stopAdvertising");
     }
-    
-    public void InitScanOptions()
+
+    public void StartServer()
     {
-        _networkingInstance.Call("initScanOptions");
+        _networkingInstance.Call("startServer");
     }
+    
+    public void StopServer()
+    {
+        _networkingInstance.Call("stopServer");
+    }
+    
+  
     
     public void StartScanning()
     {
@@ -91,20 +97,6 @@ public class AARTest : MonoBehaviour
         _networkingInstance.Call("stopScanning");
     }
     
-    public void InitConnectOption()
-    {
-        _networkingInstance.Call("initConnectOption");
-    }
-    
-    public void ConnectDevice()
-    {
-        _networkingInstance.Call("connectDevice");
-    }
-    
-    public void DisconnectGattServer()
-    {
-        _networkingInstance.Call("disconnectGattServer");
-    }
     
     public void Write()
     {
