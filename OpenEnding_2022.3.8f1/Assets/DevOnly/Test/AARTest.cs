@@ -12,6 +12,13 @@ public class AARTest : MonoBehaviour
     
     private AndroidJavaClass _networkingClass;
     private AndroidJavaObject _networkingInstance;
+
+    private AndroidJavaClass _centralClass;
+    private AndroidJavaObject _centralInstance;
+
+    private AndroidJavaClass _peripheralClass;
+    private AndroidJavaObject _peripheralInstance;
+
     private void Awake()
     {
         _androidUtilsClass = new AndroidJavaClass("com.oeccsy.openending_ble.AndroidUtils");
@@ -22,6 +29,12 @@ public class AARTest : MonoBehaviour
         
         _networkingClass = new AndroidJavaClass("com.oeccsy.openending_ble.Networking");
         _networkingInstance = _networkingClass.CallStatic<AndroidJavaObject>("getInstance");
+
+        _centralClass = new AndroidJavaClass("com.oeccsy.openending_ble.Central");
+        _centralInstance = _centralClass.CallStatic<AndroidJavaObject>("getInstance");
+
+        _peripheralClass = new AndroidJavaClass("com.oeccsy.openending_ble.Peripheral");
+        _peripheralInstance = _peripheralClass.CallStatic<AndroidJavaObject>("getInstance");
         
         Toast("Hello from android!");
     }
@@ -60,46 +73,71 @@ public class AARTest : MonoBehaviour
 
 
 
-    public void InitBluetoothSystem()
+    public void InitCentralBluetoothSystem()
     {
-        _networkingInstance.Call("initBluetoothSystem");
-    }
-    
-    public void StartAdvertising()
-    {
-        _networkingInstance.Call("startAdvertising");
-    }
-    
-    public void StopAdvertising()
-    {
-        _networkingInstance.Call("stopAdvertising");
+        _centralInstance.Call("initBluetoothSystem");
     }
 
-    public void StartServer()
-    {
-        _networkingInstance.Call("startServer");
-    }
-    
-    public void StopServer()
-    {
-        _networkingInstance.Call("stopServer");
-    }
-    
-  
-    
     public void StartScanning()
     {
-        _networkingInstance.Call("startScanning");
+        _centralInstance.Call("startScanning");
     }
     
     public void StopScanning()
     {
-        _networkingInstance.Call("stopScanning");
+        _centralInstance.Call("stopScanning");
     }
-    
     
     public void Write()
     {
-        _networkingInstance.Call("write");
+        string deviceName = "Test";
+        byte[] data = new byte[] {116, 101, 115, 116};
+        _centralInstance.Call("write", deviceName, data);
+    }
+
+
+
+    public void InitPeripheralBluetoothSystem()
+    {
+        _peripheralInstance.Call("initBluetoothSystem");
+    }
+
+    public void StartAdvertising()
+    {
+        string deviceName = "Test";
+        _peripheralInstance.Call("startAdvertising", deviceName, 0);
+    }
+    
+    public void StopAdvertising()
+    {
+        _peripheralInstance.Call("stopAdvertising");
+    }
+
+    public void StartServer()
+    {
+        _peripheralInstance.Call("startServer");
+    }
+    
+    public void StopServer()
+    {
+        _peripheralInstance.Call("stopServer");
+    }
+
+    public void Indicate()
+    {
+        byte[] data = new byte[] {116, 101, 115, 116};
+        _peripheralInstance.Call("indicate", data);
+    }
+    
+    
+    public void OnDataReceive(string encodedData)
+    {
+        Debug.Log(encodedData);
+        Toast(encodedData);
+
+        byte[] bytes = System.Convert.FromBase64String(encodedData);
+        
+        Debug.Log(bytes.ToString());
+        Toast(bytes[0].ToString());
     }
 }
