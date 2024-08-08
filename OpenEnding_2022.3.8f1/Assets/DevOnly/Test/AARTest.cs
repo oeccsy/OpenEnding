@@ -9,9 +9,6 @@ public class AARTest : MonoBehaviour
 
     private AndroidJavaClass _bluetoothLEUtilsClass;
     private AndroidJavaObject _bluetoothLEUtilsInstance;
-    
-    private AndroidJavaClass _networkingClass;
-    private AndroidJavaObject _networkingInstance;
 
     private AndroidJavaClass _centralClass;
     private AndroidJavaObject _centralInstance;
@@ -26,9 +23,6 @@ public class AARTest : MonoBehaviour
         
         _bluetoothLEUtilsClass = new AndroidJavaClass("com.oeccsy.openending_ble.BluetoothLEUtils");
         _bluetoothLEUtilsInstance = _bluetoothLEUtilsClass.CallStatic<AndroidJavaObject>("getInstance");
-        
-        _networkingClass = new AndroidJavaClass("com.oeccsy.openending_ble.Networking");
-        _networkingInstance = _networkingClass.CallStatic<AndroidJavaObject>("getInstance");
 
         _centralClass = new AndroidJavaClass("com.oeccsy.openending_ble.Central");
         _centralInstance = _centralClass.CallStatic<AndroidJavaObject>("getInstance");
@@ -43,12 +37,6 @@ public class AARTest : MonoBehaviour
     {
         _androidUtilsClass.CallStatic("toast", text);
     }
-
-    public void ReturnInt()
-    {
-        Toast(_androidUtilsClass.CallStatic<int>("returnInt").ToString());
-    }
-
 
 
     public void IsBluetoothLEFeatureExist()
@@ -70,8 +58,6 @@ public class AARTest : MonoBehaviour
     {
         _bluetoothLEUtilsInstance.Call("requestPermissions");
     }
-
-
 
     public void InitCentralBluetoothSystem()
     {
@@ -105,7 +91,7 @@ public class AARTest : MonoBehaviour
     public void StartAdvertising()
     {
         string deviceName = "Test";
-        _peripheralInstance.Call("startAdvertising", deviceName, 0);
+        _peripheralInstance.Call("startAdvertising", deviceName);
     }
     
     public void StopAdvertising()
