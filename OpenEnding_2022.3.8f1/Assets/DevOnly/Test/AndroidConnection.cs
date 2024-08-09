@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
-public class AARTest : MonoBehaviour
+public class AndroidConnection : MonoBehaviour
 {
     private AndroidJavaClass _androidUtilsClass;
     private AndroidJavaObject _androidUtilsInstance;
@@ -73,14 +74,20 @@ public class AARTest : MonoBehaviour
     {
         _centralInstance.Call("stopScanning");
     }
+
+    public void RequestMTU()
+    {
+        int mtu = 256;
+        _centralInstance.Call("requestMtu", mtu);
+    }
     
     public void Write()
     {
         string deviceName = "Test";
-        byte[] data = new byte[] {116, 101, 115, 116};
+        string str = "abcdefghijklmnopqrstuvwxyz";
+        byte[] data = Encoding.UTF8.GetBytes(str);
         _centralInstance.Call("write", deviceName, data);
     }
-
 
 
     public void InitPeripheralBluetoothSystem()
@@ -111,19 +118,29 @@ public class AARTest : MonoBehaviour
 
     public void Indicate()
     {
-        byte[] data = new byte[] {116, 101, 115, 116};
+        string str = "abcdefghijklmnopqrstuvwxyz";
+        byte[] data = Encoding.UTF8.GetBytes(str);
         _peripheralInstance.Call("indicate", data);
     }
     
     
     public void OnDataReceive(string encodedData)
     {
-        Debug.Log(encodedData);
-        Toast(encodedData);
-
         byte[] bytes = System.Convert.FromBase64String(encodedData);
         
         Debug.Log(bytes.ToString());
-        Toast(bytes[0].ToString());
+        Toast(bytes.Length.ToString());
+    }
+
+    public void OnDeviceConnected(string deviceName)
+    {
+        Debug.Log(deviceName + " connected");
+        Toast(deviceName + " connected");
+    }
+
+    public void OnDeviceDisconnected(string deviceName)
+    {
+        Debug.Log(deviceName + " disconnected");
+        Toast(deviceName + " disconnected");
     }
 }
