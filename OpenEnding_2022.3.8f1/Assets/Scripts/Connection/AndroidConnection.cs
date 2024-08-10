@@ -101,14 +101,14 @@ public class AndroidConnection : Singleton<AndroidConnection>
     _peripheralInstance.Call("stopAdvertising");
   }
 
-  public void StartServer()
+  public void StartGattServer()
   {
-    _peripheralInstance.Call("startServer");
+    _peripheralInstance.Call("startGattServer");
   }
 
-  public void StopServer()
+  public void StopGattServer()
   {
-    _peripheralInstance.Call("stopServer");
+    _peripheralInstance.Call("stopGattServer");
   }
 
   public void Indicate(byte[] data)

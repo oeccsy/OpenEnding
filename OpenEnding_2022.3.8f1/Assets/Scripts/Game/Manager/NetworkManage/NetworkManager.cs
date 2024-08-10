@@ -111,7 +111,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     {
         connectedDeviceList.Clear();
 #if UNITY_ANDROID
-        AndroidConnection.Instance.StopServer();
+        AndroidConnection.Instance.StopGattServer();
 #endif
     }
 
@@ -123,7 +123,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
         connectType = Define.ConnectType.Client;
 
 #if UNITY_ANDROID
-        AndroidConnection.Instance.StartServer();
+        AndroidConnection.Instance.StartGattServer();
         AndroidConnection.Instance.StartAdvertising(ownDeviceColor.ToString());
 #endif
     }
@@ -156,7 +156,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
     public void StopClient()
     {
 #if UNITY_ANDROID
-        AndroidConnection.Instance.StopServer();
+        AndroidConnection.Instance.StopGattServer();
         AndroidConnection.Instance.InitPeripheralBluetoothSystem();
 #endif
     }
