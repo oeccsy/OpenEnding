@@ -31,7 +31,6 @@ namespace Game.OnBoarding
             contentDragEventHandler.dragable = false;
         
             var targetIndex = (int)(-1 * contentRect.anchoredPosition.x + 540) / 1080;
-            Debug.Log(targetIndex);
         
             Sequence sequence = DOTween.Sequence();
             sequence
