@@ -16,12 +16,15 @@ public class AndroidConnection : Singleton<AndroidConnection>
   private AndroidJavaClass _peripheralClass;
   private AndroidJavaObject _peripheralInstance;
 
+  public delegate void BluetoothConnectHandler(string deviceName);
+  public event BluetoothConnectHandler OnBluetoothDeviceConnected;
+  public event BluetoothConnectHandler OnBluetoothDeviceDisconnected;
+
   public delegate void BluetoothDataHandler(byte[] data);
   public event BluetoothDataHandler OnBluetoothDataReceive;
 
   protected override void Awake()
   {
-    base.Awake();
     DontDestroyOnLoad(gameObject);
 
     _androidUtilsClass = new AndroidJavaClass("com.oeccsy.openending_ble.AndroidUtils");
@@ -35,7 +38,9 @@ public class AndroidConnection : Singleton<AndroidConnection>
 
     _peripheralClass = new AndroidJavaClass("com.oeccsy.openending_ble.Peripheral");
     _peripheralInstance = _peripheralClass.CallStatic<AndroidJavaObject>("getInstance");
-  }
+
+    Toast("Hello From Android!");
+}
 
   public void Toast(string text)
   {
@@ -67,9 +72,9 @@ public class AndroidConnection : Singleton<AndroidConnection>
     _centralInstance.Call("initBluetoothSystem");
   }
 
-  public void StartScanning()
+  public void StartScanning(string deviceName)
   {
-    _centralInstance.Call("startScanning");
+    _centralInstance.Call("startScanning", deviceName);
   }
 
   public void StopScanning()
@@ -113,6 +118,16 @@ public class AndroidConnection : Singleton<AndroidConnection>
     _peripheralInstance.Call("indicate", data);
   }
 
+
+  public void OnDeviceConnected(string deviceName)
+  {
+    OnBluetoothDeviceConnected?.Invoke(deviceName);
+  }
+
+  public void OnDeviceDisconnected(string deviceName)
+  {
+    OnBluetoothDeviceDisconnected?.Invoke(deviceName);
+  }
 
   public void OnDataReceive(string encodedData)
   {

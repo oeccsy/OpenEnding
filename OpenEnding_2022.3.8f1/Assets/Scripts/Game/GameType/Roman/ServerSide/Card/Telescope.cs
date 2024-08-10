@@ -3,9 +3,11 @@ using System.Collections;
 using System.Linq;
 using Game.GameType.Roman.ServerSide.CardBase;
 using Game.Manager.GameManage;
+using Game.GameType.Roman.ClientSide;
+using Game.GameType.Roman.ServerSide;
 using UnityEngine;
 
-namespace Game.GameType.Roman.ServerSide.Card
+namespace Game.GameType.Roman
 {
     public class Telescope : RomanCard, IFlipAbility
     {
@@ -23,7 +25,7 @@ namespace Game.GameType.Roman.ServerSide.Card
                 cards = cards.Where(card => card.cardType != CardType.Telescope).ToList();
             
                 var targetCard = cards[UnityEngine.Random.Range(0, cards.Count)];
-                GameManager.Instance.StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] { 11, 3, (byte)targetCard.cardType }));
+                NetworkManager.Instance.ClientRpcCall(deviceColor, typeof(RomanGameScene), "DiscoverCard", targetCard.cardType);
 
                 yield return new WaitForSeconds(7f);
                 gameMode.DiscoverCard(targetCard.cardType);

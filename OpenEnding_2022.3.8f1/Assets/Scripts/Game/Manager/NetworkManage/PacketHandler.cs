@@ -1,30 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using Game.Manager.GameManage;
-using Shatalmic;
+using System.Reflection;
+using UnityEngine;
 
 namespace Game.Manager.NetworkManage
 {
-    public abstract class PacketHandler
+    public abstract class PacketHandler : MonoBehaviour
     {
-        protected Dictionary<Tuple<byte, byte>, Action<byte[]>> _funcDict;
-        
-        protected void ExecuteActionByPacket(Networking.NetworkDevice device, string characteristic, byte[] bytes)
-        {
-            var funcKey = Tuple.Create<byte, byte>(bytes[0], bytes[1]);
-            var targetFunction = _funcDict[funcKey];
+        protected Dictionary<Type, object> _instanceDict;
 
-            List<Byte> byteList = new List<byte>(bytes);
-            targetFunction.Invoke(byteList.GetRange(2, byteList.Count - 2).ToArray());
+        protected virtual void Awake()
+        {
+            //NetworkManager.Instance.PacketHandler = this;
         }
-        
-        protected void ExecuteActionByPacket(string clientName, string characteristic, byte[] bytes)
-        {
-            var funcKey = Tuple.Create<byte, byte>(bytes[0], bytes[1]);
-            var targetFunction = _funcDict[funcKey];
 
-            List<Byte> byteList = new List<byte>(bytes);
-            targetFunction.Invoke(byteList.GetRange(2, byteList.Count - 2).ToArray());
+        private void OnEnable()
+        {
+            //NetworkManager.Instance.OnBluetoothDataReceive += ExcuteMethodByPacket;
+        }
+
+        private void ExcuteMethodByPacket(byte[] packet)
+        {
+            Command command = CommandSerializer.Deserialize(packet);
+            $"{command.methodName} packet arrived len : {packet.Length}".Log();
+            $"{command.methodName} param len : {command.param.Length}".Log();
+            
+            Type type = Type.GetType(command.typeName);
+            Debug.Log(type);
+            if(type == null) "type is null exception".LogError();  
+            object instance = _instanceDict[type];
+           
+            MethodInfo methodInfo = instance.GetType().GetMethod(command.methodName);
+            methodInfo.Invoke(instance, command.param);
+        }
+
+        private void OnDisbale()
+        {
+            //NetworkManager.Instance.OnBluetoothDataReceive -= ExcuteMethodByPacket;
         }
     }
 }

@@ -10,7 +10,7 @@ public abstract class Fairytale_Card : MonoBehaviour
 
     protected virtual void Awake()
     {
-        cardData = new Fairytale_CardData(NetworkManager.Instance.ownDeviceData);
+        cardData = new Fairytale_CardData(NetworkManager.Instance.ownDeviceColor);
     }
 
     private void Start()

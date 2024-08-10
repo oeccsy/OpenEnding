@@ -20,7 +20,7 @@ public class GameFlow : MonoBehaviour
 
         if (Connect_Scene.Instance.n != NetworkManager.Instance.connectedDeviceList.Count) yield break;
 
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] {1, 0, 2}));
+        NetworkManager.Instance.ClientRpcCall(typeof(GameFlow), "LoadScene", Define.SceneType.RomanScene);
     }
     
     public void LoadScene(Define.SceneType targetScene)

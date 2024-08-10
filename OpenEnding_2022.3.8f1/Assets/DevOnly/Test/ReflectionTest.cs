@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using System.Text;
 using UnityEngine;
 
 public class ReflectionTest : MonoBehaviour
 {
     protected Dictionary<Type, object> _instanceDict = new Dictionary<Type, object>();
-    // Start is called before the first frame update
+    public Command command1;
+    public Command command2;
+
     void Start()
     {
         _instanceDict.Add(typeof(ReflectionTest), this);
@@ -37,4 +40,6 @@ public class ReflectionTest : MonoBehaviour
     {
         Debug.Log($"TestTestTest {a} {b}");
     }
+
+    
 }
