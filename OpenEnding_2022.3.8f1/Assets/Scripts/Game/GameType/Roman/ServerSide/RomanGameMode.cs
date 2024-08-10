@@ -116,7 +116,7 @@ namespace Game.GameType.Roman.ServerSide
             if (curStep == GameStep.SelectCard && face == Define.DisplayedFace.Stand)
             {
                 ColorPalette.ColorName targetDeviceColor = cardContainer.GetCard(cardType).deviceColor;
-                NetworkManager.Instance.ClientRpcCall(typeof(RomanGameScene), "ShowCard", null);
+                NetworkManager.Instance.ClientRpcCall(targetDeviceColor, typeof(RomanGameScene), "ShowCard", null);
                 
                 curStep = GameStep.FlipOrShake;
                 $"{curStep.ToString()}".Log();

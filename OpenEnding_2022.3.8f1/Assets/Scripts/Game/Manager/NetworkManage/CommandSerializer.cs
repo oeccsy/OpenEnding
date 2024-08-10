@@ -15,7 +15,6 @@ public class CommandSerializer
 
     public static Command Deserialize(byte[] packet)
     {
-        packet.Length.Log();
         using(MemoryStream memoryStream = new MemoryStream(packet))
         {
             BinaryFormatter formatter = new BinaryFormatter();

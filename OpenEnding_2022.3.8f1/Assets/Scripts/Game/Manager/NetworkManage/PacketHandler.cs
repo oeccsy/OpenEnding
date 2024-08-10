@@ -11,32 +11,29 @@ namespace Game.Manager.NetworkManage
 
         protected virtual void Awake()
         {
-            //NetworkManager.Instance.PacketHandler = this;
+            NetworkManager.Instance.PacketHandler = this;
         }
 
         private void OnEnable()
         {
-            //NetworkManager.Instance.OnBluetoothDataReceive += ExcuteMethodByPacket;
+            NetworkManager.Instance.OnBluetoothDataReceive += ExcuteMethodByPacket;
         }
 
         private void ExcuteMethodByPacket(byte[] packet)
         {
             Command command = CommandSerializer.Deserialize(packet);
-            $"{command.methodName} packet arrived len : {packet.Length}".Log();
-            $"{command.methodName} param len : {command.param.Length}".Log();
+            $"{command.methodName} arrived packet : {packet.Length}, param : {command.param?.Length}".Log();
             
             Type type = Type.GetType(command.typeName);
-            Debug.Log(type);
-            if(type == null) "type is null exception".LogError();  
+            MethodInfo methodInfo = type.GetMethod(command.methodName);
+            
             object instance = _instanceDict[type];
-           
-            MethodInfo methodInfo = instance.GetType().GetMethod(command.methodName);
             methodInfo.Invoke(instance, command.param);
         }
 
-        private void OnDisbale()
+        private void OnDisable()
         {
-            //NetworkManager.Instance.OnBluetoothDataReceive -= ExcuteMethodByPacket;
+            NetworkManager.Instance.OnBluetoothDataReceive -= ExcuteMethodByPacket;
         }
     }
 }

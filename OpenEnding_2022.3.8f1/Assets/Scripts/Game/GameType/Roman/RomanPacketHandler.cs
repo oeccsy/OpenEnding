@@ -10,20 +10,19 @@ namespace Game.GameType.Roman
 {
     public class RomanPacketHandler : PacketHandler
     {
-        private RomanGameScene RomanGameScene => (RomanGameScene)GameManager.Instance.GameScene;
-        private RomanGameState RomanGameState => (RomanGameState)GameManager.Instance.GameState;
-        private RomanGameMode RomanGameMode => GameManager.Instance.GameMode as RomanGameMode;
-
         protected override void Awake()
         {
             base.Awake();
+        }
 
+        private void Start()
+        {
             _instanceDict = new Dictionary<Type, object>
             {
-                {typeof(RomanGameScene), RomanGameScene},
-                {typeof(RomanGameState), RomanGameState},
+                {typeof(RomanGameScene), GameManager.Instance.GameScene as RomanGameScene},
+                {typeof(RomanGameState), GameManager.Instance.GameState as RomanGameState},
                 {typeof(DeviceUtils), null},
-                {typeof(RomanGameMode), RomanGameMode}
+                {typeof(RomanGameMode), GameManager.Instance.GameMode as RomanGameMode}
             };
         }
     }

@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Game.Manager.NetworkManage;
-using UnityEngine;
 
 public partial class NetworkManager : Singleton<NetworkManager>
 {
@@ -105,7 +103,6 @@ public partial class NetworkManager : Singleton<NetworkManager>
             else
             {
                 AndroidConnection.Instance.Write(targetDeviceColor.ToString(), bytes);    
-                $"Send to {targetDeviceColor}".Log();
             }
         }
     }
@@ -140,6 +137,7 @@ public partial class NetworkManager : Singleton<NetworkManager>
         command.param = param;
 
         byte[] packet = CommandSerializer.Serialize(command);
+        $"{methodName} RPC Call packet len : {packet.Length}".Log();
         SendBytesToServer(packet);
     }
     
@@ -148,7 +146,6 @@ public partial class NetworkManager : Singleton<NetworkManager>
         if (connectType == Define.ConnectType.Client)
         {
             AndroidConnection.Instance.Indicate(bytes);
-            $"Send [{bytes[0]},{bytes[1]}] to Server".Log();
         }
         else if (connectType == Define.ConnectType.Server)
         {

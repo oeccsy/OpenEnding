@@ -73,7 +73,6 @@ public class SerailizeTest : MonoBehaviour
 
     public static TempCommand Deserialize(byte[] packet)
     {
-        packet.Length.Log();
         MemoryStream memoryStream = new MemoryStream(packet);
         BinaryFormatter formatter = new BinaryFormatter();
         return formatter.Deserialize(memoryStream) as TempCommand;

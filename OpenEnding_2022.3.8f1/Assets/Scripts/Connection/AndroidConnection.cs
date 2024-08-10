@@ -38,8 +38,6 @@ public class AndroidConnection : Singleton<AndroidConnection>
 
     _peripheralClass = new AndroidJavaClass("com.oeccsy.openending_ble.Peripheral");
     _peripheralInstance = _peripheralClass.CallStatic<AndroidJavaObject>("getInstance");
-
-    Toast("Hello From Android!");
 }
 
   public void Toast(string text)
