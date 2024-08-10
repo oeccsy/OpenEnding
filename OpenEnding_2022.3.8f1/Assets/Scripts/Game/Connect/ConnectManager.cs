@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using Shatalmic;
 using UnityEngine;
 
 public class ConnectManager : Singleton<ConnectManager>
@@ -16,10 +14,10 @@ public class ConnectManager : Singleton<ConnectManager>
     {
         InitConnect();
         
-        NetworkManager.Instance.OnDeviceReady += RegisterDevice;
-        NetworkManager.Instance.OnDeviceReady += RequestSynchronizeDevices;
-        NetworkManager.Instance.OnDeviceDisconnected += UnRegisterDevice;
-        NetworkManager.Instance.OnDeviceDisconnected += RequestSynchronizeDevices;
+        NetworkManager.Instance.OnBluetoothDeviceConnected += RegisterDevice;
+        NetworkManager.Instance.OnBluetoothDeviceConnected += RequestSynchronizeDevices;
+        NetworkManager.Instance.OnBluetoothDeviceDisconnected += UnRegisterDevice;
+        NetworkManager.Instance.OnBluetoothDeviceDisconnected += RequestSynchronizeDevices;
         
         foreach (var deviceObject in Connect_Scene.Instance.deviceObjectList)
         {
@@ -50,9 +48,7 @@ public class ConnectManager : Singleton<ConnectManager>
     {
         if (connectStatus != Define.ConnectStatus.LeaveParty) return;
 
-        NetworkManager.Instance.clientName = selectedDevice.ownColor.ToString();
-        NetworkManager.Instance.ownDeviceData.colorOrder = (int)selectedDevice.ownColor;
-        
+        NetworkManager.Instance.ownDeviceColor = selectedDevice.ownColor;
         
         switch (selectedDevice.ownColor)
         {
@@ -96,48 +92,43 @@ public class ConnectManager : Singleton<ConnectManager>
         "StopConnect".Log();
     }
 
-    private void RegisterDevice(Networking.NetworkDevice connectedDevice)
+    private void RegisterDevice(string deviceName)
     {
-        $"{connectedDevice.Name} Join Done".Log();
+        $"{deviceName} Join Done".Log();
         
-        List<Networking.NetworkDevice> connectedDeviceList = NetworkManager.Instance.connectedDeviceList;
+        List<ColorPalette.ColorName> connectedDeviceList = NetworkManager.Instance.connectedDeviceList;
 
-        var colorString = connectedDevice.Name.Split(':')[1];
-        connectedDevice.colorOrder = (int)(ColorPalette.ColorName)Enum.Parse(typeof(ColorPalette.ColorName), colorString);
+        ColorPalette.ColorName deviceColor = (ColorPalette.ColorName)Enum.Parse(typeof(ColorPalette.ColorName), deviceName);
 
-        if (!connectedDeviceList.Contains(connectedDevice))
+        if (!connectedDeviceList.Contains(deviceColor))
         {
-            connectedDevice.deviceListOrder = connectedDeviceList.Count;
-            connectedDeviceList.Add(connectedDevice);
+            connectedDeviceList.Add(deviceColor);
         }
 
         if (Connect_Scene.Instance.n == connectedDeviceList.Count)
         {
-            OnAllDeviceConnected?.Invoke();    
+            OnAllDeviceConnected?.Invoke();
         }
     }
 
-    private void UnRegisterDevice(Networking.NetworkDevice disconnectedDevice)
+    private void UnRegisterDevice(string deviceName)
     {
-        $"{disconnectedDevice.Name} Disconnect".Log();
+        $"{deviceName} Disconnect".Log();
         
-        List<Networking.NetworkDevice> connectedDeviceList = NetworkManager.Instance.connectedDeviceList;
+        List<ColorPalette.ColorName> connectedDeviceList = NetworkManager.Instance.connectedDeviceList;
 
-        if (connectedDeviceList != null && connectedDeviceList.Contains(disconnectedDevice))
+        ColorPalette.ColorName deviceColor = (ColorPalette.ColorName)Enum.Parse(typeof(ColorPalette.ColorName), deviceName);
+
+        if (connectedDeviceList != null && connectedDeviceList.Contains(deviceColor))
         {
-            connectedDeviceList.Remove(disconnectedDevice);
+            connectedDeviceList.Remove(deviceColor);
         }
     }
 
-    private void RequestSynchronizeDevices(Networking.NetworkDevice temp)
+    private void RequestSynchronizeDevices(string deviceName)
     {
-        var packet = new List<byte> {0, 0};
-        
-        foreach (var device in NetworkManager.Instance.connectedDeviceList)
-        {
-            packet.Add((byte)device.colorOrder);
-        }
+        ColorPalette.ColorName[] deviceColors = NetworkManager.Instance.connectedDeviceList.ToArray();
 
-        StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(packet.ToArray()));
+        NetworkManager.Instance.ClientRpcCall(typeof(Connect_Scene), "SynchronizeDevicesWithAnimation", deviceColors);
     }
 }

@@ -2,11 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Manager.GameManage;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 public class Connect_Scene : Singleton<Connect_Scene>
 {
@@ -54,11 +51,11 @@ public class Connect_Scene : Singleton<Connect_Scene>
         selectedDevice.OnTouchDevice += LeavePartyWithAnimation;
     }
 
-    public void SynchronizeDevicesWithAnimation(Byte[] colors)
+    public void SynchronizeDevicesWithAnimation(ColorPalette.ColorName[] deviceColors)
     {
         foreach (var device in deviceObjectList)
         {
-            if (colors.Contains((byte)device.ownColor))
+            if (deviceColors.Contains(device.ownColor))
             {
                 if (device.curColor == ColorPalette.ColorName.DeviceDefault)
                 {

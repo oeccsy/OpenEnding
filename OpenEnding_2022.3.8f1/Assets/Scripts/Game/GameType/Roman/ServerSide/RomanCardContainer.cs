@@ -23,14 +23,14 @@ namespace Game.GameType.Roman.ServerSide
             availableCards.Add(CardType.RoleModel, new RoleModel());
         }
 
-        public void UseCard(CardType cardType, Networking.NetworkDevice device)
+        public void UseCard(CardType cardType, ColorPalette.ColorName deviceColor)
         {
             if (!availableCards.ContainsKey(cardType)) return;
             
             RomanCard cardData = availableCards[cardType];
             availableCards.Remove(cardType);
 
-            cardData.device = device;
+            cardData.deviceColor = deviceColor;
             usedCards.Add(cardType, cardData);
             
             cardData.OnEnterField();
@@ -47,8 +47,8 @@ namespace Game.GameType.Roman.ServerSide
             RomanCard prevCard = usedCards[cardType];
             usedCards.Remove(cardType);
             
-            newCard.device = prevCard.device;
-            prevCard.device = null;
+            newCard.deviceColor = prevCard.deviceColor;
+            prevCard.deviceColor = ColorPalette.ColorName.DeviceDefault;
             
             usedCards.Add(newCard.cardType, newCard);
             availableCards.Add(cardType, prevCard);

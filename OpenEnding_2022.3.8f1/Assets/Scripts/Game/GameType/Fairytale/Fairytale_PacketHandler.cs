@@ -50,10 +50,6 @@ public class Fairytale_PacketHandler : Singleton<Fairytale_PacketHandler>
 
             {Tuple.Create<byte, byte>(5, 0), (bytes) => GameFlow.LoadScene(Define.SceneType.ConnectScene)}
         };
-
-
-        NetworkManager.Instance.OnReceiveDataFromServer = ExecuteActionByPacket;
-        NetworkManager.Instance.OnReceiveDataFromClient = ExecuteActionByPacket;
     }
 
     public void ExecuteActionByPacket(string clientName, string characteristic, byte[] bytes)

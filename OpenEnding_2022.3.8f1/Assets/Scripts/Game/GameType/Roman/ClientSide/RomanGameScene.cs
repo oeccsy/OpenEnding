@@ -94,6 +94,7 @@ namespace Game.GameType.Roman.ClientSide
 
         public void ShowCard()
         {
+            "ShowCard".Log();
             IEnumerator ShowRoutine()
             {
                 yield return card.Show();

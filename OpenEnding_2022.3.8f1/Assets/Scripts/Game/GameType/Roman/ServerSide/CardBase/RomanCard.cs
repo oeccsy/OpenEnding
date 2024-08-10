@@ -11,7 +11,7 @@ namespace Game.GameType.Roman.ServerSide.CardBase
         public string cardDesc;
         
         public Define.DisplayedFace displayedFace = Define.DisplayedFace.None;
-        public Networking.NetworkDevice device;
+        public ColorPalette.ColorName deviceColor;
 
         public abstract void OnEnterField();
         public abstract void OnExitField();

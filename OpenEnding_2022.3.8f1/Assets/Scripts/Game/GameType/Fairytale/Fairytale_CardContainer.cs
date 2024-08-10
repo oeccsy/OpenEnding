@@ -27,7 +27,7 @@ public class Fairytale_CardContainer
 
     public void SetCardHead(ColorPalette.ColorName targetColor)
     {
-        var cardData = cardList.Single(cardData => cardData.Color == targetColor);
+        var cardData = cardList.Single(cardData => cardData.deviceColor == targetColor);
         
         if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
         if (cardData.displayedFace == Define.DisplayedFace.Head) return;
@@ -45,7 +45,7 @@ public class Fairytale_CardContainer
     
     public void SetCardTail(ColorPalette.ColorName targetColor)
     {
-        var cardData = cardList.Single(cardData => cardData.Color == targetColor);
+        var cardData = cardList.Single(cardData => cardData.deviceColor == targetColor);
 
         if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
         if (cardData.displayedFace == Define.DisplayedFace.Tail) return;
@@ -63,7 +63,7 @@ public class Fairytale_CardContainer
     
     public void SetCardSuccess(ColorPalette.ColorName targetColor)
     {
-        var cardData = cardList.Single(cardData => cardData.Color == targetColor);
+        var cardData = cardList.Single(cardData => cardData.deviceColor == targetColor);
 
         if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
 
@@ -83,7 +83,7 @@ public class Fairytale_CardContainer
     
     public void SetCardGiveUp(ColorPalette.ColorName targetColor)
     {
-        var cardData = cardList.Single(cardData => cardData.Color == targetColor);
+        var cardData = cardList.Single(cardData => cardData.deviceColor == targetColor);
 
         if (cardData.cardStatus != Define.FairyTaleGameCardStatus.Playing) return;
 
