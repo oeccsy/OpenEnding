@@ -3,7 +3,6 @@ using System.Collections;
 using Game.GameType.Roman.ClientSide;
 using Game.GameType.Roman.ServerSide.CardBase;
 using Game.Manager.GameManage;
-using Shatalmic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -31,18 +30,16 @@ namespace Game.GameType.Roman.ServerSide
         
         private void Start()
         {
-            NetworkManager.Instance.clientSidePacketHandler = new ClientSide.RomanPacketHandler();
-            NetworkManager.Instance.serverSidePacketHandler = new ServerSide.RomanPacketHandler();
-        
             GameManager.Instance.GameState = new RomanGameState();
         }
         
         protected override IEnumerator GameRoutine()
         {
+            yield return new WaitForSeconds(1f);
             yield return new WaitUntil(() => curStep == GameStep.InitGame);
-            yield return InitDeviceOwnCard();
+            InitDeviceOwnCard();
             yield return SelectStartPlayer();
-            yield return RequestFlipToTail();
+            RequestFlipToTail();
             yield return new WaitUntil(() => cardContainer.IsAllHide());
             
             while (curStep != GameStep.GameOver)
@@ -61,7 +58,7 @@ namespace Game.GameType.Roman.ServerSide
             }
         }
 
-        private IEnumerator InitDeviceOwnCard()
+        private void InitDeviceOwnCard()
         {
             var randomNumbers = Utils.GetCombinationInt(1, 5, 5); // TODO
             Utils.ShuffleList(randomNumbers);
@@ -69,36 +66,25 @@ namespace Game.GameType.Roman.ServerSide
             for (int i = 0; i < NetworkManager.Instance.connectedDeviceList.Count; i++)
             {
                 CardType cardType = (CardType)randomNumbers[i];
-                Networking.NetworkDevice device = NetworkManager.Instance.connectedDeviceList[i];
+                ColorPalette.ColorName deviceColor = NetworkManager.Instance.connectedDeviceList[i];
                 
-                cardContainer.UseCard(cardType, device);
+                cardContainer.UseCard(cardType, deviceColor);
 
-                yield return new WaitForSecondsRealtime(0.5f);
-                yield return NetworkManager.Instance.SendBytesToTargetDevice(device, new byte[] { 10, 2, (byte)cardType });
+                NetworkManager.Instance.ClientRpcCall(deviceColor, typeof(RomanGameScene), "CreateCard", cardType);
             }
         }
         
         private IEnumerator SelectStartPlayer()
         {
-            int startPlayerNumber = Random.Range(0, base.playerCount);
-            
-            startPlayer = (ColorPalette.ColorName)startPlayerNumber;
-            Networking.NetworkDevice targetDevice = null;
+            ColorPalette.ColorName startPlayerColor = (ColorPalette.ColorName)Random.Range(0, base.playerCount);
 
-            foreach (var device in NetworkManager.Instance.connectedDeviceList)
-            {
-                if (device.colorOrder != startPlayerNumber) continue;
-                targetDevice = device;
-                break;
-            }
-
-            StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(targetDevice, new byte[] { 10, 0 }));
+            NetworkManager.Instance.ClientRpcCall(startPlayerColor, typeof(RomanGameScene), "ShowStartPlayerPopup", null);
             yield return new WaitForSecondsRealtime(5f);
         }
 
-        private IEnumerator RequestFlipToTail()
+        private void RequestFlipToTail()
         {
-            yield return NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 10, 1 });
+            NetworkManager.Instance.ClientRpcCall(typeof(RomanGameScene), "ShowRequestFlipToTailPopup", null);
         }
 
         private IEnumerator NotifyNewPlayerTurn()
@@ -106,14 +92,12 @@ namespace Game.GameType.Roman.ServerSide
             yield return new WaitForSeconds(1f);
             
             curPlayer = (ColorPalette.ColorName)(((int)startPlayer + turnCount) % base.playerCount);
-            SynchronizeCurPlayer();
-            
-            yield return NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 11, 0 });
-            
+            NetworkManager.Instance.ClientRpcCall(typeof(RomanGameState), "SynchronizeCurPlayer", curPlayer);
+            NetworkManager.Instance.ClientRpcCall(typeof(DeviceUtils), "Vibrate", null);
             
             curStep = GameStep.SelectCard;
             $"{curStep.ToString()}".Log();
-            SynchronizeGameStep();
+            NetworkManager.Instance.ClientRpcCall(typeof(RomanGameState), "SynchronizeGameStep", curStep);
         }
         
         private IEnumerator WaitForCardCheck()
@@ -121,7 +105,7 @@ namespace Game.GameType.Roman.ServerSide
             yield return new WaitForSecondsRealtime(3f);
             curStep = GameStep.HideCard;
             $"{curStep.ToString()}".Log();
-            SynchronizeGameStep();
+            NetworkManager.Instance.ClientRpcCall(typeof(RomanGameState), "SynchronizeGameStep", curStep);
         }
         
         public void FlipCard(CardType cardType, Define.DisplayedFace face)
@@ -131,12 +115,12 @@ namespace Game.GameType.Roman.ServerSide
         
             if (curStep == GameStep.SelectCard && face == Define.DisplayedFace.Stand)
             {
-                Networking.NetworkDevice targetDevice = cardContainer.GetCard(cardType).device;
-                StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(targetDevice, new byte[] {11, 1}));
+                ColorPalette.ColorName targetDeviceColor = cardContainer.GetCard(cardType).deviceColor;
+                NetworkManager.Instance.ClientRpcCall(targetDeviceColor, typeof(RomanGameScene), "ShowCard", null);
                 
                 curStep = GameStep.FlipOrShake;
                 $"{curStep.ToString()}".Log();
-                SynchronizeGameStep();
+                NetworkManager.Instance.ClientRpcCall(targetDeviceColor, typeof(RomanGameState), "SynchronizeGameStep", curStep);
                 return;
             }
         
@@ -148,7 +132,7 @@ namespace Game.GameType.Roman.ServerSide
 
                 curStep = GameStep.ShowCard;
                 $"{curStep.ToString()}".Log();
-                SynchronizeGameStep();
+                NetworkManager.Instance.ClientRpcCall(typeof(RomanGameState), "SynchronizeGameStep", curStep);
                 return;
             }
             
@@ -156,7 +140,7 @@ namespace Game.GameType.Roman.ServerSide
             {
                 curStep = GameStep.SelectCard;
                 $"{curStep.ToString()}".Log();
-                SynchronizeGameStep();
+                NetworkManager.Instance.ClientRpcCall(typeof(RomanGameState), "SynchronizeGameStep", curStep);
                 return;
             }
         }
@@ -175,7 +159,7 @@ namespace Game.GameType.Roman.ServerSide
             
             var newCard = cardContainer.ReplaceCard(cardType);
 
-            StartCoroutine(NetworkManager.Instance.SendBytesToTargetDevice(newCard.device, new byte[] { 11, 2, (byte)newCard.cardType }));
+            NetworkManager.Instance.ClientRpcCall(newCard.deviceColor, typeof(RomanGameScene), "ReplaceCard", newCard.cardType);
         }
         
         public void DiscoverCard(CardType cardType)
@@ -192,7 +176,7 @@ namespace Game.GameType.Roman.ServerSide
             GameOver();
             OnGameOver?.Invoke();
             
-            StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 12, 0 })); 
+            NetworkManager.Instance.ClientRpcCall(typeof(RomanGameScene), "ShowResultPopup", null);
         }
         
         public void Victory(ColorPalette.ColorName playerColor)
@@ -200,19 +184,7 @@ namespace Game.GameType.Roman.ServerSide
             GameOver();
             OnGameOver?.Invoke();
             
-            StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 12, 0 })); 
-        }
-
-        public void SynchronizeGameStep()
-        {
-            byte curGameStepToByte = (byte)curStep;
-            StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 13, 0, curGameStepToByte }));
-        }
-        
-        public void SynchronizeCurPlayer()
-        {
-            byte curPlayerToByte = (byte)curPlayer;
-            StartCoroutine(NetworkManager.Instance.SendBytesToAllDevice(new byte[] { 13, 1, curPlayerToByte }));
+            NetworkManager.Instance.ClientRpcCall(typeof(RomanGameScene), "ShowResultPopup", null); 
         }
     }
 }

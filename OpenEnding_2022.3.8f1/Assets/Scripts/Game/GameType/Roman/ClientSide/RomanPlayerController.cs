@@ -1,4 +1,5 @@
-﻿using Game.Manager.GameManage;
+﻿using Game.GameType.Roman.ServerSide;
+using Game.Manager.GameManage;
 
 namespace Game.GameType.Roman.ClientSide
 {
@@ -19,7 +20,7 @@ namespace Game.GameType.Roman.ClientSide
             
             byte cardType = (byte)(GameManager.Instance.GameScene as RomanGameScene).card.cardType;
             byte displayedFace = (byte)Define.DisplayedFace.Head;
-            StartCoroutine(NetworkManager.Instance.SendBytesToServer(new byte[] {0, 0, cardType, displayedFace}));
+            NetworkManager.Instance.ServerRpcCall(typeof(RomanGameMode), "FlipCard", cardType, displayedFace);
         }
         
         public void NotifyFlipToTail()
@@ -28,7 +29,7 @@ namespace Game.GameType.Roman.ClientSide
             
             byte cardType = (byte)(GameManager.Instance.GameScene as RomanGameScene).card.cardType;
             byte displayedFace = (byte)Define.DisplayedFace.Tail;
-            StartCoroutine(NetworkManager.Instance.SendBytesToServer(new byte[] {0, 0, cardType, displayedFace}));
+            NetworkManager.Instance.ServerRpcCall(typeof(RomanGameMode), "FlipCard", cardType, displayedFace);
         }
 
         public void NotifyStand()
@@ -37,7 +38,7 @@ namespace Game.GameType.Roman.ClientSide
             
             byte cardType = (byte)(GameManager.Instance.GameScene as RomanGameScene).card.cardType;
             byte displayedFace = (byte)Define.DisplayedFace.Stand;
-            StartCoroutine(NetworkManager.Instance.SendBytesToServer(new byte[] {0, 0, cardType, displayedFace}));
+            NetworkManager.Instance.ServerRpcCall(typeof(RomanGameMode), "FlipCard", cardType, displayedFace);
         }
 
         public void NotifyShake()
@@ -45,7 +46,7 @@ namespace Game.GameType.Roman.ClientSide
             if ((GameManager.Instance.GameScene as RomanGameScene)?.card == null) return;
             
             byte cardType = (byte)(GameManager.Instance.GameScene as RomanGameScene).card.cardType;
-            StartCoroutine(NetworkManager.Instance.SendBytesToServer(new byte[] {0, 1, cardType}));
+            NetworkManager.Instance.ServerRpcCall(typeof(RomanGameMode), "ShakeCard", cardType);
         }
     }
 }

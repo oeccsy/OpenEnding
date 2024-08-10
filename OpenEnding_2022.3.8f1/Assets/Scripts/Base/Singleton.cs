@@ -36,7 +36,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         if(gameObject != Instance.gameObject)
         {
-            Debug.Log("is Duplicated");
+            "is Duplicated".Log();
             Destroy(gameObject);
         }
     }

@@ -1,104 +1,108 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Game.Manager.NetworkManage;
-using Shatalmic;
-using UnityEngine;
 
 public partial class NetworkManager : Singleton<NetworkManager>
 {
-    [Header("Connect Info")]
-    public string networkName = "OpenEnding";
-    public string clientName = "None";
+
     public Define.ConnectType connectType = Define.ConnectType.None;
     
-    public readonly List<Networking.NetworkDevice> connectedDeviceList = new List<Networking.NetworkDevice>();
-    public readonly Networking.NetworkDevice ownDeviceData = new Networking.NetworkDevice();
-    
-    [Header("Networking")]
-    private Networking networking = null;
-    private bool isWritingData = false;
+    public ColorPalette.ColorName ownDeviceColor = ColorPalette.ColorName.DeviceDefault;
+    public readonly List<ColorPalette.ColorName> connectedDeviceList = new List<ColorPalette.ColorName>();
+
+    public delegate void BluetoothConnectHandler(string deviceName);
+    public event BluetoothConnectHandler OnBluetoothDeviceConnected;
+    public event BluetoothConnectHandler OnBluetoothDeviceDisconnected;
+
+    public delegate void BluetoothDataHandler(byte[] data);
+    public event BluetoothDataHandler OnBluetoothDataReceive;
+
+    public PacketHandler PacketHandler { get; set; }
 
 #if UNITY_ANDROID || UNITY_IOS
-
-    protected override void Awake()
+    protected void Start()
     {
-        NetworkingInit();
-    }
-    
-    public void NetworkingInit()
-    {
-        if (networking != null) Destroy(networking);
-        
-        networking = gameObject.AddComponent<Networking>();
-        networking.Initialize(null, null);
+#if UNITY_ANDROID
+        AndroidConnection.Instance.OnBluetoothDeviceConnected += (deviceName) => OnBluetoothDeviceConnected.Invoke(deviceName);
+        AndroidConnection.Instance.OnBluetoothDeviceDisconnected += (deviceName) => OnBluetoothDeviceDisconnected.Invoke(deviceName);
+        AndroidConnection.Instance.OnBluetoothDataReceive += (data) => OnBluetoothDataReceive.Invoke(data);
+        AndroidConnection.Instance.RequestPermissions();
+        AndroidConnection.Instance.InitCentralBluetoothSystem();
+        AndroidConnection.Instance.InitPeripheralBluetoothSystem();
+#endif
     }
 
     #region Server Side
 
-    public ServerSidePacketHandler serverSidePacketHandler;       
-    
-    public Action<Networking.NetworkDevice> OnDeviceReady = null;
-    public Action<Networking.NetworkDevice> OnDeviceDisconnected = null;
-    public Action<Networking.NetworkDevice, string, byte[]> OnReceiveDataFromClient = null;
-    
     public void StartServer()
     {
         connectType = Define.ConnectType.Server;
-        
-        ownDeviceData.deviceListOrder = connectedDeviceList.Count;
-        ownDeviceData.colorOrder = 0;
-        
-        connectedDeviceList.Add(ownDeviceData);
 
-        networking.StartServer
-        (
-            networkName, 
-            (connectedDevice) => OnDeviceReady?.Invoke(connectedDevice),
-            (disconnectedDevice) => OnDeviceDisconnected?.Invoke(disconnectedDevice),
-            (device, characteristic, bytes) => OnReceiveDataFromClient?.Invoke(device, characteristic, bytes)
-        );
+        ownDeviceColor = ColorPalette.ColorName.Pink;
+        connectedDeviceList.Add(ownDeviceColor);
+
+#if UNITY_ANDROID
+        AndroidConnection.Instance.StartScanning(ownDeviceColor.ToString());
+#endif
+    }
+
+    public void ClientRpcCall(ColorPalette.ColorName targetDeviceColor, Type type, string methodName, params object[] param)
+    {
+        Command command = new Command();
+        command.sourceDeviceColor = ownDeviceColor;
+        command.typeName = type.FullName;
+        command.methodName = methodName;
+        command.param = param;
+
+        byte[] packet = CommandSerializer.Serialize(command);
+
+        $"{methodName} RPC Call packet len : {packet.Length}".Log();
+    
+        SendBytesToTargetDevice(targetDeviceColor, packet);
+    }
+
+    public void ClientRpcCall(Type type, string methodName, params object[] param)
+    {
+        Command command = new Command();
+        command.sourceDeviceColor = ownDeviceColor;
+        command.typeName = type.FullName;
+        command.methodName = methodName;
+        command.param = param;
+
+        byte[] packet = CommandSerializer.Serialize(command);
+
+        $"{methodName} RPC Call packet len : {packet.Length}".Log();
+
+        SendBytesToAllDevice(packet);
     }
     
-    public IEnumerator SendBytesToTargetDevice(Networking.NetworkDevice targetDevice, byte[] bytes)
+    public void SendBytesToTargetDevice(ColorPalette.ColorName targetDevice, byte[] bytes)
     {
-        if (connectType != Define.ConnectType.Server) yield break;
+        if (connectType != Define.ConnectType.Server) return;
    
-        yield return new WaitWhile(() => isWritingData);
-        isWritingData = true;
-
-        if (targetDevice == ownDeviceData)
+        if (targetDevice == ownDeviceColor)
         {
-            OnReceiveDataFromServer?.Invoke(null, null, bytes);
-            isWritingData = false;
+            OnBluetoothDataReceive?.Invoke(bytes);
         }
         else
         {
-            networking.WriteDevice(targetDevice, bytes, () => isWritingData = false);    
+            AndroidConnection.Instance.Write(targetDevice.ToString(), bytes);    
         }
     }
 
-    public IEnumerator SendBytesToAllDevice(byte[] bytes)
+    public void SendBytesToAllDevice(byte[] bytes)
     {
-        if (connectType != Define.ConnectType.Server) yield break;
+        if (connectType != Define.ConnectType.Server) return;
         
-        yield return new WaitWhile(() => isWritingData);
-        yield return new WaitForSecondsRealtime(0.3f);
-        
-        foreach (var targetDevice in connectedDeviceList)
+        foreach (var targetDeviceColor in connectedDeviceList)
         {
-            yield return new WaitWhile(() => isWritingData);
-            isWritingData = true;
-            
-            if (targetDevice == ownDeviceData)
+            if (targetDeviceColor == ownDeviceColor)
             {
-                OnReceiveDataFromServer?.Invoke(null, null, bytes);
-                isWritingData = false;
+                OnBluetoothDataReceive?.Invoke(bytes);
             }
             else
             {
-                networking.WriteDevice(targetDevice, bytes, () => isWritingData = false);    
-                $"Send [{bytes[0]},{bytes[1]}] to {targetDevice.Name}".Log();
+                AndroidConnection.Instance.Write(targetDeviceColor.ToString(), bytes);    
             }
         }
     }
@@ -106,53 +110,57 @@ public partial class NetworkManager : Singleton<NetworkManager>
     public void StopServer()
     {
         connectedDeviceList.Clear();
-        networking.StopServer(null);
+#if UNITY_ANDROID
+        AndroidConnection.Instance.StopGattServer();
+#endif
     }
 
     #endregion
     
     #region Client Side
-    
-    public ClientSidePacketHandler clientSidePacketHandler;
-    
-    public Action<string, string, byte[]> OnReceiveDataFromServer = null;
-    
     public void StartClient()
     {
         connectType = Define.ConnectType.Client;
-        
-        networking.StartClient
-        (
-            networkName,
-            clientName,
-            null,
-            (client, characteristic, bytes) => OnReceiveDataFromServer?.Invoke(client, characteristic, bytes)
-        );
+
+#if UNITY_ANDROID
+        AndroidConnection.Instance.StartGattServer();
+        AndroidConnection.Instance.StartAdvertising(ownDeviceColor.ToString());
+#endif
+    }
+
+    public void ServerRpcCall(Type type, string methodName, params object[] param)
+    {
+        Command command = new Command();
+        command.sourceDeviceColor = ownDeviceColor;
+        command.typeName = type.FullName;
+        command.methodName = methodName;
+        command.param = param;
+
+        byte[] packet = CommandSerializer.Serialize(command);
+        $"{methodName} RPC Call packet len : {packet.Length}".Log();
+        SendBytesToServer(packet);
     }
     
-    public IEnumerator SendBytesToServer(byte[] bytes)
+    public void SendBytesToServer(byte[] bytes)
     {
-        yield return new WaitWhile(() => isWritingData);
-        isWritingData = true;
-
         if (connectType == Define.ConnectType.Client)
         {
-            networking.SendFromClient(bytes);
-            $"Send [{bytes[0]},{bytes[1]}] to Server".Log();
+            AndroidConnection.Instance.Indicate(bytes);
         }
         else if (connectType == Define.ConnectType.Server)
         {
-            OnReceiveDataFromClient?.Invoke(null, null, bytes);
+            OnBluetoothDataReceive?.Invoke(bytes);
         }
-        
-        isWritingData = false;
     }
     
     public void StopClient()
     {
-        networking.StopClient(null);
+#if UNITY_ANDROID
+        AndroidConnection.Instance.StopGattServer();
+        AndroidConnection.Instance.InitPeripheralBluetoothSystem();
+#endif
     }
-    
+
     #endregion
     
 #endif
